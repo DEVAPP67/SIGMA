@@ -1810,7 +1810,7 @@
       }
 
       const user = users.find(u => u.id === userId);
-      if (!user || user.code_pin !== pin) {
+      if (!user || String(user.code_pin) !== pin) {
         showToast('Code incorrect', 'error');
         document.getElementById('login-pin').value = '';
         return;
