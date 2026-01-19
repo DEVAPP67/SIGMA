@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SIGMA - Croix Blanche</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23e63946' rx='20' width='100' height='100'/><text x='50' y='65' text-anchor='middle' font-size='50'>🏥</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23e63946' rx='20' width='100' height='100'/><text x='50' y='65' text-anchor='middle' font-size='50'>✚</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
@@ -43,7 +43,6 @@
       overflow-x: hidden;
     }
 
-    /* ==================== SCREENS ==================== */
     .screen {
       display: none;
       min-height: 100vh;
@@ -62,7 +61,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ==================== LOGIN SCREEN ==================== */
     .logo {
       text-align: center;
       margin: 60px 0 50px;
@@ -85,12 +83,6 @@
       font-size: 32px;
       font-weight: 700;
       letter-spacing: -0.5px;
-    }
-
-    .logo p {
-      color: var(--text-secondary);
-      font-size: 15px;
-      margin-top: 6px;
     }
 
     .logo .acronym-detail {
@@ -214,7 +206,6 @@
       cursor: not-allowed;
     }
 
-    /* ==================== HEADER ==================== */
     .header {
       display: flex;
       align-items: center;
@@ -269,7 +260,6 @@
       gap: 6px;
     }
 
-    /* ==================== HOME SCREEN ==================== */
     .home-header {
       text-align: center;
       margin-bottom: 40px;
@@ -362,7 +352,6 @@
       color: var(--text-secondary);
     }
 
-    /* ==================== SCAN SCREEN ==================== */
     .scan-area {
       background: var(--bg-card);
       border-radius: 24px;
@@ -475,7 +464,6 @@
       background: var(--border);
     }
 
-    /* ==================== BAG LIST ==================== */
     .bag-list {
       display: flex;
       flex-direction: column;
@@ -572,7 +560,6 @@
       font-size: 24px;
     }
 
-    /* ==================== INVENTORY SCREEN ==================== */
     .bag-header {
       background: linear-gradient(135deg, var(--accent-red), #ff6b6b);
       margin: -20px -20px 24px -20px;
@@ -631,7 +618,6 @@
       margin-top: 2px;
     }
 
-    /* ==================== FILTER TABS ==================== */
     .filter-tabs {
       display: flex;
       gap: 8px;
@@ -671,7 +657,6 @@
       background: rgba(255,255,255,0.3);
     }
 
-    /* ==================== POCHON SECTIONS ==================== */
     .pochon-section {
       margin-bottom: 28px;
     }
@@ -706,7 +691,6 @@
       font-size: 13px;
     }
 
-    /* ==================== ITEM CARDS ==================== */
     .item-card {
       background: var(--bg-card);
       border-radius: 16px;
@@ -845,7 +829,6 @@
       color: var(--accent-blue);
     }
 
-    /* ==================== FLOATING BUTTON ==================== */
     .floating-container {
       position: fixed;
       bottom: 0;
@@ -860,7 +843,6 @@
       padding-bottom: 100px;
     }
 
-    /* ==================== DESTINATION SCREEN ==================== */
     .selection-summary {
       background: var(--bg-card);
       border-radius: 18px;
@@ -1041,7 +1023,6 @@
       color: var(--text-muted);
     }
 
-    /* ==================== PEREMPTION SCREEN ==================== */
     .peremption-item {
       background: var(--bg-card);
       border-radius: 16px;
@@ -1143,7 +1124,6 @@
       margin-top: 4px;
     }
 
-    /* ==================== TOAST ==================== */
     .toast {
       position: fixed;
       bottom: 100px;
@@ -1178,7 +1158,6 @@
       color: white;
     }
 
-    /* ==================== LOADING ==================== */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -1216,7 +1195,6 @@
       font-size: 15px;
     }
 
-    /* ==================== EMPTY STATE ==================== */
     .empty-state {
       text-align: center;
       padding: 60px 20px;
@@ -1233,7 +1211,6 @@
       font-size: 15px;
     }
 
-    /* ==================== SOURCE SELECTION FOR INVENTORY ==================== */
     .source-modal {
       position: fixed;
       top: 0;
@@ -1343,29 +1320,23 @@
 </head>
 <body>
 
-  <!-- ==================== LOADING OVERLAY ==================== -->
   <div class="loading-overlay" id="loading">
     <div class="spinner"></div>
     <div class="loading-text">Chargement...</div>
   </div>
 
-  <!-- ==================== TOAST ==================== -->
   <div class="toast" id="toast"></div>
 
-  <!-- ==================== SOURCE MODAL ==================== -->
   <div class="source-modal" id="source-modal">
     <div class="source-modal-content">
       <div class="source-modal-header">
         <h3>Compléter depuis...</h3>
         <button class="close-modal" onclick="closeSourceModal()">×</button>
       </div>
-      <div id="source-options">
-        <!-- Rempli dynamiquement -->
-      </div>
+      <div id="source-options"></div>
     </div>
   </div>
 
-  <!-- ==================== ÉCRAN 1: CONNEXION ==================== -->
   <div class="screen active" id="screen-login">
     <div class="logo">
       <div class="logo-icon">✚</div>
@@ -1394,7 +1365,6 @@
     </button>
   </div>
 
-  <!-- ==================== ÉCRAN 2: ACCUEIL ==================== -->
   <div class="screen" id="screen-home">
     <div class="home-header">
       <h2>Bonjour <span id="home-user-name">-</span> 👋</h2>
@@ -1437,7 +1407,6 @@
     </button>
   </div>
 
-  <!-- ==================== ÉCRAN 3: SCAN / SÉLECTION SAC (Intervention) ==================== -->
   <div class="screen" id="screen-scan">
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
@@ -1467,12 +1436,9 @@
 
     <div class="divider">ou sélectionner manuellement</div>
 
-    <div class="bag-list" id="bag-list">
-      <!-- Rempli dynamiquement -->
-    </div>
+    <div class="bag-list" id="bag-list"></div>
   </div>
 
-  <!-- ==================== ÉCRAN 4: CONTENU DU SAC (Intervention) ==================== -->
   <div class="screen" id="screen-inventory">
     <div class="bag-header" id="bag-header">
       <button class="back-btn" onclick="goToScreen('screen-scan')">←</button>
@@ -1494,9 +1460,7 @@
       </div>
     </div>
 
-    <div class="inventory-content" id="inventory-content">
-      <!-- Rempli dynamiquement -->
-    </div>
+    <div class="inventory-content" id="inventory-content"></div>
 
     <div class="floating-container">
       <button class="btn btn-primary" id="btn-validate" disabled>
@@ -1506,7 +1470,6 @@
     </div>
   </div>
 
-  <!-- ==================== ÉCRAN 5: DESTINATION ==================== -->
   <div class="screen" id="screen-destination">
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-inventory')">←</button>
@@ -1518,9 +1481,7 @@
 
     <div class="selection-summary">
       <h3>Matériel sélectionné</h3>
-      <div class="selected-items" id="selected-items">
-        <!-- Rempli dynamiquement -->
-      </div>
+      <div class="selected-items" id="selected-items"></div>
     </div>
 
     <div class="destination-section">
@@ -1571,7 +1532,6 @@
     </div>
   </div>
 
-  <!-- ==================== ÉCRAN 6: SÉLECTION SAC (Inventaire) ==================== -->
   <div class="screen" id="screen-inventaire-select">
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
@@ -1581,12 +1541,9 @@
       </div>
     </div>
 
-    <div class="bag-list" id="inventaire-bag-list">
-      <!-- Rempli dynamiquement -->
-    </div>
+    <div class="bag-list" id="inventaire-bag-list"></div>
   </div>
 
-  <!-- ==================== ÉCRAN 7: INVENTAIRE DU SAC ==================== -->
   <div class="screen" id="screen-inventaire-detail">
     <div class="bag-header blue" id="inventaire-header">
       <button class="back-btn" onclick="goToScreen('screen-inventaire-select')">←</button>
@@ -1620,9 +1577,7 @@
       </button>
     </div>
 
-    <div class="inventory-content" id="inventaire-content">
-      <!-- Rempli dynamiquement -->
-    </div>
+    <div class="inventory-content" id="inventaire-content"></div>
 
     <div class="floating-container" id="inventaire-floating" style="display: none;">
       <button class="btn btn-success" id="btn-completer">
@@ -1632,7 +1587,6 @@
     </div>
   </div>
 
-  <!-- ==================== ÉCRAN 8: PÉREMPTIONS ==================== -->
   <div class="screen" id="screen-peremption">
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
@@ -1662,128 +1616,60 @@
       </button>
     </div>
 
-    <div id="peremption-content">
-      <!-- Rempli dynamiquement -->
-    </div>
+    <div id="peremption-content"></div>
   </div>
 
   <script>
-    // ==================== CONFIGURATION ====================
-    // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE GOOGLE APPS SCRIPT
     const API_URL = 'https://script.google.com/macros/s/AKfycbyxFlO5vTm1l4iDwwvLyuyMu7oWwfAq6vEZxc-i1iy5j2PVM0FLzJpUVSLxOGTY6aeSoA/exec';
 
-    // ==================== STATE ====================
     let currentUser = null;
     let currentBag = null;
-    let currentMode = null; // 'intervention', 'inventaire', 'peremption'
+    let currentMode = null;
     let users = [];
     let contenants = [];
     let articles = [];
     let stock = [];
     let pochons = [];
-    let selectedItems = {}; // { articleId: quantity }
-    let inventaireManques = []; // Articles manquants pour l'inventaire
+    let selectedItems = {};
+    let inventaireManques = [];
     let currentInventaireFilter = 'all';
     let currentPeremptionFilter = 'alerts';
     let qrScanner = null;
 
-    // ==================== INITIALIZATION ====================
     document.addEventListener('DOMContentLoaded', async () => {
-      // Register service worker
-      if ('serviceWorker' in navigator) {
-        try {
-          await navigator.serviceWorker.register('sw.js');
-          console.log('Service Worker registered');
-        } catch (e) {
-          console.log('Service Worker registration failed:', e);
-        }
-      }
-
-      // Load initial data
       await loadData();
     });
 
-    // ==================== DATA LOADING ====================
     async function loadData() {
+      // Nettoyer l'ancien Service Worker
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const registration of registrations) {
+          registration.unregister();
+        }
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          for (const key of keys) {
+            await caches.delete(key);
+          }
+        }
+      }
+
       showLoading(true);
       try {
-        if (API_URL === 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
-          loadDemoData();
-          showToast('Mode démo activé', 'info');
-        } else {
-          const response = await fetch(`${API_URL}?action=getData`);
-          const data = await response.json();
-          users = data.users || [];
-          contenants = data.contenants || [];
-          articles = data.articles || [];
-          stock = data.stock || [];
-          pochons = data.pochons || [];
-        }
+        const response = await fetch(`${API_URL}?action=getData`);
+        const data = await response.json();
+        users = data.users || [];
+        contenants = data.contenants || [];
+        articles = data.articles || [];
+        stock = data.stock || [];
+        pochons = data.pochons || [];
         populateUserSelect();
       } catch (error) {
         console.error('Error loading data:', error);
-        loadDemoData();
-        showToast('Mode hors ligne', 'info');
+        showToast('Erreur de chargement', 'error');
       }
       showLoading(false);
-    }
-
-    function loadDemoData() {
-      users = [
-        { id: 'USR001', nom: 'Marie D.', code_pin: '1234', role: 'admin' },
-        { id: 'USR002', nom: 'Thomas B.', code_pin: '5678', role: 'secouriste' },
-        { id: 'USR003', nom: 'Sophie L.', code_pin: '9012', role: 'secouriste' }
-      ];
-      contenants = [
-        { id: 'SAC001', nom: 'Sac Prompt Secours #1', type: 'sac', localisation: 'VSAV 1', couleur: 'red' },
-        { id: 'SAC002', nom: 'Sac Prompt Secours #2', type: 'sac', localisation: 'VSAV 1', couleur: 'blue' },
-        { id: 'SAC003', nom: 'Sac Oxygénothérapie', type: 'sac', localisation: 'VSAV 1', couleur: 'green' },
-        { id: 'ARM001', nom: 'Armoire de réserve', type: 'armoire', localisation: 'Local technique', couleur: 'orange' }
-      ];
-      articles = [
-        { id: 'ART001', nom: 'Garrot tourniquet', description: 'CAT Gen 7', emoji: '🔴', categorie: 'hémorragie' },
-        { id: 'ART002', nom: 'Pansement compressif', description: 'Israeli bandage', emoji: '🩹', categorie: 'hémorragie' },
-        { id: 'ART003', nom: 'Compresses hémostatiques', description: 'QuikClot', emoji: '🧱', categorie: 'hémorragie' },
-        { id: 'ART004', nom: 'Sérum physiologique', description: 'Pipettes 10ml', emoji: '💧', categorie: 'soins' },
-        { id: 'ART005', nom: 'Poche de froid', description: 'Instantanée', emoji: '🥶', categorie: 'divers' },
-        { id: 'ART006', nom: 'Vomibag', description: 'Sac vomitoire', emoji: '🤢', categorie: 'divers' },
-        { id: 'ART007', nom: 'Compresses stériles', description: '10x10cm', emoji: '⬜', categorie: 'pansements' },
-        { id: 'ART008', nom: 'Bande Velpeau', description: '7cm x 4m', emoji: '🩹', categorie: 'pansements' },
-        { id: 'ART009', nom: 'Couverture survie', description: 'Or/Argent', emoji: '🟨', categorie: 'divers' },
-        { id: 'ART010', nom: 'Gants vinyle', description: 'Taille M', emoji: '🧤', categorie: 'protection' }
-      ];
-      pochons = [
-        { id: 'PCH001', id_contenant: 'SAC001', nom: 'Pochon Rouge - Hémorragie', couleur: 'red', ordre: 1 },
-        { id: 'PCH002', id_contenant: 'SAC001', nom: 'Pochon Jaune - Divers', couleur: 'yellow', ordre: 2 },
-        { id: 'PCH003', id_contenant: 'SAC001', nom: 'Pochon Bleu - Pansements', couleur: 'blue', ordre: 3 }
-      ];
-      
-      // Dates de péremption pour la démo
-      const today = new Date();
-      const addDays = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r.toISOString().split('T')[0]; };
-      
-      stock = [
-        { id_contenant: 'SAC001', id_pochon: 'PCH001', id_article: 'ART001', quantite: 2, quantite_cible: 2, date_peremption: addDays(today, 365) },
-        { id_contenant: 'SAC001', id_pochon: 'PCH001', id_article: 'ART002', quantite: 3, quantite_cible: 3, date_peremption: addDays(today, 15) }, // Warning
-        { id_contenant: 'SAC001', id_pochon: 'PCH001', id_article: 'ART003', quantite: 1, quantite_cible: 2, date_peremption: addDays(today, -5) }, // Expired
-        { id_contenant: 'SAC001', id_pochon: 'PCH002', id_article: 'ART004', quantite: 10, quantite_cible: 10, date_peremption: addDays(today, 180) },
-        { id_contenant: 'SAC001', id_pochon: 'PCH002', id_article: 'ART005', quantite: 4, quantite_cible: 4, date_peremption: addDays(today, 90) },
-        { id_contenant: 'SAC001', id_pochon: 'PCH002', id_article: 'ART006', quantite: 1, quantite_cible: 4, date_peremption: addDays(today, 25) }, // Warning
-        { id_contenant: 'SAC001', id_pochon: 'PCH003', id_article: 'ART007', quantite: 10, quantite_cible: 10, date_peremption: addDays(today, 200) },
-        { id_contenant: 'SAC001', id_pochon: 'PCH003', id_article: 'ART008', quantite: 4, quantite_cible: 4, date_peremption: addDays(today, 300) },
-        { id_contenant: 'SAC002', id_pochon: '', id_article: 'ART001', quantite: 2, quantite_cible: 2, date_peremption: addDays(today, 400) },
-        { id_contenant: 'SAC002', id_pochon: '', id_article: 'ART004', quantite: 8, quantite_cible: 10, date_peremption: addDays(today, 150) },
-        { id_contenant: 'SAC003', id_pochon: '', id_article: 'ART009', quantite: 2, quantite_cible: 2, date_peremption: null },
-        { id_contenant: 'SAC003', id_pochon: '', id_article: 'ART010', quantite: 5, quantite_cible: 5, date_peremption: null },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART001', quantite: 10, quantite_cible: 10, date_peremption: addDays(today, 500) },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART002', quantite: 15, quantite_cible: 15, date_peremption: addDays(today, 400) },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART003', quantite: 20, quantite_cible: 20, date_peremption: addDays(today, 350) },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART004', quantite: 50, quantite_cible: 50, date_peremption: addDays(today, 200) },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART005', quantite: 20, quantite_cible: 20, date_peremption: addDays(today, 180) },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART006', quantite: 30, quantite_cible: 30, date_peremption: addDays(today, 120) },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART007', quantite: 100, quantite_cible: 100, date_peremption: addDays(today, 250) },
-        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART008', quantite: 40, quantite_cible: 40, date_peremption: addDays(today, 300) }
-      ];
     }
 
     function populateUserSelect() {
@@ -1794,7 +1680,6 @@
       });
     }
 
-    // ==================== AUTHENTICATION ====================
     document.getElementById('btn-login').addEventListener('click', login);
     document.getElementById('login-pin').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') login();
@@ -1836,7 +1721,6 @@
     }
 
     function updateHomeBadges() {
-      // Calculer les alertes péremption
       const peremptionAlerts = countPeremptionAlerts();
       const badge = document.getElementById('peremption-badge');
       if (peremptionAlerts.total > 0) {
@@ -1846,9 +1730,8 @@
         badge.style.display = 'none';
       }
 
-      // Calculer les manques dans tous les contenants (sacs + armoire)
       const totalManques = contenants.reduce((sum, bag) => {
-        const bagStock = stock.filter(s => s.id_contenant === bag.id);
+        const bagStock = stock.filter(s => s.id_contenant === bag.id_contenant);
         return sum + bagStock.filter(s => s.quantite < s.quantite_cible).length;
       }, 0);
       
@@ -1861,64 +1744,42 @@
       }
     }
 
-    // ==================== MODE SELECTION ====================
     function enterMode(mode) {
       currentMode = mode;
-      
       switch (mode) {
-        case 'intervention':
-          populateBagList();
-          goToScreen('screen-scan');
-          break;
-        case 'inventaire':
-          populateInventaireBagList();
-          goToScreen('screen-inventaire-select');
-          break;
-        case 'peremption':
-          populatePeremption();
-          goToScreen('screen-peremption');
-          break;
+        case 'intervention': populateBagList(); goToScreen('screen-scan'); break;
+        case 'inventaire': populateInventaireBagList(); goToScreen('screen-inventaire-select'); break;
+        case 'peremption': populatePeremption(); goToScreen('screen-peremption'); break;
       }
     }
 
-    // ==================== BAG SELECTION (Intervention) ====================
     function populateBagList() {
       const list = document.getElementById('bag-list');
       list.innerHTML = '';
-
-      // D'abord les sacs, puis l'armoire
-      const sortedContenants = [...contenants].sort((a, b) => {
-        if (a.type === 'armoire') return 1;
-        if (b.type === 'armoire') return -1;
-        return 0;
-      });
-
-      sortedContenants.forEach(bag => {
-        const bagStock = stock.filter(s => s.id_contenant === bag.id);
-        const articleCount = bagStock.reduce((sum, s) => sum + s.quantite, 0);
+      const sorted = [...contenants].sort((a, b) => a.type === 'armoire' ? 1 : b.type === 'armoire' ? -1 : 0);
+      sorted.forEach(bag => {
+        const bagStock = stock.filter(s => s.id_contenant === bag.id_contenant);
+        const count = bagStock.reduce((sum, s) => sum + s.quantite, 0);
         const icon = bag.type === 'armoire' ? '🗄️' : '🎒';
-
         list.innerHTML += `
-          <div class="bag-item" onclick="selectBag('${bag.id}')">
+          <div class="bag-item" onclick="selectBag('${bag.id_contenant}')">
             <div class="bag-icon ${bag.couleur}">${icon}</div>
             <div class="bag-info">
               <h4>${bag.nom}</h4>
-              <p>${bag.localisation} • ${articleCount} articles</p>
+              <p>${bag.localisation} • ${count} articles</p>
             </div>
             <span class="bag-arrow">›</span>
-          </div>
-        `;
+          </div>`;
       });
     }
 
     function selectBag(bagId) {
-      currentBag = contenants.find(c => c.id === bagId);
+      currentBag = contenants.find(c => c.id_contenant === bagId);
       selectedItems = {};
       populateInventory();
       goToScreen('screen-inventory');
     }
 
-    // ==================== QR SCANNER ====================
     document.getElementById('btn-scan').addEventListener('click', toggleScanner);
 
     async function toggleScanner() {
@@ -1927,26 +1788,16 @@
       const readerEl = document.getElementById('qr-reader');
       const scanArea = document.getElementById('scan-area');
 
-      if (qrScanner) {
-        stopScanner();
-        return;
-      }
+      if (qrScanner) { stopScanner(); return; }
 
       try {
         placeholder.style.display = 'none';
         readerEl.style.display = 'block';
         scanArea.classList.add('scanning');
         btn.textContent = '⏹ Arrêter le scan';
-
         qrScanner = new Html5Qrcode('qr-reader');
-        await qrScanner.start(
-          { facingMode: 'environment' },
-          { fps: 10, qrbox: { width: 250, height: 250 } },
-          onQrCodeScanned,
-          () => {}
-        );
+        await qrScanner.start({ facingMode: 'environment' }, { fps: 10, qrbox: { width: 250, height: 250 } }, onQrCodeScanned, () => {});
       } catch (error) {
-        console.error('Scanner error:', error);
         showToast('Impossible d\'accéder à la caméra', 'error');
         stopScanner();
       }
@@ -1957,12 +1808,7 @@
       const placeholder = document.getElementById('scan-placeholder');
       const readerEl = document.getElementById('qr-reader');
       const scanArea = document.getElementById('scan-area');
-
-      if (qrScanner) {
-        qrScanner.stop().catch(() => {});
-        qrScanner = null;
-      }
-
+      if (qrScanner) { qrScanner.stop().catch(() => {}); qrScanner = null; }
       placeholder.style.display = 'flex';
       readerEl.style.display = 'none';
       scanArea.classList.remove('scanning');
@@ -1970,114 +1816,64 @@
     }
 
     function onQrCodeScanned(qrCode) {
-      const bag = contenants.find(c => c.id === qrCode);
-      if (bag) {
-        stopScanner();
-        selectBag(bag.id);
-        showToast(`${bag.nom} identifié !`, 'success');
-      } else {
-        showToast('QR code non reconnu', 'error');
-      }
+      const bag = contenants.find(c => c.id_contenant === qrCode);
+      if (bag) { stopScanner(); selectBag(bag.id_contenant); showToast(`${bag.nom} identifié !`, 'success'); }
+      else { showToast('QR code non reconnu', 'error'); }
     }
 
-    // ==================== INVENTORY (Intervention) ====================
     function populateInventory() {
       const header = document.getElementById('bag-header');
       header.className = `bag-header ${currentBag.couleur}`;
-      
       document.getElementById('bag-title').textContent = currentBag.nom;
       document.getElementById('bag-subtitle').textContent = currentBag.localisation;
 
-      const bagStock = stock.filter(s => s.id_contenant === currentBag.id);
-      const bagPochons = pochons.filter(p => p.id_contenant === currentBag.id);
-      
-      const totalArticles = bagStock.reduce((sum, s) => sum + s.quantite, 0);
+      const bagStock = stock.filter(s => s.id_contenant === currentBag.id_contenant);
+      const bagPochons = pochons.filter(p => p.id_contenant === currentBag.id_contenant);
+      const total = bagStock.reduce((sum, s) => sum + s.quantite, 0);
       const hasIssues = bagStock.some(s => s.quantite < s.quantite_cible);
 
-      document.getElementById('stat-articles').textContent = totalArticles;
+      document.getElementById('stat-articles').textContent = total;
       document.getElementById('stat-pochons').textContent = bagPochons.length || '-';
       document.getElementById('stat-status').textContent = hasIssues ? '⚠️' : '✓';
 
       const content = document.getElementById('inventory-content');
       content.innerHTML = '';
 
-      // Group by pochon
       const grouped = {};
-      bagStock.forEach(s => {
-        const key = s.id_pochon || 'vrac';
-        if (!grouped[key]) grouped[key] = [];
-        grouped[key].push(s);
-      });
+      bagStock.forEach(s => { const key = s.id_pochon || 'vrac'; if (!grouped[key]) grouped[key] = []; grouped[key].push(s); });
 
-      // Sort pochons
       const sortedKeys = Object.keys(grouped).sort((a, b) => {
-        if (a === 'vrac') return 1;
-        if (b === 'vrac') return -1;
-        const pA = pochons.find(p => p.id === a);
-        const pB = pochons.find(p => p.id === b);
+        if (a === 'vrac') return 1; if (b === 'vrac') return -1;
+        const pA = pochons.find(p => p.id_pochon === a);
+        const pB = pochons.find(p => p.id_pochon === b);
         return (pA?.ordre || 0) - (pB?.ordre || 0);
       });
 
       sortedKeys.forEach(pochonId => {
         const items = grouped[pochonId];
-        const pochon = pochons.find(p => p.id === pochonId) || { nom: 'Vrac', couleur: 'gray' };
-
-        let html = `
-          <div class="pochon-section">
-            <div class="pochon-header">
-              <div class="pochon-dot ${pochon.couleur}"></div>
-              <h3>${pochon.nom}</h3>
-              <span>${items.length} type${items.length > 1 ? 's' : ''}</span>
-            </div>
-        `;
-
+        const pochon = pochons.find(p => p.id_pochon === pochonId) || { nom: 'Vrac', couleur: 'gray' };
+        let html = `<div class="pochon-section"><div class="pochon-header"><div class="pochon-dot ${pochon.couleur}"></div><h3>${pochon.nom}</h3><span>${items.length} type${items.length > 1 ? 's' : ''}</span></div>`;
         items.forEach(item => {
-          const article = articles.find(a => a.id === item.id_article) || {};
-          const stockClass = item.quantite >= item.quantite_cible ? 'stock-ok' : 
-                            item.quantite >= item.quantite_cible / 2 ? 'stock-low' : 'stock-critical';
+          const article = articles.find(a => a.id_article === item.id_article) || {};
+          const stockClass = item.quantite >= item.quantite_cible ? 'stock-ok' : item.quantite >= item.quantite_cible / 2 ? 'stock-low' : 'stock-critical';
           const selected = selectedItems[item.id_article] || 0;
-
-          html += `
-            <div class="item-card ${selected > 0 ? 'selected' : ''}" id="item-${item.id_article}">
-              <div class="item-icon">${article.emoji || '📦'}</div>
-              <div class="item-details">
-                <h4>${article.nom || 'Article inconnu'}</h4>
-                <p>${article.description || ''}</p>
-              </div>
-              <span class="stock-indicator ${stockClass}">×${item.quantite}</span>
-              <div class="item-qty">
-                <button class="qty-btn" onclick="updateQty('${item.id_article}', -1, ${item.quantite})">−</button>
-                <span class="qty-value ${selected > 0 ? 'active' : ''}" id="qty-${item.id_article}">${selected}</span>
-                <button class="qty-btn" onclick="updateQty('${item.id_article}', 1, ${item.quantite})">+</button>
-              </div>
-            </div>
-          `;
+          html += `<div class="item-card ${selected > 0 ? 'selected' : ''}" id="item-${item.id_article}"><div class="item-icon">${article.emoji || '📦'}</div><div class="item-details"><h4>${article.nom || 'Article inconnu'}</h4><p>${article.description || ''}</p></div><span class="stock-indicator ${stockClass}">×${item.quantite}</span><div class="item-qty"><button class="qty-btn" onclick="updateQty('${item.id_article}', -1, ${item.quantite})">−</button><span class="qty-value ${selected > 0 ? 'active' : ''}" id="qty-${item.id_article}">${selected}</span><button class="qty-btn" onclick="updateQty('${item.id_article}', 1, ${item.quantite})">+</button></div></div>`;
         });
-
         html += '</div>';
         content.innerHTML += html;
       });
-
       updateValidateButton();
     }
 
     function updateQty(articleId, delta, maxQty) {
       const current = selectedItems[articleId] || 0;
       const newQty = Math.max(0, Math.min(current + delta, maxQty));
-
-      if (newQty === 0) {
-        delete selectedItems[articleId];
-      } else {
-        selectedItems[articleId] = newQty;
-      }
-
+      if (newQty === 0) delete selectedItems[articleId]; else selectedItems[articleId] = newQty;
       const qtyEl = document.getElementById(`qty-${articleId}`);
       const cardEl = document.getElementById(`item-${articleId}`);
-      
       qtyEl.textContent = newQty;
       qtyEl.classList.toggle('active', newQty > 0);
       cardEl.classList.toggle('selected', newQty > 0);
-
       updateValidateButton();
     }
 
@@ -2087,47 +1883,23 @@
       document.getElementById('btn-validate').disabled = total === 0;
     }
 
-    document.getElementById('btn-validate').addEventListener('click', () => {
-      populateDestination();
-      goToScreen('screen-destination');
-    });
+    document.getElementById('btn-validate').addEventListener('click', () => { populateDestination(); goToScreen('screen-destination'); });
 
-    // ==================== DESTINATION ====================
     function populateDestination() {
       const container = document.getElementById('selected-items');
       container.innerHTML = '';
-
       Object.entries(selectedItems).forEach(([articleId, qty]) => {
-        const article = articles.find(a => a.id === articleId) || {};
-        container.innerHTML += `
-          <div class="selected-item">
-            <span class="emoji">${article.emoji || '📦'}</span>
-            <span class="name">${article.nom || 'Article'}</span>
-            <span class="qty">×${qty}</span>
-          </div>
-        `;
+        const article = articles.find(a => a.id_article === articleId) || {};
+        container.innerHTML += `<div class="selected-item"><span class="emoji">${article.emoji || '📦'}</span><span class="name">${article.nom || 'Article'}</span><span class="qty">×${qty}</span></div>`;
       });
 
       const transferSelect = document.getElementById('transfer-target');
       transferSelect.innerHTML = '<option value="">Choisir le sac destination...</option>';
-      
-      // Si on est dans l'armoire, proposer tous les sacs comme destination de transfert
-      // Sinon, proposer les autres sacs (pas l'armoire, car "retour armoire" est une option séparée)
-      const transferTargets = currentBag.type === 'armoire' 
-        ? contenants.filter(c => c.type === 'sac')
-        : contenants.filter(c => c.id !== currentBag.id && c.type === 'sac');
-      
-      transferTargets.forEach(c => {
-        transferSelect.innerHTML += `<option value="${c.id}">${c.nom}</option>`;
-      });
+      const targets = currentBag.type === 'armoire' ? contenants.filter(c => c.type === 'sac') : contenants.filter(c => c.id_contenant !== currentBag.id_contenant && c.type === 'sac');
+      targets.forEach(c => { transferSelect.innerHTML += `<option value="${c.id_contenant}">${c.nom}</option>`; });
 
-      // Masquer l'option "Retour armoire" si on est déjà dans l'armoire
       const retourOption = document.querySelector('[data-dest="retour"]');
-      if (currentBag.type === 'armoire') {
-        retourOption.style.display = 'none';
-      } else {
-        retourOption.style.display = '';
-      }
+      retourOption.style.display = currentBag.type === 'armoire' ? 'none' : '';
 
       document.querySelectorAll('.dest-option').forEach(el => el.classList.remove('selected'));
       document.querySelector('[data-dest="victime"]').classList.add('selected');
@@ -2135,12 +1907,7 @@
     }
 
     function selectDestination(el) {
-      document.querySelectorAll('.dest-option').forEach(opt => {
-        opt.classList.remove('selected');
-        const subOpts = opt.querySelector('.sub-options');
-        if (subOpts) subOpts.style.display = 'none';
-      });
-
+      document.querySelectorAll('.dest-option').forEach(opt => { opt.classList.remove('selected'); const subOpts = opt.querySelector('.sub-options'); if (subOpts) subOpts.style.display = 'none'; });
       el.classList.add('selected');
       const subOpts = el.querySelector('.sub-options');
       if (subOpts) subOpts.style.display = 'block';
@@ -2154,108 +1921,49 @@
       const note = document.getElementById('movement-note').value;
 
       let destination = null;
-      if (destType === 'transfert') {
-        destination = document.getElementById('transfer-target').value;
-        if (!destination) {
-          showToast('Sélectionnez un sac destination', 'error');
-          return;
-        }
-      } else if (destType === 'retour') {
-        destination = 'ARM001';
-      }
+      if (destType === 'transfert') { destination = document.getElementById('transfer-target').value; if (!destination) { showToast('Sélectionnez un sac destination', 'error'); return; } }
+      else if (destType === 'retour') { const armoire = contenants.find(c => c.type === 'armoire'); destination = armoire ? armoire.id_contenant : null; }
 
       const movements = Object.entries(selectedItems).map(([articleId, qty]) => ({
-        date_heure: new Date().toISOString(),
-        id_utilisateur: currentUser.id,
-        id_article: articleId,
-        quantite: qty,
-        id_contenant_source: currentBag.id,
-        id_contenant_destination: destination,
-        type_mouvement: destType,
-        note: note
+        date_heure: new Date().toISOString(), id_utilisateur: currentUser.id_utilisateur, id_article: articleId, quantite: qty,
+        id_contenant_source: currentBag.id_contenant, id_contenant_destination: destination, type_mouvement: destType, note: note
       }));
 
       showLoading(true);
       try {
-        if (API_URL !== 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
-          await fetch(`${API_URL}?action=addMovements`, {
-            method: 'POST',
-            body: JSON.stringify({ movements })
-          });
-        }
-
-        // Update local stock
+        await fetch(`${API_URL}?action=addMovements`, { method: 'POST', body: JSON.stringify({ movements }) });
         movements.forEach(mov => {
           const sourceStock = stock.find(s => s.id_contenant === mov.id_contenant_source && s.id_article === mov.id_article);
           if (sourceStock) sourceStock.quantite -= mov.quantite;
-
-          if (mov.id_contenant_destination) {
-            let destStock = stock.find(s => s.id_contenant === mov.id_contenant_destination && s.id_article === mov.id_article);
-            if (destStock) {
-              destStock.quantite += mov.quantite;
-            }
-          }
+          if (mov.id_contenant_destination) { let destStock = stock.find(s => s.id_contenant === mov.id_contenant_destination && s.id_article === mov.id_article); if (destStock) destStock.quantite += mov.quantite; }
         });
-
         showToast('Mouvement enregistré !', 'success');
         selectedItems = {};
         updateHomeBadges();
         goToScreen('screen-home');
-      } catch (error) {
-        console.error('Error saving movement:', error);
-        showToast('Erreur lors de l\'enregistrement', 'error');
-      }
+      } catch (error) { showToast('Erreur lors de l\'enregistrement', 'error'); }
       showLoading(false);
     }
 
-    // ==================== INVENTAIRE ====================
     function populateInventaireBagList() {
       const list = document.getElementById('inventaire-bag-list');
       list.innerHTML = '';
-
-      // D'abord les sacs, puis l'armoire
-      const sortedContenants = [...contenants].sort((a, b) => {
-        if (a.type === 'armoire') return 1;
-        if (b.type === 'armoire') return -1;
-        return 0;
-      });
-
-      sortedContenants.forEach(bag => {
-        const bagStock = stock.filter(s => s.id_contenant === bag.id);
+      const sorted = [...contenants].sort((a, b) => a.type === 'armoire' ? 1 : b.type === 'armoire' ? -1 : 0);
+      sorted.forEach(bag => {
+        const bagStock = stock.filter(s => s.id_contenant === bag.id_contenant);
         const manques = bagStock.filter(s => s.quantite < s.quantite_cible).length;
         const exces = bagStock.filter(s => s.quantite > s.quantite_cible).length;
         const icon = bag.type === 'armoire' ? '🗄️' : '🎒';
-        
         let statusTags = '';
-        if (manques > 0) {
-          statusTags += `<span class="status-tag critical">${manques} manquant${manques > 1 ? 's' : ''}</span>`;
-        }
-        if (exces > 0) {
-          statusTags += `<span class="status-tag warning">${exces} excès</span>`;
-        }
-        if (manques === 0 && exces === 0) {
-          statusTags = `<span class="status-tag ok">Complet ✓</span>`;
-        }
-
-        list.innerHTML += `
-          <div class="bag-item ${manques > 0 ? 'has-alert' : ''}" onclick="selectBagForInventaire('${bag.id}')">
-            <div class="bag-icon ${bag.couleur}">
-              ${icon}
-              ${manques > 0 ? `<div class="alert-dot">${manques}</div>` : ''}
-            </div>
-            <div class="bag-info">
-              <h4>${bag.nom}</h4>
-              <p>${bag.localisation}</p>
-              <div class="bag-status">${statusTags}</div>
-            </div>
-            <span class="bag-arrow">›</span>
-          </div>
-        `;
+        if (manques > 0) statusTags += `<span class="status-tag critical">${manques} manquant${manques > 1 ? 's' : ''}</span>`;
+        if (exces > 0) statusTags += `<span class="status-tag warning">${exces} excès</span>`;
+        if (manques === 0 && exces === 0) statusTags = `<span class="status-tag ok">Complet ✓</span>`;
+        list.innerHTML += `<div class="bag-item ${manques > 0 ? 'has-alert' : ''}" onclick="selectBagForInventaire('${bag.id_contenant}')"><div class="bag-icon ${bag.couleur}">${icon}${manques > 0 ? `<div class="alert-dot">${manques}</div>` : ''}</div><div class="bag-info"><h4>${bag.nom}</h4><p>${bag.localisation}</p><div class="bag-status">${statusTags}</div></div><span class="bag-arrow">›</span></div>`;
       });
     }
 
     function selectBagForInventaire(bagId) {
-      currentBag = contenants.find(c => c.id === bagId);
+      currentBag = contenants.find(c => c.id_contenant === bagId);
       currentInventaireFilter = 'all';
       populateInventaireDetail();
       goToScreen('screen-inventaire-detail');
@@ -2264,115 +1972,45 @@
     function populateInventaireDetail() {
       const header = document.getElementById('inventaire-header');
       header.className = `bag-header ${currentBag.couleur}`;
-      
       document.getElementById('inventaire-title').textContent = currentBag.nom;
-
-      const bagStock = stock.filter(s => s.id_contenant === currentBag.id);
-      
+      const bagStock = stock.filter(s => s.id_contenant === currentBag.id_contenant);
       const okCount = bagStock.filter(s => s.quantite === s.quantite_cible).length;
       const manqueCount = bagStock.filter(s => s.quantite < s.quantite_cible).length;
       const excesCount = bagStock.filter(s => s.quantite > s.quantite_cible).length;
-
       document.getElementById('inventaire-stat-ok').textContent = okCount;
       document.getElementById('inventaire-stat-manque').textContent = manqueCount;
       document.getElementById('inventaire-stat-exces').textContent = excesCount;
       document.getElementById('filter-count-manque').textContent = manqueCount;
       document.getElementById('filter-count-exces').textContent = excesCount;
-
-      // Calculer les manques
-      inventaireManques = bagStock
-        .filter(s => s.quantite < s.quantite_cible)
-        .map(s => ({
-          ...s,
-          manque: s.quantite_cible - s.quantite
-        }));
-
+      inventaireManques = bagStock.filter(s => s.quantite < s.quantite_cible).map(s => ({ ...s, manque: s.quantite_cible - s.quantite }));
       const totalManques = inventaireManques.reduce((sum, m) => sum + m.manque, 0);
       document.getElementById('manque-count').textContent = totalManques;
       document.getElementById('inventaire-floating').style.display = totalManques > 0 ? 'block' : 'none';
-
       renderInventaireContent(bagStock);
     }
 
     function renderInventaireContent(bagStock) {
       const content = document.getElementById('inventaire-content');
       content.innerHTML = '';
-
       let filteredStock = bagStock;
-      if (currentInventaireFilter === 'manque') {
-        filteredStock = bagStock.filter(s => s.quantite < s.quantite_cible);
-      } else if (currentInventaireFilter === 'exces') {
-        filteredStock = bagStock.filter(s => s.quantite > s.quantite_cible);
-      }
-
-      if (filteredStock.length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <div class="icon">✓</div>
-            <p>Aucun article dans cette catégorie</p>
-          </div>
-        `;
-        return;
-      }
-
-      // Group by pochon
+      if (currentInventaireFilter === 'manque') filteredStock = bagStock.filter(s => s.quantite < s.quantite_cible);
+      else if (currentInventaireFilter === 'exces') filteredStock = bagStock.filter(s => s.quantite > s.quantite_cible);
+      if (filteredStock.length === 0) { content.innerHTML = `<div class="empty-state"><div class="icon">✓</div><p>Aucun article dans cette catégorie</p></div>`; return; }
       const grouped = {};
-      filteredStock.forEach(s => {
-        const key = s.id_pochon || 'vrac';
-        if (!grouped[key]) grouped[key] = [];
-        grouped[key].push(s);
-      });
-
-      const sortedKeys = Object.keys(grouped).sort((a, b) => {
-        if (a === 'vrac') return 1;
-        if (b === 'vrac') return -1;
-        const pA = pochons.find(p => p.id === a);
-        const pB = pochons.find(p => p.id === b);
-        return (pA?.ordre || 0) - (pB?.ordre || 0);
-      });
-
+      filteredStock.forEach(s => { const key = s.id_pochon || 'vrac'; if (!grouped[key]) grouped[key] = []; grouped[key].push(s); });
+      const sortedKeys = Object.keys(grouped).sort((a, b) => { if (a === 'vrac') return 1; if (b === 'vrac') return -1; const pA = pochons.find(p => p.id_pochon === a); const pB = pochons.find(p => p.id_pochon === b); return (pA?.ordre || 0) - (pB?.ordre || 0); });
       sortedKeys.forEach(pochonId => {
         const items = grouped[pochonId];
-        const pochon = pochons.find(p => p.id === pochonId) || { nom: 'Vrac', couleur: 'gray' };
-
-        let html = `
-          <div class="pochon-section">
-            <div class="pochon-header">
-              <div class="pochon-dot ${pochon.couleur}"></div>
-              <h3>${pochon.nom}</h3>
-            </div>
-        `;
-
+        const pochon = pochons.find(p => p.id_pochon === pochonId) || { nom: 'Vrac', couleur: 'gray' };
+        let html = `<div class="pochon-section"><div class="pochon-header"><div class="pochon-dot ${pochon.couleur}"></div><h3>${pochon.nom}</h3></div>`;
         items.forEach(item => {
-          const article = articles.find(a => a.id === item.id_article) || {};
+          const article = articles.find(a => a.id_article === item.id_article) || {};
           const ecart = item.quantite - item.quantite_cible;
-          let highlightClass = '';
-          let ecartText = '';
-          
-          if (ecart < 0) {
-            highlightClass = Math.abs(ecart) >= item.quantite_cible / 2 ? 'highlight-critical' : 'highlight-low';
-            ecartText = `<span class="ecart negative">⚠️ ${Math.abs(ecart)} manquant${Math.abs(ecart) > 1 ? 's' : ''}</span>`;
-          } else if (ecart > 0) {
-            highlightClass = 'highlight-low';
-            ecartText = `<span class="ecart positive">↑ ${ecart} en plus</span>`;
-          }
-
-          html += `
-            <div class="item-card ${highlightClass}">
-              <div class="item-icon">${article.emoji || '📦'}</div>
-              <div class="item-details">
-                <h4>${article.nom || 'Article inconnu'}</h4>
-                <p>${article.description || ''}</p>
-                ${ecartText}
-              </div>
-              <div class="stock-display">
-                <div class="current">${item.quantite}</div>
-                <div class="target">/ ${item.quantite_cible}</div>
-              </div>
-            </div>
-          `;
+          let highlightClass = '', ecartText = '';
+          if (ecart < 0) { highlightClass = Math.abs(ecart) >= item.quantite_cible / 2 ? 'highlight-critical' : 'highlight-low'; ecartText = `<span class="ecart negative">⚠️ ${Math.abs(ecart)} manquant${Math.abs(ecart) > 1 ? 's' : ''}</span>`; }
+          else if (ecart > 0) { highlightClass = 'highlight-low'; ecartText = `<span class="ecart positive">↑ ${ecart} en plus</span>`; }
+          html += `<div class="item-card ${highlightClass}"><div class="item-icon">${article.emoji || '📦'}</div><div class="item-details"><h4>${article.nom || 'Article inconnu'}</h4><p>${article.description || ''}</p>${ecartText}</div><div class="stock-display"><div class="current">${item.quantite}</div><div class="target">/ ${item.quantite_cible}</div></div></div>`;
         });
-
         html += '</div>';
         content.innerHTML += html;
       });
@@ -2380,156 +2018,67 @@
 
     function filterInventaire(filter) {
       currentInventaireFilter = filter;
-      
-      document.querySelectorAll('#inventaire-filters .filter-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.filter === filter);
-      });
-
-      const bagStock = stock.filter(s => s.id_contenant === currentBag.id);
+      document.querySelectorAll('#inventaire-filters .filter-tab').forEach(tab => { tab.classList.toggle('active', tab.dataset.filter === filter); });
+      const bagStock = stock.filter(s => s.id_contenant === currentBag.id_contenant);
       renderInventaireContent(bagStock);
     }
 
-    document.getElementById('btn-completer').addEventListener('click', () => {
-      openSourceModal();
-    });
+    document.getElementById('btn-completer').addEventListener('click', () => { openSourceModal(); });
 
-    // ==================== SOURCE MODAL ====================
     function openSourceModal() {
       const modal = document.getElementById('source-modal');
       const options = document.getElementById('source-options');
       options.innerHTML = '';
-
-      // Armoire de réserve (si on n'est pas déjà dans l'armoire)
       const armoire = contenants.find(c => c.type === 'armoire');
-      if (armoire && currentBag.id !== armoire.id) {
-        options.innerHTML += `
-          <div class="source-option" onclick="completerDepuis('${armoire.id}')">
-            <div class="icon armoire">🗄️</div>
-            <div class="info">
-              <h4>${armoire.nom}</h4>
-              <p>${armoire.localisation}</p>
-            </div>
-            <span class="stock-available">Stock disponible</span>
-          </div>
-        `;
+      if (armoire && currentBag.id_contenant !== armoire.id_contenant) {
+        options.innerHTML += `<div class="source-option" onclick="completerDepuis('${armoire.id_contenant}')"><div class="icon armoire">🗄️</div><div class="info"><h4>${armoire.nom}</h4><p>${armoire.localisation}</p></div><span class="stock-available">Stock disponible</span></div>`;
       }
-
-      // Autres sacs (et armoire si on est dans un sac)
-      contenants.filter(c => c.id !== currentBag.id).forEach(contenant => {
-        // On a déjà ajouté l'armoire au-dessus si applicable
-        if (contenant.type === 'armoire') return;
-        
-        options.innerHTML += `
-          <div class="source-option" onclick="completerDepuis('${contenant.id}')">
-            <div class="icon sac">🎒</div>
-            <div class="info">
-              <h4>${contenant.nom}</h4>
-              <p>${contenant.localisation}</p>
-            </div>
-          </div>
-        `;
+      contenants.filter(c => c.id_contenant !== currentBag.id_contenant && c.type !== 'armoire').forEach(contenant => {
+        options.innerHTML += `<div class="source-option" onclick="completerDepuis('${contenant.id_contenant}')"><div class="icon sac">🎒</div><div class="info"><h4>${contenant.nom}</h4><p>${contenant.localisation}</p></div></div>`;
       });
-
-      // Si on est dans l'armoire, proposer aussi les sacs comme source
-      if (currentBag.type === 'armoire') {
-        if (options.innerHTML === '') {
-          options.innerHTML = `
-            <div class="empty-state" style="padding: 40px;">
-              <div class="icon">📦</div>
-              <p>Aucune source disponible pour compléter l'armoire</p>
-            </div>
-          `;
-        }
-      }
-
+      if (options.innerHTML === '') { options.innerHTML = `<div class="empty-state" style="padding: 40px;"><div class="icon">📦</div><p>Aucune source disponible</p></div>`; }
       modal.classList.add('show');
     }
 
-    function closeSourceModal() {
-      document.getElementById('source-modal').classList.remove('show');
-    }
+    function closeSourceModal() { document.getElementById('source-modal').classList.remove('show'); }
 
     async function completerDepuis(sourceId) {
       closeSourceModal();
       showLoading(true);
-
       const movements = [];
-      
       inventaireManques.forEach(item => {
         const sourceStock = stock.find(s => s.id_contenant === sourceId && s.id_article === item.id_article);
         if (sourceStock && sourceStock.quantite > 0) {
           const qtyToMove = Math.min(item.manque, sourceStock.quantite);
-          
-          movements.push({
-            date_heure: new Date().toISOString(),
-            id_utilisateur: currentUser.id,
-            id_article: item.id_article,
-            quantite: qtyToMove,
-            id_contenant_source: sourceId,
-            id_contenant_destination: currentBag.id,
-            type_mouvement: 'reassort',
-            note: 'Complément inventaire'
-          });
+          movements.push({ date_heure: new Date().toISOString(), id_utilisateur: currentUser.id_utilisateur, id_article: item.id_article, quantite: qtyToMove, id_contenant_source: sourceId, id_contenant_destination: currentBag.id_contenant, type_mouvement: 'reassort', note: 'Complément inventaire' });
         }
       });
-
-      if (movements.length === 0) {
-        showToast('Aucun article disponible dans cette source', 'error');
-        showLoading(false);
-        return;
-      }
-
+      if (movements.length === 0) { showToast('Aucun article disponible dans cette source', 'error'); showLoading(false); return; }
       try {
-        if (API_URL !== 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
-          await fetch(`${API_URL}?action=addMovements`, {
-            method: 'POST',
-            body: JSON.stringify({ movements })
-          });
-        }
-
-        // Update local stock
+        await fetch(`${API_URL}?action=addMovements`, { method: 'POST', body: JSON.stringify({ movements }) });
         movements.forEach(mov => {
           const sourceStock = stock.find(s => s.id_contenant === mov.id_contenant_source && s.id_article === mov.id_article);
           if (sourceStock) sourceStock.quantite -= mov.quantite;
-
           const destStock = stock.find(s => s.id_contenant === mov.id_contenant_destination && s.id_article === mov.id_article);
           if (destStock) destStock.quantite += mov.quantite;
         });
-
         const totalMoved = movements.reduce((sum, m) => sum + m.quantite, 0);
         showToast(`${totalMoved} article${totalMoved > 1 ? 's' : ''} ajouté${totalMoved > 1 ? 's' : ''} !`, 'success');
-        
         populateInventaireDetail();
         updateHomeBadges();
-      } catch (error) {
-        console.error('Error:', error);
-        showToast('Erreur lors du réassort', 'error');
-      }
-
+      } catch (error) { showToast('Erreur lors du réassort', 'error'); }
       showLoading(false);
     }
 
-    // ==================== PÉREMPTION ====================
     function countPeremptionAlerts() {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      
-      let expired = 0;
-      let warning = 0;
-
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      let expired = 0, warning = 0;
       stock.forEach(item => {
         if (!item.date_peremption) return;
-        
         const expDate = new Date(item.date_peremption);
         const diffDays = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
-        
-        if (diffDays < 0) {
-          expired++;
-        } else if (diffDays <= 30) {
-          warning++;
-        }
+        if (diffDays < 0) expired++; else if (diffDays <= 30) warning++;
       });
-
       return { expired, warning, total: expired + warning };
     }
 
@@ -2537,119 +2086,50 @@
       const alerts = countPeremptionAlerts();
       document.getElementById('peremption-expired-count').textContent = alerts.expired;
       document.getElementById('peremption-warning-count').textContent = alerts.warning;
-
       renderPeremptionContent();
     }
 
     function renderPeremptionContent() {
       const content = document.getElementById('peremption-content');
       content.innerHTML = '';
-
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let items = stock
-        .filter(s => s.date_peremption)
-        .map(s => {
-          const expDate = new Date(s.date_peremption);
-          const diffDays = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
-          const article = articles.find(a => a.id === s.id_article) || {};
-          const contenant = contenants.find(c => c.id === s.id_contenant) || {};
-          
-          return {
-            ...s,
-            article,
-            contenant,
-            diffDays,
-            status: diffDays < 0 ? 'expired' : diffDays <= 30 ? 'warning' : 'ok'
-          };
-        })
-        .sort((a, b) => a.diffDays - b.diffDays);
-
-      if (currentPeremptionFilter === 'alerts') {
-        items = items.filter(i => i.status !== 'ok');
-      }
-
-      if (items.length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <div class="icon">✓</div>
-            <p>${currentPeremptionFilter === 'alerts' ? 'Aucune alerte de péremption' : 'Aucun article avec date de péremption'}</p>
-          </div>
-        `;
-        return;
-      }
-
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      let items = stock.filter(s => s.date_peremption).map(s => {
+        const expDate = new Date(s.date_peremption);
+        const diffDays = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+        const article = articles.find(a => a.id_article === s.id_article) || {};
+        const contenant = contenants.find(c => c.id_contenant === s.id_contenant) || {};
+        return { ...s, article, contenant, diffDays, status: diffDays < 0 ? 'expired' : diffDays <= 30 ? 'warning' : 'ok' };
+      }).sort((a, b) => a.diffDays - b.diffDays);
+      if (currentPeremptionFilter === 'alerts') items = items.filter(i => i.status !== 'ok');
+      if (items.length === 0) { content.innerHTML = `<div class="empty-state"><div class="icon">✓</div><p>${currentPeremptionFilter === 'alerts' ? 'Aucune alerte de péremption' : 'Aucun article avec date de péremption'}</p></div>`; return; }
       items.forEach(item => {
-        const dateStr = new Date(item.date_peremption).toLocaleDateString('fr-FR', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric'
-        });
-
-        let daysText = '';
-        if (item.diffDays < 0) {
-          daysText = `Périmé depuis ${Math.abs(item.diffDays)}j`;
-        } else if (item.diffDays === 0) {
-          daysText = "Expire aujourd'hui";
-        } else {
-          daysText = `Dans ${item.diffDays}j`;
-        }
-
-        content.innerHTML += `
-          <div class="peremption-item ${item.status}">
-            <div class="item-row">
-              <div class="item-icon">${item.article.emoji || '📦'}</div>
-              <div class="item-details">
-                <h4>${item.article.nom || 'Article'}</h4>
-                <p>×${item.quantite} • ${item.article.description || ''}</p>
-              </div>
-              <div class="date-badge ${item.status}">
-                ${dateStr}
-                <span class="days">${daysText}</span>
-              </div>
-            </div>
-            <div class="location">📍 ${item.contenant.nom || 'Inconnu'}</div>
-          </div>
-        `;
+        const dateStr = new Date(item.date_peremption).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+        let daysText = item.diffDays < 0 ? `Périmé depuis ${Math.abs(item.diffDays)}j` : item.diffDays === 0 ? "Expire aujourd'hui" : `Dans ${item.diffDays}j`;
+        content.innerHTML += `<div class="peremption-item ${item.status}"><div class="item-row"><div class="item-icon">${item.article.emoji || '📦'}</div><div class="item-details"><h4>${item.article.nom || 'Article'}</h4><p>×${item.quantite} • ${item.article.description || ''}</p></div><div class="date-badge ${item.status}">${dateStr}<span class="days">${daysText}</span></div></div><div class="location">📍 ${item.contenant.nom || 'Inconnu'}</div></div>`;
       });
     }
 
     function filterPeremption(filter) {
       currentPeremptionFilter = filter;
-      
-      document.querySelectorAll('#peremption-filters .filter-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.filter === filter);
-      });
-
+      document.querySelectorAll('#peremption-filters .filter-tab').forEach(tab => { tab.classList.toggle('active', tab.dataset.filter === filter); });
       renderPeremptionContent();
     }
 
-    // ==================== NAVIGATION ====================
     function goToScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(screenId).classList.add('active');
       window.scrollTo(0, 0);
-
-      if (screenId !== 'screen-scan') {
-        stopScanner();
-      }
+      if (screenId !== 'screen-scan') stopScanner();
     }
 
-    // ==================== UTILITIES ====================
-    function showLoading(show) {
-      document.getElementById('loading').classList.toggle('show', show);
-    }
+    function showLoading(show) { document.getElementById('loading').classList.toggle('show', show); }
 
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.className = `toast ${type}`;
       toast.classList.add('show');
-
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
   </script>
 </body>
