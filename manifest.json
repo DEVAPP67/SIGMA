@@ -1,0 +1,20 @@
+{
+  "name": "SIGMA - Croix Blanche",
+  "short_name": "SIGMA",
+  "description": "Suivi des Inventaires et Gestion du MAtériel - Secouristes Français Croix Blanche",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#0f1419",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23e63946' rx='100' width='512' height='512'/><text x='256' y='340' text-anchor='middle' font-size='280' fill='white'>✚</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "utilities"],
+  "lang": "fr-FR"
+}

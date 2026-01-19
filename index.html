@@ -1,0 +1,2656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f1419">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SIGMA - Croix Blanche</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23e63946' rx='20' width='100' height='100'/><text x='50' y='65' text-anchor='middle' font-size='50'>🏥</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0f1419;
+      --bg-card: #1a2332;
+      --bg-input: #232f3e;
+      --accent-red: #e63946;
+      --accent-yellow: #f4a261;
+      --accent-green: #2ec4b6;
+      --accent-blue: #3a86ff;
+      --accent-purple: #a855f7;
+      --text-primary: #ffffff;
+      --text-secondary: #8899a6;
+      --text-muted: #5c6c7c;
+      --border: #2d3f50;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      overflow-x: hidden;
+    }
+
+    /* ==================== SCREENS ==================== */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 20px;
+      padding-top: env(safe-area-inset-top, 20px);
+      padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 20px);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==================== LOGIN SCREEN ==================== */
+    .logo {
+      text-align: center;
+      margin: 60px 0 50px;
+    }
+
+    .logo-icon {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, var(--accent-red), #ff6b6b);
+      border-radius: 24px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 15px 50px rgba(230, 57, 70, 0.35);
+    }
+
+    .logo h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    .logo .acronym-detail {
+      color: var(--text-muted);
+      font-size: 11px;
+      margin-top: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .logo .org-name {
+      color: var(--accent-blue);
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: inline-block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 18px;
+      background: var(--bg-input);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      color: var(--text-primary);
+      font-size: 17px;
+      font-family: inherit;
+      transition: all 0.2s;
+      appearance: none;
+    }
+
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238899a6' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 50px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 4px rgba(58, 134, 255, 0.15);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .code-input {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px !important;
+      text-align: center;
+      letter-spacing: 12px;
+      padding-left: 24px !important;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), #5a9cff);
+      color: white;
+      box-shadow: 0 8px 25px rgba(58, 134, 255, 0.35);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--accent-red), #ff6b6b);
+      color: white;
+      box-shadow: 0 8px 25px rgba(230, 57, 70, 0.35);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--accent-green), #5ce0d8);
+      color: white;
+      box-shadow: 0 8px 25px rgba(46, 196, 182, 0.35);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 2px solid var(--border);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==================== HEADER ==================== */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .back-btn {
+      width: 44px;
+      height: 44px;
+      background: var(--bg-card);
+      border: none;
+      border-radius: 14px;
+      color: var(--text-primary);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .back-btn:active {
+      transform: scale(0.95);
+      background: var(--bg-input);
+    }
+
+    .header-title {
+      flex: 1;
+    }
+
+    .header-title h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .header-title p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .user-badge {
+      background: var(--bg-card);
+      padding: 10px 14px;
+      border-radius: 25px;
+      font-size: 13px;
+      color: var(--accent-green);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==================== HOME SCREEN ==================== */
+    .home-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .home-header h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .home-header p {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    .mode-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mode-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 24px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .mode-card:active {
+      transform: scale(0.98);
+      border-color: var(--accent-blue);
+    }
+
+    .mode-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .mode-icon.intervention { background: linear-gradient(135deg, var(--accent-red), #ff6b6b); }
+    .mode-icon.inventaire { background: linear-gradient(135deg, var(--accent-blue), #5a9cff); }
+    .mode-icon.peremption { background: linear-gradient(135deg, var(--accent-yellow), #f4c994); }
+
+    .mode-info {
+      flex: 1;
+    }
+
+    .mode-info h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .mode-info p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .mode-badge {
+      background: var(--accent-red);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    .mode-arrow {
+      color: var(--text-muted);
+      font-size: 24px;
+    }
+
+    .logout-btn {
+      margin-top: 40px;
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    /* ==================== SCAN SCREEN ==================== */
+    .scan-area {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      border: 2px dashed var(--border);
+    }
+
+    .scan-area.scanning {
+      border-style: solid;
+      border-color: var(--accent-blue);
+    }
+
+    #qr-reader {
+      width: 100%;
+      max-width: 280px;
+      height: 280px;
+      margin: 0 auto 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg-input);
+    }
+
+    #qr-reader video {
+      border-radius: 16px;
+    }
+
+    .scan-placeholder {
+      width: 100%;
+      max-width: 220px;
+      height: 220px;
+      margin: 0 auto 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scan-placeholder::before,
+    .scan-placeholder::after,
+    .scan-placeholder .corner-tr,
+    .scan-placeholder .corner-bl {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--accent-blue);
+    }
+
+    .scan-placeholder::before {
+      top: 0; left: 0;
+      border-right: none; border-bottom: none;
+      border-radius: 12px 0 0 0;
+    }
+
+    .scan-placeholder::after {
+      bottom: 0; right: 0;
+      border-left: none; border-top: none;
+      border-radius: 0 0 12px 0;
+    }
+
+    .scan-placeholder .corner-tr {
+      top: 0; right: 0;
+      border-left: none; border-bottom: none;
+      border-radius: 0 12px 0 0;
+    }
+
+    .scan-placeholder .corner-bl {
+      bottom: 0; left: 0;
+      border-right: none; border-top: none;
+      border-radius: 0 0 0 12px;
+    }
+
+    .scan-icon {
+      font-size: 72px;
+      opacity: 0.4;
+    }
+
+    .scan-area p {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    .scan-area .hint {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .scan-btn {
+      margin-top: 16px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 28px 0;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ==================== BAG LIST ==================== */
+    .bag-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .bag-item {
+      background: var(--bg-card);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .bag-item:active {
+      transform: scale(0.98);
+      border-color: var(--accent-blue);
+    }
+
+    .bag-item.has-alert {
+      border-color: var(--accent-yellow);
+    }
+
+    .bag-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      position: relative;
+    }
+
+    .bag-icon.red { background: rgba(230, 57, 70, 0.15); }
+    .bag-icon.blue { background: rgba(58, 134, 255, 0.15); }
+    .bag-icon.green { background: rgba(46, 196, 182, 0.15); }
+    .bag-icon.orange { background: rgba(244, 162, 97, 0.15); }
+
+    .bag-icon .alert-dot {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      background: var(--accent-red);
+      border-radius: 50%;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+
+    .bag-info {
+      flex: 1;
+    }
+
+    .bag-info h4 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .bag-info p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .bag-status {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .status-tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .status-tag.ok { background: rgba(46, 196, 182, 0.15); color: var(--accent-green); }
+    .status-tag.warning { background: rgba(244, 162, 97, 0.15); color: var(--accent-yellow); }
+    .status-tag.critical { background: rgba(230, 57, 70, 0.15); color: var(--accent-red); }
+
+    .bag-arrow {
+      color: var(--text-muted);
+      font-size: 24px;
+    }
+
+    /* ==================== INVENTORY SCREEN ==================== */
+    .bag-header {
+      background: linear-gradient(135deg, var(--accent-red), #ff6b6b);
+      margin: -20px -20px 24px -20px;
+      padding: 20px 20px 28px;
+      padding-top: calc(env(safe-area-inset-top, 20px) + 10px);
+      border-radius: 0 0 28px 28px;
+    }
+
+    .bag-header.blue { background: linear-gradient(135deg, var(--accent-blue), #5a9cff); }
+    .bag-header.green { background: linear-gradient(135deg, var(--accent-green), #5ce0d8); }
+    .bag-header.orange { background: linear-gradient(135deg, var(--accent-yellow), #f4c994); }
+
+    .bag-header .back-btn {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .bag-header h2 {
+      color: white;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .bag-header p {
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .bag-stats {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.18);
+      padding: 12px 16px;
+      border-radius: 12px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .stat-value {
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      color: rgba(255,255,255,0.75);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* ==================== FILTER TABS ==================== */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .filter-tab {
+      padding: 10px 16px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 25px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .filter-tab.active {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: white;
+    }
+
+    .filter-tab .count {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .filter-tab.active .count {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* ==================== POCHON SECTIONS ==================== */
+    .pochon-section {
+      margin-bottom: 28px;
+    }
+
+    .pochon-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .pochon-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    .pochon-dot.red { background: var(--accent-red); }
+    .pochon-dot.yellow { background: var(--accent-yellow); }
+    .pochon-dot.blue { background: var(--accent-blue); }
+    .pochon-dot.green { background: var(--accent-green); }
+    .pochon-dot.gray { background: var(--text-muted); }
+
+    .pochon-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .pochon-header span {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ==================== ITEM CARDS ==================== */
+    .item-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .item-card.selected {
+      border-color: var(--accent-blue);
+      background: rgba(58, 134, 255, 0.08);
+    }
+
+    .item-card.highlight-low {
+      border-color: var(--accent-yellow);
+      background: rgba(244, 162, 97, 0.08);
+    }
+
+    .item-card.highlight-critical {
+      border-color: var(--accent-red);
+      background: rgba(230, 57, 70, 0.08);
+    }
+
+    .item-card:active {
+      transform: scale(0.99);
+    }
+
+    .item-icon {
+      width: 46px;
+      height: 46px;
+      background: var(--bg-input);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .item-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-details h4 {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-details p {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .item-details .ecart {
+      font-size: 12px;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .item-details .ecart.negative { color: var(--accent-red); }
+    .item-details .ecart.positive { color: var(--accent-green); }
+
+    .stock-indicator {
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stock-ok { background: rgba(46, 196, 182, 0.15); color: var(--accent-green); }
+    .stock-low { background: rgba(244, 162, 97, 0.15); color: var(--accent-yellow); }
+    .stock-critical { background: rgba(230, 57, 70, 0.15); color: var(--accent-red); }
+
+    .stock-display {
+      text-align: center;
+      min-width: 50px;
+    }
+
+    .stock-display .current {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stock-display .target {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .item-qty {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qty-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      font-weight: 500;
+    }
+
+    .qty-btn:active {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      transform: scale(0.95);
+    }
+
+    .qty-value {
+      min-width: 28px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 17px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .qty-value.active {
+      color: var(--accent-blue);
+    }
+
+    /* ==================== FLOATING BUTTON ==================== */
+    .floating-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
+      background: linear-gradient(to top, var(--bg-dark) 80%, transparent);
+    }
+
+    .inventory-content {
+      padding-bottom: 100px;
+    }
+
+    /* ==================== DESTINATION SCREEN ==================== */
+    .selection-summary {
+      background: var(--bg-card);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 28px;
+    }
+
+    .selection-summary h3 {
+      color: var(--text-secondary);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    .selected-items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .selected-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-input);
+      border-radius: 12px;
+    }
+
+    .selected-item .emoji {
+      font-size: 22px;
+    }
+
+    .selected-item .name {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .selected-item .qty {
+      background: var(--accent-blue);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .destination-section h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .destination-options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .dest-option {
+      background: var(--bg-card);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .dest-option:active {
+      transform: scale(0.98);
+    }
+
+    .dest-option.selected {
+      border-color: var(--accent-blue);
+      background: rgba(58, 134, 255, 0.08);
+    }
+
+    .dest-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .dest-icon.victim { background: linear-gradient(135deg, var(--accent-red), #ff6b6b); }
+    .dest-icon.transfer { background: linear-gradient(135deg, var(--accent-blue), #5a9cff); }
+    .dest-icon.return { background: linear-gradient(135deg, var(--accent-green), #5ce0d8); }
+
+    .dest-info {
+      flex: 1;
+    }
+
+    .dest-info h4 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .dest-info p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .dest-check {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .dest-option.selected .dest-check {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: white;
+    }
+
+    .sub-options {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .sub-options select {
+      width: 100%;
+      padding: 14px;
+      background: var(--bg-input);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .confirm-section {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .confirm-section .note {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .confirm-section .note textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 15px;
+      font-family: inherit;
+      resize: none;
+      height: 70px;
+    }
+
+    .confirm-section .note textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ==================== PEREMPTION SCREEN ==================== */
+    .peremption-item {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 2px solid transparent;
+    }
+
+    .peremption-item.expired {
+      border-color: var(--accent-red);
+      background: rgba(230, 57, 70, 0.08);
+    }
+
+    .peremption-item.warning {
+      border-color: var(--accent-yellow);
+      background: rgba(244, 162, 97, 0.08);
+    }
+
+    .peremption-item .item-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .peremption-item .location {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .date-badge {
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .date-badge.expired {
+      background: var(--accent-red);
+      color: white;
+    }
+
+    .date-badge.warning {
+      background: var(--accent-yellow);
+      color: #1a1a1a;
+    }
+
+    .date-badge.ok {
+      background: rgba(46, 196, 182, 0.15);
+      color: var(--accent-green);
+    }
+
+    .date-badge .days {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .alert-summary {
+      background: var(--bg-card);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+    }
+
+    .alert-box {
+      flex: 1;
+      text-align: center;
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .alert-box.expired {
+      background: rgba(230, 57, 70, 0.15);
+    }
+
+    .alert-box.warning {
+      background: rgba(244, 162, 97, 0.15);
+    }
+
+    .alert-box .number {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .alert-box.expired .number { color: var(--accent-red); }
+    .alert-box.warning .number { color: var(--accent-yellow); }
+
+    .alert-box .label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ==================== TOAST ==================== */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: var(--accent-green);
+      color: white;
+    }
+
+    .toast.error {
+      background: var(--accent-red);
+      color: white;
+    }
+
+    /* ==================== LOADING ==================== */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 20, 25, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border);
+      border-top-color: var(--accent-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    /* ==================== EMPTY STATE ==================== */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      font-size: 15px;
+    }
+
+    /* ==================== SOURCE SELECTION FOR INVENTORY ==================== */
+    .source-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 20, 25, 0.95);
+      z-index: 1500;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .source-modal.show {
+      display: flex;
+    }
+
+    .source-modal-content {
+      background: var(--bg-card);
+      border-radius: 28px 28px 0 0;
+      padding: 24px 20px;
+      padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 20px);
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .source-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .source-modal-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .close-modal {
+      width: 36px;
+      height: 36px;
+      background: var(--bg-input);
+      border: none;
+      border-radius: 50%;
+      color: var(--text-primary);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .source-option {
+      background: var(--bg-input);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .source-option:active {
+      border-color: var(--accent-blue);
+    }
+
+    .source-option .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .source-option .icon.armoire { background: rgba(244, 162, 97, 0.15); }
+    .source-option .icon.sac { background: rgba(58, 134, 255, 0.15); }
+
+    .source-option .info {
+      flex: 1;
+    }
+
+    .source-option .info h4 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .source-option .info p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .source-option .stock-available {
+      font-size: 14px;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== LOADING OVERLAY ==================== -->
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Chargement...</div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ==================== SOURCE MODAL ==================== -->
+  <div class="source-modal" id="source-modal">
+    <div class="source-modal-content">
+      <div class="source-modal-header">
+        <h3>Compléter depuis...</h3>
+        <button class="close-modal" onclick="closeSourceModal()">×</button>
+      </div>
+      <div id="source-options">
+        <!-- Rempli dynamiquement -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ÉCRAN 1: CONNEXION ==================== -->
+  <div class="screen active" id="screen-login">
+    <div class="logo">
+      <div class="logo-icon">✚</div>
+      <h1>SIGMA</h1>
+      <div class="acronym-detail">Suivi des Inventaires et Gestion du MAtériel</div>
+      <div class="org-name">Secouristes Français Croix Blanche</div>
+    </div>
+
+    <div class="form-group">
+      <label>Identifiant</label>
+      <select id="login-user">
+        <option value="">Choisir un utilisateur...</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Code personnel</label>
+      <input type="password" id="login-pin" class="code-input" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+
+    <div style="height: 30px"></div>
+
+    <button class="btn btn-primary" id="btn-login">
+      Connexion
+      <span>→</span>
+    </button>
+  </div>
+
+  <!-- ==================== ÉCRAN 2: ACCUEIL ==================== -->
+  <div class="screen" id="screen-home">
+    <div class="home-header">
+      <h2>Bonjour <span id="home-user-name">-</span> 👋</h2>
+      <p>Que souhaitez-vous faire ?</p>
+    </div>
+
+    <div class="mode-cards">
+      <div class="mode-card" onclick="enterMode('intervention')">
+        <div class="mode-icon intervention">🚑</div>
+        <div class="mode-info">
+          <h3>Intervention</h3>
+          <p>Sortir du matériel utilisé sur victime ou transférer entre sacs</p>
+        </div>
+        <span class="mode-arrow">›</span>
+      </div>
+
+      <div class="mode-card" onclick="enterMode('inventaire')">
+        <div class="mode-icon inventaire">📋</div>
+        <div class="mode-info">
+          <h3>Inventaire</h3>
+          <p>Vérifier le contenu d'un sac et compléter les manques</p>
+        </div>
+        <span id="inventaire-badge" class="mode-badge" style="display: none;">!</span>
+        <span class="mode-arrow">›</span>
+      </div>
+
+      <div class="mode-card" onclick="enterMode('peremption')">
+        <div class="mode-icon peremption">⏰</div>
+        <div class="mode-info">
+          <h3>Péremptions</h3>
+          <p>Gérer les dates de péremption du matériel</p>
+        </div>
+        <span id="peremption-badge" class="mode-badge" style="display: none;">0</span>
+        <span class="mode-arrow">›</span>
+      </div>
+    </div>
+
+    <button class="btn logout-btn" onclick="logout()">
+      Déconnexion
+    </button>
+  </div>
+
+  <!-- ==================== ÉCRAN 3: SCAN / SÉLECTION SAC (Intervention) ==================== -->
+  <div class="screen" id="screen-scan">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+      <div class="header-title">
+        <h2>Intervention</h2>
+        <p>Scannez ou choisissez un sac</p>
+      </div>
+      <div class="user-badge" id="user-badge">
+        <span>👤</span>
+        <span id="current-user-name">-</span>
+      </div>
+    </div>
+
+    <div class="scan-area" id="scan-area">
+      <div id="qr-reader" style="display: none;"></div>
+      <div class="scan-placeholder" id="scan-placeholder">
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="scan-icon">📷</div>
+      </div>
+      <p>Scanner le QR code du sac</p>
+      <p class="hint">Positionnez le code dans le cadre</p>
+      <button class="btn btn-secondary scan-btn" id="btn-scan">
+        📷 Activer la caméra
+      </button>
+    </div>
+
+    <div class="divider">ou sélectionner manuellement</div>
+
+    <div class="bag-list" id="bag-list">
+      <!-- Rempli dynamiquement -->
+    </div>
+  </div>
+
+  <!-- ==================== ÉCRAN 4: CONTENU DU SAC (Intervention) ==================== -->
+  <div class="screen" id="screen-inventory">
+    <div class="bag-header" id="bag-header">
+      <button class="back-btn" onclick="goToScreen('screen-scan')">←</button>
+      <h2 id="bag-title">-</h2>
+      <p id="bag-subtitle">-</p>
+      <div class="bag-stats">
+        <div class="stat">
+          <div class="stat-value" id="stat-articles">0</div>
+          <div class="stat-label">Articles</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-pochons">0</div>
+          <div class="stat-label">Pochons</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-status">-</div>
+          <div class="stat-label">État</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inventory-content" id="inventory-content">
+      <!-- Rempli dynamiquement -->
+    </div>
+
+    <div class="floating-container">
+      <button class="btn btn-primary" id="btn-validate" disabled>
+        Valider la sortie (<span id="selected-count">0</span> articles)
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== ÉCRAN 5: DESTINATION ==================== -->
+  <div class="screen" id="screen-destination">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-inventory')">←</button>
+      <div class="header-title">
+        <h2>Destination</h2>
+        <p>Où va ce matériel ?</p>
+      </div>
+    </div>
+
+    <div class="selection-summary">
+      <h3>Matériel sélectionné</h3>
+      <div class="selected-items" id="selected-items">
+        <!-- Rempli dynamiquement -->
+      </div>
+    </div>
+
+    <div class="destination-section">
+      <h3>Choisir la destination</h3>
+      
+      <div class="destination-options">
+        <div class="dest-option selected" data-dest="victime" onclick="selectDestination(this)">
+          <div class="dest-icon victim">🚑</div>
+          <div class="dest-info">
+            <h4>Utilisé sur victime</h4>
+            <p>Matériel consommé lors d'une intervention</p>
+          </div>
+          <div class="dest-check">✓</div>
+        </div>
+
+        <div class="dest-option" data-dest="transfert" onclick="selectDestination(this)">
+          <div class="dest-icon transfer">↔️</div>
+          <div class="dest-info">
+            <h4>Transfert vers autre sac</h4>
+            <p>Déplacer vers un autre contenant</p>
+          </div>
+          <div class="dest-check">✓</div>
+          <div class="sub-options" style="display: none;">
+            <select id="transfer-target">
+              <option value="">Choisir le sac destination...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="dest-option" data-dest="retour" onclick="selectDestination(this)">
+          <div class="dest-icon return">🗄️</div>
+          <div class="dest-info">
+            <h4>Retour armoire</h4>
+            <p>Réintégrer dans la réserve</p>
+          </div>
+          <div class="dest-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-section">
+      <div class="note">
+        <textarea id="movement-note" placeholder="Note optionnelle (n° intervention, remarque...)"></textarea>
+      </div>
+      <button class="btn btn-danger" id="btn-confirm">
+        ✓ Confirmer la sortie
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== ÉCRAN 6: SÉLECTION SAC (Inventaire) ==================== -->
+  <div class="screen" id="screen-inventaire-select">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+      <div class="header-title">
+        <h2>Inventaire</h2>
+        <p>Choisissez un sac à inventorier</p>
+      </div>
+    </div>
+
+    <div class="bag-list" id="inventaire-bag-list">
+      <!-- Rempli dynamiquement -->
+    </div>
+  </div>
+
+  <!-- ==================== ÉCRAN 7: INVENTAIRE DU SAC ==================== -->
+  <div class="screen" id="screen-inventaire-detail">
+    <div class="bag-header blue" id="inventaire-header">
+      <button class="back-btn" onclick="goToScreen('screen-inventaire-select')">←</button>
+      <h2 id="inventaire-title">-</h2>
+      <p id="inventaire-subtitle">Inventaire du contenu</p>
+      <div class="bag-stats">
+        <div class="stat">
+          <div class="stat-value" id="inventaire-stat-ok">0</div>
+          <div class="stat-label">Complet</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="inventaire-stat-manque">0</div>
+          <div class="stat-label">Manquant</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="inventaire-stat-exces">0</div>
+          <div class="stat-label">Excès</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-tabs" id="inventaire-filters">
+      <button class="filter-tab active" data-filter="all" onclick="filterInventaire('all')">
+        Tout
+      </button>
+      <button class="filter-tab" data-filter="manque" onclick="filterInventaire('manque')">
+        Manquants <span class="count" id="filter-count-manque">0</span>
+      </button>
+      <button class="filter-tab" data-filter="exces" onclick="filterInventaire('exces')">
+        Excès <span class="count" id="filter-count-exces">0</span>
+      </button>
+    </div>
+
+    <div class="inventory-content" id="inventaire-content">
+      <!-- Rempli dynamiquement -->
+    </div>
+
+    <div class="floating-container" id="inventaire-floating" style="display: none;">
+      <button class="btn btn-success" id="btn-completer">
+        Compléter les manques (<span id="manque-count">0</span>)
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== ÉCRAN 8: PÉREMPTIONS ==================== -->
+  <div class="screen" id="screen-peremption">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+      <div class="header-title">
+        <h2>Péremptions</h2>
+        <p>Suivi des dates de validité</p>
+      </div>
+    </div>
+
+    <div class="alert-summary" id="peremption-summary">
+      <div class="alert-box expired">
+        <div class="number" id="peremption-expired-count">0</div>
+        <div class="label">Périmés</div>
+      </div>
+      <div class="alert-box warning">
+        <div class="number" id="peremption-warning-count">0</div>
+        <div class="label">< 30 jours</div>
+      </div>
+    </div>
+
+    <div class="filter-tabs" id="peremption-filters">
+      <button class="filter-tab active" data-filter="alerts" onclick="filterPeremption('alerts')">
+        🚨 Alertes
+      </button>
+      <button class="filter-tab" data-filter="all" onclick="filterPeremption('all')">
+        Tous
+      </button>
+    </div>
+
+    <div id="peremption-content">
+      <!-- Rempli dynamiquement -->
+    </div>
+  </div>
+
+  <script>
+    // ==================== CONFIGURATION ====================
+    // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE GOOGLE APPS SCRIPT
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyxFlO5vTm1l4iDwwvLyuyMu7oWwfAq6vEZxc-i1iy5j2PVM0FLzJpUVSLxOGTY6aeSoA/exec';
+
+    // ==================== STATE ====================
+    let currentUser = null;
+    let currentBag = null;
+    let currentMode = null; // 'intervention', 'inventaire', 'peremption'
+    let users = [];
+    let contenants = [];
+    let articles = [];
+    let stock = [];
+    let pochons = [];
+    let selectedItems = {}; // { articleId: quantity }
+    let inventaireManques = []; // Articles manquants pour l'inventaire
+    let currentInventaireFilter = 'all';
+    let currentPeremptionFilter = 'alerts';
+    let qrScanner = null;
+
+    // ==================== INITIALIZATION ====================
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator.serviceWorker.register('sw.js');
+          console.log('Service Worker registered');
+        } catch (e) {
+          console.log('Service Worker registration failed:', e);
+        }
+      }
+
+      // Load initial data
+      await loadData();
+    });
+
+    // ==================== DATA LOADING ====================
+    async function loadData() {
+      showLoading(true);
+      try {
+        if (API_URL === 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
+          loadDemoData();
+          showToast('Mode démo activé', 'info');
+        } else {
+          const response = await fetch(`${API_URL}?action=getData`);
+          const data = await response.json();
+          users = data.users || [];
+          contenants = data.contenants || [];
+          articles = data.articles || [];
+          stock = data.stock || [];
+          pochons = data.pochons || [];
+        }
+        populateUserSelect();
+      } catch (error) {
+        console.error('Error loading data:', error);
+        loadDemoData();
+        showToast('Mode hors ligne', 'info');
+      }
+      showLoading(false);
+    }
+
+    function loadDemoData() {
+      users = [
+        { id: 'USR001', nom: 'Marie D.', code_pin: '1234', role: 'admin' },
+        { id: 'USR002', nom: 'Thomas B.', code_pin: '5678', role: 'secouriste' },
+        { id: 'USR003', nom: 'Sophie L.', code_pin: '9012', role: 'secouriste' }
+      ];
+      contenants = [
+        { id: 'SAC001', nom: 'Sac Prompt Secours #1', type: 'sac', localisation: 'VSAV 1', couleur: 'red' },
+        { id: 'SAC002', nom: 'Sac Prompt Secours #2', type: 'sac', localisation: 'VSAV 1', couleur: 'blue' },
+        { id: 'SAC003', nom: 'Sac Oxygénothérapie', type: 'sac', localisation: 'VSAV 1', couleur: 'green' },
+        { id: 'ARM001', nom: 'Armoire de réserve', type: 'armoire', localisation: 'Local technique', couleur: 'orange' }
+      ];
+      articles = [
+        { id: 'ART001', nom: 'Garrot tourniquet', description: 'CAT Gen 7', emoji: '🔴', categorie: 'hémorragie' },
+        { id: 'ART002', nom: 'Pansement compressif', description: 'Israeli bandage', emoji: '🩹', categorie: 'hémorragie' },
+        { id: 'ART003', nom: 'Compresses hémostatiques', description: 'QuikClot', emoji: '🧱', categorie: 'hémorragie' },
+        { id: 'ART004', nom: 'Sérum physiologique', description: 'Pipettes 10ml', emoji: '💧', categorie: 'soins' },
+        { id: 'ART005', nom: 'Poche de froid', description: 'Instantanée', emoji: '🥶', categorie: 'divers' },
+        { id: 'ART006', nom: 'Vomibag', description: 'Sac vomitoire', emoji: '🤢', categorie: 'divers' },
+        { id: 'ART007', nom: 'Compresses stériles', description: '10x10cm', emoji: '⬜', categorie: 'pansements' },
+        { id: 'ART008', nom: 'Bande Velpeau', description: '7cm x 4m', emoji: '🩹', categorie: 'pansements' },
+        { id: 'ART009', nom: 'Couverture survie', description: 'Or/Argent', emoji: '🟨', categorie: 'divers' },
+        { id: 'ART010', nom: 'Gants vinyle', description: 'Taille M', emoji: '🧤', categorie: 'protection' }
+      ];
+      pochons = [
+        { id: 'PCH001', id_contenant: 'SAC001', nom: 'Pochon Rouge - Hémorragie', couleur: 'red', ordre: 1 },
+        { id: 'PCH002', id_contenant: 'SAC001', nom: 'Pochon Jaune - Divers', couleur: 'yellow', ordre: 2 },
+        { id: 'PCH003', id_contenant: 'SAC001', nom: 'Pochon Bleu - Pansements', couleur: 'blue', ordre: 3 }
+      ];
+      
+      // Dates de péremption pour la démo
+      const today = new Date();
+      const addDays = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r.toISOString().split('T')[0]; };
+      
+      stock = [
+        { id_contenant: 'SAC001', id_pochon: 'PCH001', id_article: 'ART001', quantite: 2, quantite_cible: 2, date_peremption: addDays(today, 365) },
+        { id_contenant: 'SAC001', id_pochon: 'PCH001', id_article: 'ART002', quantite: 3, quantite_cible: 3, date_peremption: addDays(today, 15) }, // Warning
+        { id_contenant: 'SAC001', id_pochon: 'PCH001', id_article: 'ART003', quantite: 1, quantite_cible: 2, date_peremption: addDays(today, -5) }, // Expired
+        { id_contenant: 'SAC001', id_pochon: 'PCH002', id_article: 'ART004', quantite: 10, quantite_cible: 10, date_peremption: addDays(today, 180) },
+        { id_contenant: 'SAC001', id_pochon: 'PCH002', id_article: 'ART005', quantite: 4, quantite_cible: 4, date_peremption: addDays(today, 90) },
+        { id_contenant: 'SAC001', id_pochon: 'PCH002', id_article: 'ART006', quantite: 1, quantite_cible: 4, date_peremption: addDays(today, 25) }, // Warning
+        { id_contenant: 'SAC001', id_pochon: 'PCH003', id_article: 'ART007', quantite: 10, quantite_cible: 10, date_peremption: addDays(today, 200) },
+        { id_contenant: 'SAC001', id_pochon: 'PCH003', id_article: 'ART008', quantite: 4, quantite_cible: 4, date_peremption: addDays(today, 300) },
+        { id_contenant: 'SAC002', id_pochon: '', id_article: 'ART001', quantite: 2, quantite_cible: 2, date_peremption: addDays(today, 400) },
+        { id_contenant: 'SAC002', id_pochon: '', id_article: 'ART004', quantite: 8, quantite_cible: 10, date_peremption: addDays(today, 150) },
+        { id_contenant: 'SAC003', id_pochon: '', id_article: 'ART009', quantite: 2, quantite_cible: 2, date_peremption: null },
+        { id_contenant: 'SAC003', id_pochon: '', id_article: 'ART010', quantite: 5, quantite_cible: 5, date_peremption: null },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART001', quantite: 10, quantite_cible: 10, date_peremption: addDays(today, 500) },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART002', quantite: 15, quantite_cible: 15, date_peremption: addDays(today, 400) },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART003', quantite: 20, quantite_cible: 20, date_peremption: addDays(today, 350) },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART004', quantite: 50, quantite_cible: 50, date_peremption: addDays(today, 200) },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART005', quantite: 20, quantite_cible: 20, date_peremption: addDays(today, 180) },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART006', quantite: 30, quantite_cible: 30, date_peremption: addDays(today, 120) },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART007', quantite: 100, quantite_cible: 100, date_peremption: addDays(today, 250) },
+        { id_contenant: 'ARM001', id_pochon: '', id_article: 'ART008', quantite: 40, quantite_cible: 40, date_peremption: addDays(today, 300) }
+      ];
+    }
+
+    function populateUserSelect() {
+      const select = document.getElementById('login-user');
+      select.innerHTML = '<option value="">Choisir un utilisateur...</option>';
+      users.forEach(user => {
+        select.innerHTML += `<option value="${user.id}">${user.nom}</option>`;
+      });
+    }
+
+    // ==================== AUTHENTICATION ====================
+    document.getElementById('btn-login').addEventListener('click', login);
+    document.getElementById('login-pin').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') login();
+    });
+
+    function login() {
+      const userId = document.getElementById('login-user').value;
+      const pin = document.getElementById('login-pin').value;
+
+      if (!userId) {
+        showToast('Sélectionnez un utilisateur', 'error');
+        return;
+      }
+
+      const user = users.find(u => u.id === userId);
+      if (!user || user.code_pin !== pin) {
+        showToast('Code incorrect', 'error');
+        document.getElementById('login-pin').value = '';
+        return;
+      }
+
+      currentUser = user;
+      document.getElementById('home-user-name').textContent = user.nom.split(' ')[0];
+      document.getElementById('current-user-name').textContent = user.nom;
+      
+      updateHomeBadges();
+      goToScreen('screen-home');
+      showToast(`Bienvenue ${user.nom} !`, 'success');
+    }
+
+    function logout() {
+      currentUser = null;
+      currentBag = null;
+      currentMode = null;
+      selectedItems = {};
+      document.getElementById('login-pin').value = '';
+      stopScanner();
+      goToScreen('screen-login');
+    }
+
+    function updateHomeBadges() {
+      // Calculer les alertes péremption
+      const peremptionAlerts = countPeremptionAlerts();
+      const badge = document.getElementById('peremption-badge');
+      if (peremptionAlerts.total > 0) {
+        badge.textContent = peremptionAlerts.total;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      // Calculer les manques dans tous les contenants (sacs + armoire)
+      const totalManques = contenants.reduce((sum, bag) => {
+        const bagStock = stock.filter(s => s.id_contenant === bag.id);
+        return sum + bagStock.filter(s => s.quantite < s.quantite_cible).length;
+      }, 0);
+      
+      const invBadge = document.getElementById('inventaire-badge');
+      if (totalManques > 0) {
+        invBadge.textContent = totalManques;
+        invBadge.style.display = 'block';
+      } else {
+        invBadge.style.display = 'none';
+      }
+    }
+
+    // ==================== MODE SELECTION ====================
+    function enterMode(mode) {
+      currentMode = mode;
+      
+      switch (mode) {
+        case 'intervention':
+          populateBagList();
+          goToScreen('screen-scan');
+          break;
+        case 'inventaire':
+          populateInventaireBagList();
+          goToScreen('screen-inventaire-select');
+          break;
+        case 'peremption':
+          populatePeremption();
+          goToScreen('screen-peremption');
+          break;
+      }
+    }
+
+    // ==================== BAG SELECTION (Intervention) ====================
+    function populateBagList() {
+      const list = document.getElementById('bag-list');
+      list.innerHTML = '';
+
+      // D'abord les sacs, puis l'armoire
+      const sortedContenants = [...contenants].sort((a, b) => {
+        if (a.type === 'armoire') return 1;
+        if (b.type === 'armoire') return -1;
+        return 0;
+      });
+
+      sortedContenants.forEach(bag => {
+        const bagStock = stock.filter(s => s.id_contenant === bag.id);
+        const articleCount = bagStock.reduce((sum, s) => sum + s.quantite, 0);
+        const icon = bag.type === 'armoire' ? '🗄️' : '🎒';
+
+        list.innerHTML += `
+          <div class="bag-item" onclick="selectBag('${bag.id}')">
+            <div class="bag-icon ${bag.couleur}">${icon}</div>
+            <div class="bag-info">
+              <h4>${bag.nom}</h4>
+              <p>${bag.localisation} • ${articleCount} articles</p>
+            </div>
+            <span class="bag-arrow">›</span>
+          </div>
+        `;
+      });
+    }
+
+    function selectBag(bagId) {
+      currentBag = contenants.find(c => c.id === bagId);
+      selectedItems = {};
+      populateInventory();
+      goToScreen('screen-inventory');
+    }
+
+    // ==================== QR SCANNER ====================
+    document.getElementById('btn-scan').addEventListener('click', toggleScanner);
+
+    async function toggleScanner() {
+      const btn = document.getElementById('btn-scan');
+      const placeholder = document.getElementById('scan-placeholder');
+      const readerEl = document.getElementById('qr-reader');
+      const scanArea = document.getElementById('scan-area');
+
+      if (qrScanner) {
+        stopScanner();
+        return;
+      }
+
+      try {
+        placeholder.style.display = 'none';
+        readerEl.style.display = 'block';
+        scanArea.classList.add('scanning');
+        btn.textContent = '⏹ Arrêter le scan';
+
+        qrScanner = new Html5Qrcode('qr-reader');
+        await qrScanner.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          onQrCodeScanned,
+          () => {}
+        );
+      } catch (error) {
+        console.error('Scanner error:', error);
+        showToast('Impossible d\'accéder à la caméra', 'error');
+        stopScanner();
+      }
+    }
+
+    function stopScanner() {
+      const btn = document.getElementById('btn-scan');
+      const placeholder = document.getElementById('scan-placeholder');
+      const readerEl = document.getElementById('qr-reader');
+      const scanArea = document.getElementById('scan-area');
+
+      if (qrScanner) {
+        qrScanner.stop().catch(() => {});
+        qrScanner = null;
+      }
+
+      placeholder.style.display = 'flex';
+      readerEl.style.display = 'none';
+      scanArea.classList.remove('scanning');
+      btn.textContent = '📷 Activer la caméra';
+    }
+
+    function onQrCodeScanned(qrCode) {
+      const bag = contenants.find(c => c.id === qrCode);
+      if (bag) {
+        stopScanner();
+        selectBag(bag.id);
+        showToast(`${bag.nom} identifié !`, 'success');
+      } else {
+        showToast('QR code non reconnu', 'error');
+      }
+    }
+
+    // ==================== INVENTORY (Intervention) ====================
+    function populateInventory() {
+      const header = document.getElementById('bag-header');
+      header.className = `bag-header ${currentBag.couleur}`;
+      
+      document.getElementById('bag-title').textContent = currentBag.nom;
+      document.getElementById('bag-subtitle').textContent = currentBag.localisation;
+
+      const bagStock = stock.filter(s => s.id_contenant === currentBag.id);
+      const bagPochons = pochons.filter(p => p.id_contenant === currentBag.id);
+      
+      const totalArticles = bagStock.reduce((sum, s) => sum + s.quantite, 0);
+      const hasIssues = bagStock.some(s => s.quantite < s.quantite_cible);
+
+      document.getElementById('stat-articles').textContent = totalArticles;
+      document.getElementById('stat-pochons').textContent = bagPochons.length || '-';
+      document.getElementById('stat-status').textContent = hasIssues ? '⚠️' : '✓';
+
+      const content = document.getElementById('inventory-content');
+      content.innerHTML = '';
+
+      // Group by pochon
+      const grouped = {};
+      bagStock.forEach(s => {
+        const key = s.id_pochon || 'vrac';
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(s);
+      });
+
+      // Sort pochons
+      const sortedKeys = Object.keys(grouped).sort((a, b) => {
+        if (a === 'vrac') return 1;
+        if (b === 'vrac') return -1;
+        const pA = pochons.find(p => p.id === a);
+        const pB = pochons.find(p => p.id === b);
+        return (pA?.ordre || 0) - (pB?.ordre || 0);
+      });
+
+      sortedKeys.forEach(pochonId => {
+        const items = grouped[pochonId];
+        const pochon = pochons.find(p => p.id === pochonId) || { nom: 'Vrac', couleur: 'gray' };
+
+        let html = `
+          <div class="pochon-section">
+            <div class="pochon-header">
+              <div class="pochon-dot ${pochon.couleur}"></div>
+              <h3>${pochon.nom}</h3>
+              <span>${items.length} type${items.length > 1 ? 's' : ''}</span>
+            </div>
+        `;
+
+        items.forEach(item => {
+          const article = articles.find(a => a.id === item.id_article) || {};
+          const stockClass = item.quantite >= item.quantite_cible ? 'stock-ok' : 
+                            item.quantite >= item.quantite_cible / 2 ? 'stock-low' : 'stock-critical';
+          const selected = selectedItems[item.id_article] || 0;
+
+          html += `
+            <div class="item-card ${selected > 0 ? 'selected' : ''}" id="item-${item.id_article}">
+              <div class="item-icon">${article.emoji || '📦'}</div>
+              <div class="item-details">
+                <h4>${article.nom || 'Article inconnu'}</h4>
+                <p>${article.description || ''}</p>
+              </div>
+              <span class="stock-indicator ${stockClass}">×${item.quantite}</span>
+              <div class="item-qty">
+                <button class="qty-btn" onclick="updateQty('${item.id_article}', -1, ${item.quantite})">−</button>
+                <span class="qty-value ${selected > 0 ? 'active' : ''}" id="qty-${item.id_article}">${selected}</span>
+                <button class="qty-btn" onclick="updateQty('${item.id_article}', 1, ${item.quantite})">+</button>
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+        content.innerHTML += html;
+      });
+
+      updateValidateButton();
+    }
+
+    function updateQty(articleId, delta, maxQty) {
+      const current = selectedItems[articleId] || 0;
+      const newQty = Math.max(0, Math.min(current + delta, maxQty));
+
+      if (newQty === 0) {
+        delete selectedItems[articleId];
+      } else {
+        selectedItems[articleId] = newQty;
+      }
+
+      const qtyEl = document.getElementById(`qty-${articleId}`);
+      const cardEl = document.getElementById(`item-${articleId}`);
+      
+      qtyEl.textContent = newQty;
+      qtyEl.classList.toggle('active', newQty > 0);
+      cardEl.classList.toggle('selected', newQty > 0);
+
+      updateValidateButton();
+    }
+
+    function updateValidateButton() {
+      const total = Object.values(selectedItems).reduce((sum, qty) => sum + qty, 0);
+      document.getElementById('selected-count').textContent = total;
+      document.getElementById('btn-validate').disabled = total === 0;
+    }
+
+    document.getElementById('btn-validate').addEventListener('click', () => {
+      populateDestination();
+      goToScreen('screen-destination');
+    });
+
+    // ==================== DESTINATION ====================
+    function populateDestination() {
+      const container = document.getElementById('selected-items');
+      container.innerHTML = '';
+
+      Object.entries(selectedItems).forEach(([articleId, qty]) => {
+        const article = articles.find(a => a.id === articleId) || {};
+        container.innerHTML += `
+          <div class="selected-item">
+            <span class="emoji">${article.emoji || '📦'}</span>
+            <span class="name">${article.nom || 'Article'}</span>
+            <span class="qty">×${qty}</span>
+          </div>
+        `;
+      });
+
+      const transferSelect = document.getElementById('transfer-target');
+      transferSelect.innerHTML = '<option value="">Choisir le sac destination...</option>';
+      
+      // Si on est dans l'armoire, proposer tous les sacs comme destination de transfert
+      // Sinon, proposer les autres sacs (pas l'armoire, car "retour armoire" est une option séparée)
+      const transferTargets = currentBag.type === 'armoire' 
+        ? contenants.filter(c => c.type === 'sac')
+        : contenants.filter(c => c.id !== currentBag.id && c.type === 'sac');
+      
+      transferTargets.forEach(c => {
+        transferSelect.innerHTML += `<option value="${c.id}">${c.nom}</option>`;
+      });
+
+      // Masquer l'option "Retour armoire" si on est déjà dans l'armoire
+      const retourOption = document.querySelector('[data-dest="retour"]');
+      if (currentBag.type === 'armoire') {
+        retourOption.style.display = 'none';
+      } else {
+        retourOption.style.display = '';
+      }
+
+      document.querySelectorAll('.dest-option').forEach(el => el.classList.remove('selected'));
+      document.querySelector('[data-dest="victime"]').classList.add('selected');
+      document.getElementById('movement-note').value = '';
+    }
+
+    function selectDestination(el) {
+      document.querySelectorAll('.dest-option').forEach(opt => {
+        opt.classList.remove('selected');
+        const subOpts = opt.querySelector('.sub-options');
+        if (subOpts) subOpts.style.display = 'none';
+      });
+
+      el.classList.add('selected');
+      const subOpts = el.querySelector('.sub-options');
+      if (subOpts) subOpts.style.display = 'block';
+    }
+
+    document.getElementById('btn-confirm').addEventListener('click', confirmMovement);
+
+    async function confirmMovement() {
+      const destOption = document.querySelector('.dest-option.selected');
+      const destType = destOption.dataset.dest;
+      const note = document.getElementById('movement-note').value;
+
+      let destination = null;
+      if (destType === 'transfert') {
+        destination = document.getElementById('transfer-target').value;
+        if (!destination) {
+          showToast('Sélectionnez un sac destination', 'error');
+          return;
+        }
+      } else if (destType === 'retour') {
+        destination = 'ARM001';
+      }
+
+      const movements = Object.entries(selectedItems).map(([articleId, qty]) => ({
+        date_heure: new Date().toISOString(),
+        id_utilisateur: currentUser.id,
+        id_article: articleId,
+        quantite: qty,
+        id_contenant_source: currentBag.id,
+        id_contenant_destination: destination,
+        type_mouvement: destType,
+        note: note
+      }));
+
+      showLoading(true);
+      try {
+        if (API_URL !== 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
+          await fetch(`${API_URL}?action=addMovements`, {
+            method: 'POST',
+            body: JSON.stringify({ movements })
+          });
+        }
+
+        // Update local stock
+        movements.forEach(mov => {
+          const sourceStock = stock.find(s => s.id_contenant === mov.id_contenant_source && s.id_article === mov.id_article);
+          if (sourceStock) sourceStock.quantite -= mov.quantite;
+
+          if (mov.id_contenant_destination) {
+            let destStock = stock.find(s => s.id_contenant === mov.id_contenant_destination && s.id_article === mov.id_article);
+            if (destStock) {
+              destStock.quantite += mov.quantite;
+            }
+          }
+        });
+
+        showToast('Mouvement enregistré !', 'success');
+        selectedItems = {};
+        updateHomeBadges();
+        goToScreen('screen-home');
+      } catch (error) {
+        console.error('Error saving movement:', error);
+        showToast('Erreur lors de l\'enregistrement', 'error');
+      }
+      showLoading(false);
+    }
+
+    // ==================== INVENTAIRE ====================
+    function populateInventaireBagList() {
+      const list = document.getElementById('inventaire-bag-list');
+      list.innerHTML = '';
+
+      // D'abord les sacs, puis l'armoire
+      const sortedContenants = [...contenants].sort((a, b) => {
+        if (a.type === 'armoire') return 1;
+        if (b.type === 'armoire') return -1;
+        return 0;
+      });
+
+      sortedContenants.forEach(bag => {
+        const bagStock = stock.filter(s => s.id_contenant === bag.id);
+        const manques = bagStock.filter(s => s.quantite < s.quantite_cible).length;
+        const exces = bagStock.filter(s => s.quantite > s.quantite_cible).length;
+        const icon = bag.type === 'armoire' ? '🗄️' : '🎒';
+        
+        let statusTags = '';
+        if (manques > 0) {
+          statusTags += `<span class="status-tag critical">${manques} manquant${manques > 1 ? 's' : ''}</span>`;
+        }
+        if (exces > 0) {
+          statusTags += `<span class="status-tag warning">${exces} excès</span>`;
+        }
+        if (manques === 0 && exces === 0) {
+          statusTags = `<span class="status-tag ok">Complet ✓</span>`;
+        }
+
+        list.innerHTML += `
+          <div class="bag-item ${manques > 0 ? 'has-alert' : ''}" onclick="selectBagForInventaire('${bag.id}')">
+            <div class="bag-icon ${bag.couleur}">
+              ${icon}
+              ${manques > 0 ? `<div class="alert-dot">${manques}</div>` : ''}
+            </div>
+            <div class="bag-info">
+              <h4>${bag.nom}</h4>
+              <p>${bag.localisation}</p>
+              <div class="bag-status">${statusTags}</div>
+            </div>
+            <span class="bag-arrow">›</span>
+          </div>
+        `;
+      });
+    }
+
+    function selectBagForInventaire(bagId) {
+      currentBag = contenants.find(c => c.id === bagId);
+      currentInventaireFilter = 'all';
+      populateInventaireDetail();
+      goToScreen('screen-inventaire-detail');
+    }
+
+    function populateInventaireDetail() {
+      const header = document.getElementById('inventaire-header');
+      header.className = `bag-header ${currentBag.couleur}`;
+      
+      document.getElementById('inventaire-title').textContent = currentBag.nom;
+
+      const bagStock = stock.filter(s => s.id_contenant === currentBag.id);
+      
+      const okCount = bagStock.filter(s => s.quantite === s.quantite_cible).length;
+      const manqueCount = bagStock.filter(s => s.quantite < s.quantite_cible).length;
+      const excesCount = bagStock.filter(s => s.quantite > s.quantite_cible).length;
+
+      document.getElementById('inventaire-stat-ok').textContent = okCount;
+      document.getElementById('inventaire-stat-manque').textContent = manqueCount;
+      document.getElementById('inventaire-stat-exces').textContent = excesCount;
+      document.getElementById('filter-count-manque').textContent = manqueCount;
+      document.getElementById('filter-count-exces').textContent = excesCount;
+
+      // Calculer les manques
+      inventaireManques = bagStock
+        .filter(s => s.quantite < s.quantite_cible)
+        .map(s => ({
+          ...s,
+          manque: s.quantite_cible - s.quantite
+        }));
+
+      const totalManques = inventaireManques.reduce((sum, m) => sum + m.manque, 0);
+      document.getElementById('manque-count').textContent = totalManques;
+      document.getElementById('inventaire-floating').style.display = totalManques > 0 ? 'block' : 'none';
+
+      renderInventaireContent(bagStock);
+    }
+
+    function renderInventaireContent(bagStock) {
+      const content = document.getElementById('inventaire-content');
+      content.innerHTML = '';
+
+      let filteredStock = bagStock;
+      if (currentInventaireFilter === 'manque') {
+        filteredStock = bagStock.filter(s => s.quantite < s.quantite_cible);
+      } else if (currentInventaireFilter === 'exces') {
+        filteredStock = bagStock.filter(s => s.quantite > s.quantite_cible);
+      }
+
+      if (filteredStock.length === 0) {
+        content.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">✓</div>
+            <p>Aucun article dans cette catégorie</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Group by pochon
+      const grouped = {};
+      filteredStock.forEach(s => {
+        const key = s.id_pochon || 'vrac';
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(s);
+      });
+
+      const sortedKeys = Object.keys(grouped).sort((a, b) => {
+        if (a === 'vrac') return 1;
+        if (b === 'vrac') return -1;
+        const pA = pochons.find(p => p.id === a);
+        const pB = pochons.find(p => p.id === b);
+        return (pA?.ordre || 0) - (pB?.ordre || 0);
+      });
+
+      sortedKeys.forEach(pochonId => {
+        const items = grouped[pochonId];
+        const pochon = pochons.find(p => p.id === pochonId) || { nom: 'Vrac', couleur: 'gray' };
+
+        let html = `
+          <div class="pochon-section">
+            <div class="pochon-header">
+              <div class="pochon-dot ${pochon.couleur}"></div>
+              <h3>${pochon.nom}</h3>
+            </div>
+        `;
+
+        items.forEach(item => {
+          const article = articles.find(a => a.id === item.id_article) || {};
+          const ecart = item.quantite - item.quantite_cible;
+          let highlightClass = '';
+          let ecartText = '';
+          
+          if (ecart < 0) {
+            highlightClass = Math.abs(ecart) >= item.quantite_cible / 2 ? 'highlight-critical' : 'highlight-low';
+            ecartText = `<span class="ecart negative">⚠️ ${Math.abs(ecart)} manquant${Math.abs(ecart) > 1 ? 's' : ''}</span>`;
+          } else if (ecart > 0) {
+            highlightClass = 'highlight-low';
+            ecartText = `<span class="ecart positive">↑ ${ecart} en plus</span>`;
+          }
+
+          html += `
+            <div class="item-card ${highlightClass}">
+              <div class="item-icon">${article.emoji || '📦'}</div>
+              <div class="item-details">
+                <h4>${article.nom || 'Article inconnu'}</h4>
+                <p>${article.description || ''}</p>
+                ${ecartText}
+              </div>
+              <div class="stock-display">
+                <div class="current">${item.quantite}</div>
+                <div class="target">/ ${item.quantite_cible}</div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+        content.innerHTML += html;
+      });
+    }
+
+    function filterInventaire(filter) {
+      currentInventaireFilter = filter;
+      
+      document.querySelectorAll('#inventaire-filters .filter-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.filter === filter);
+      });
+
+      const bagStock = stock.filter(s => s.id_contenant === currentBag.id);
+      renderInventaireContent(bagStock);
+    }
+
+    document.getElementById('btn-completer').addEventListener('click', () => {
+      openSourceModal();
+    });
+
+    // ==================== SOURCE MODAL ====================
+    function openSourceModal() {
+      const modal = document.getElementById('source-modal');
+      const options = document.getElementById('source-options');
+      options.innerHTML = '';
+
+      // Armoire de réserve (si on n'est pas déjà dans l'armoire)
+      const armoire = contenants.find(c => c.type === 'armoire');
+      if (armoire && currentBag.id !== armoire.id) {
+        options.innerHTML += `
+          <div class="source-option" onclick="completerDepuis('${armoire.id}')">
+            <div class="icon armoire">🗄️</div>
+            <div class="info">
+              <h4>${armoire.nom}</h4>
+              <p>${armoire.localisation}</p>
+            </div>
+            <span class="stock-available">Stock disponible</span>
+          </div>
+        `;
+      }
+
+      // Autres sacs (et armoire si on est dans un sac)
+      contenants.filter(c => c.id !== currentBag.id).forEach(contenant => {
+        // On a déjà ajouté l'armoire au-dessus si applicable
+        if (contenant.type === 'armoire') return;
+        
+        options.innerHTML += `
+          <div class="source-option" onclick="completerDepuis('${contenant.id}')">
+            <div class="icon sac">🎒</div>
+            <div class="info">
+              <h4>${contenant.nom}</h4>
+              <p>${contenant.localisation}</p>
+            </div>
+          </div>
+        `;
+      });
+
+      // Si on est dans l'armoire, proposer aussi les sacs comme source
+      if (currentBag.type === 'armoire') {
+        if (options.innerHTML === '') {
+          options.innerHTML = `
+            <div class="empty-state" style="padding: 40px;">
+              <div class="icon">📦</div>
+              <p>Aucune source disponible pour compléter l'armoire</p>
+            </div>
+          `;
+        }
+      }
+
+      modal.classList.add('show');
+    }
+
+    function closeSourceModal() {
+      document.getElementById('source-modal').classList.remove('show');
+    }
+
+    async function completerDepuis(sourceId) {
+      closeSourceModal();
+      showLoading(true);
+
+      const movements = [];
+      
+      inventaireManques.forEach(item => {
+        const sourceStock = stock.find(s => s.id_contenant === sourceId && s.id_article === item.id_article);
+        if (sourceStock && sourceStock.quantite > 0) {
+          const qtyToMove = Math.min(item.manque, sourceStock.quantite);
+          
+          movements.push({
+            date_heure: new Date().toISOString(),
+            id_utilisateur: currentUser.id,
+            id_article: item.id_article,
+            quantite: qtyToMove,
+            id_contenant_source: sourceId,
+            id_contenant_destination: currentBag.id,
+            type_mouvement: 'reassort',
+            note: 'Complément inventaire'
+          });
+        }
+      });
+
+      if (movements.length === 0) {
+        showToast('Aucun article disponible dans cette source', 'error');
+        showLoading(false);
+        return;
+      }
+
+      try {
+        if (API_URL !== 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
+          await fetch(`${API_URL}?action=addMovements`, {
+            method: 'POST',
+            body: JSON.stringify({ movements })
+          });
+        }
+
+        // Update local stock
+        movements.forEach(mov => {
+          const sourceStock = stock.find(s => s.id_contenant === mov.id_contenant_source && s.id_article === mov.id_article);
+          if (sourceStock) sourceStock.quantite -= mov.quantite;
+
+          const destStock = stock.find(s => s.id_contenant === mov.id_contenant_destination && s.id_article === mov.id_article);
+          if (destStock) destStock.quantite += mov.quantite;
+        });
+
+        const totalMoved = movements.reduce((sum, m) => sum + m.quantite, 0);
+        showToast(`${totalMoved} article${totalMoved > 1 ? 's' : ''} ajouté${totalMoved > 1 ? 's' : ''} !`, 'success');
+        
+        populateInventaireDetail();
+        updateHomeBadges();
+      } catch (error) {
+        console.error('Error:', error);
+        showToast('Erreur lors du réassort', 'error');
+      }
+
+      showLoading(false);
+    }
+
+    // ==================== PÉREMPTION ====================
+    function countPeremptionAlerts() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      let expired = 0;
+      let warning = 0;
+
+      stock.forEach(item => {
+        if (!item.date_peremption) return;
+        
+        const expDate = new Date(item.date_peremption);
+        const diffDays = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays < 0) {
+          expired++;
+        } else if (diffDays <= 30) {
+          warning++;
+        }
+      });
+
+      return { expired, warning, total: expired + warning };
+    }
+
+    function populatePeremption() {
+      const alerts = countPeremptionAlerts();
+      document.getElementById('peremption-expired-count').textContent = alerts.expired;
+      document.getElementById('peremption-warning-count').textContent = alerts.warning;
+
+      renderPeremptionContent();
+    }
+
+    function renderPeremptionContent() {
+      const content = document.getElementById('peremption-content');
+      content.innerHTML = '';
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      let items = stock
+        .filter(s => s.date_peremption)
+        .map(s => {
+          const expDate = new Date(s.date_peremption);
+          const diffDays = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+          const article = articles.find(a => a.id === s.id_article) || {};
+          const contenant = contenants.find(c => c.id === s.id_contenant) || {};
+          
+          return {
+            ...s,
+            article,
+            contenant,
+            diffDays,
+            status: diffDays < 0 ? 'expired' : diffDays <= 30 ? 'warning' : 'ok'
+          };
+        })
+        .sort((a, b) => a.diffDays - b.diffDays);
+
+      if (currentPeremptionFilter === 'alerts') {
+        items = items.filter(i => i.status !== 'ok');
+      }
+
+      if (items.length === 0) {
+        content.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">✓</div>
+            <p>${currentPeremptionFilter === 'alerts' ? 'Aucune alerte de péremption' : 'Aucun article avec date de péremption'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach(item => {
+        const dateStr = new Date(item.date_peremption).toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+
+        let daysText = '';
+        if (item.diffDays < 0) {
+          daysText = `Périmé depuis ${Math.abs(item.diffDays)}j`;
+        } else if (item.diffDays === 0) {
+          daysText = "Expire aujourd'hui";
+        } else {
+          daysText = `Dans ${item.diffDays}j`;
+        }
+
+        content.innerHTML += `
+          <div class="peremption-item ${item.status}">
+            <div class="item-row">
+              <div class="item-icon">${item.article.emoji || '📦'}</div>
+              <div class="item-details">
+                <h4>${item.article.nom || 'Article'}</h4>
+                <p>×${item.quantite} • ${item.article.description || ''}</p>
+              </div>
+              <div class="date-badge ${item.status}">
+                ${dateStr}
+                <span class="days">${daysText}</span>
+              </div>
+            </div>
+            <div class="location">📍 ${item.contenant.nom || 'Inconnu'}</div>
+          </div>
+        `;
+      });
+    }
+
+    function filterPeremption(filter) {
+      currentPeremptionFilter = filter;
+      
+      document.querySelectorAll('#peremption-filters .filter-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.filter === filter);
+      });
+
+      renderPeremptionContent();
+    }
+
+    // ==================== NAVIGATION ====================
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      window.scrollTo(0, 0);
+
+      if (screenId !== 'screen-scan') {
+        stopScanner();
+      }
+    }
+
+    // ==================== UTILITIES ====================
+    function showLoading(show) {
+      document.getElementById('loading').classList.toggle('show', show);
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
