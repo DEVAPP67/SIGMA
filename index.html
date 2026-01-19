@@ -1790,7 +1790,7 @@
       const select = document.getElementById('login-user');
       select.innerHTML = '<option value="">Choisir un utilisateur...</option>';
       users.forEach(user => {
-        select.innerHTML += `<option value="${user.id}">${user.nom}</option>`;
+        select.innerHTML += `<option value="${user.id_utilisateur}">${user.nom}</option>`;
       });
     }
 
