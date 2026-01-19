@@ -11,6 +11,7 @@
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23e63946' rx='20' width='100' height='100'/><text x='50' y='65' text-anchor='middle' font-size='50'>✚</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
       --bg-dark: #0f1419;
@@ -313,6 +314,7 @@
     .mode-icon.intervention { background: linear-gradient(135deg, var(--accent-red), #ff6b6b); }
     .mode-icon.inventaire { background: linear-gradient(135deg, var(--accent-blue), #5a9cff); }
     .mode-icon.peremption { background: linear-gradient(135deg, var(--accent-yellow), #f4c994); }
+    .mode-icon.qrcode { background: linear-gradient(135deg, var(--accent-purple), #c084fc); }
 
     .mode-info {
       flex: 1;
@@ -1316,6 +1318,121 @@
       color: var(--accent-green);
       font-weight: 600;
     }
+
+    /* QR Generator Styles */
+    .qr-gen-controls {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .qr-gen-mode-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: var(--bg-input);
+      padding: 4px;
+      border-radius: 12px;
+    }
+
+    .qr-gen-mode-tab {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .qr-gen-mode-tab.active {
+      background: var(--accent-purple);
+      color: white;
+    }
+
+    .qr-gen-section {
+      display: none;
+    }
+
+    .qr-gen-section.active {
+      display: block;
+    }
+
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .qr-card-mini {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      border: 2px solid var(--border);
+    }
+
+    .qr-card-mini h4 {
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .qr-card-mini .qr-id {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .qr-canvas-mini {
+      margin: 12px auto;
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    .qr-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .qr-card-actions button {
+      flex: 1;
+      padding: 8px;
+      background: var(--bg-input);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .qr-card-actions button:active {
+      transform: scale(0.95);
+    }
+
+    .info-banner {
+      background: rgba(168, 85, 247, 0.1);
+      border: 2px solid rgba(168, 85, 247, 0.3);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .info-banner strong {
+      color: var(--accent-purple);
+    }
   </style>
 </head>
 <body>
@@ -1400,7 +1517,16 @@
         <span id="peremption-badge" class="mode-badge" style="display: none;">0</span>
         <span class="mode-arrow">›</span>
       </div>
-    </div>
+
+      <div class="mode-card" id="qr-generator-card" style="display: none;" onclick="enterMode('qrcode')">
+        <div class="mode-icon qrcode">🔲</div>
+        <div class="mode-info">
+          <h3>Générateur QR</h3>
+          <p>Créer des QR codes pour les sacs</p>
+        </div>
+        <span class="mode-arrow">›</span>
+      </div>
+        </div>
 
     <button class="btn logout-btn" onclick="logout()">
       Déconnexion
@@ -1619,6 +1745,65 @@
     <div id="peremption-content"></div>
   </div>
 
+
+  <div class="screen" id="screen-qrcode">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+      <div class="header-title">
+        <h2>Générateur QR</h2>
+        <p>Créez vos QR codes</p>
+      </div>
+    </div>
+
+    <div class="info-banner">
+      <strong>💡 Comment l'utiliser :</strong><br>
+      Entrez les informations du sac, générez le QR code, puis imprimez et plastifiez.
+    </div>
+
+    <div class="qr-gen-controls">
+      <div class="qr-gen-mode-tabs">
+        <button class="qr-gen-mode-tab active" data-mode="single" onclick="switchQRMode('single')">Un QR code</button>
+        <button class="qr-gen-mode-tab" data-mode="batch" onclick="switchQRMode('batch')">Lot</button>
+      </div>
+
+      <div class="qr-gen-section active" id="qr-single">
+        <div class="form-group">
+          <label>Nom du sac</label>
+          <input type="text" id="qr-bag-name" placeholder="Ex: SAC VSAV 1" value="">
+        </div>
+        <div class="form-group">
+          <label>ID du contenant</label>
+          <input type="text" id="qr-bag-id" placeholder="Ex: SAC001" value="">
+        </div>
+        <button class="btn btn-primary" onclick="generateSingleQR()" style="margin-top: 10px;">🔲 Générer le QR code</button>
+      </div>
+
+      <div class="qr-gen-section" id="qr-batch">
+        <div class="form-group">
+          <label>Préfixe des IDs</label>
+          <input type="text" id="qr-batch-prefix" placeholder="Ex: SAC" value="SAC">
+        </div>
+        <div class="form-group">
+          <label>Numéro de début</label>
+          <input type="number" id="qr-batch-start" value="1" min="1">
+        </div>
+        <div class="form-group">
+          <label>Numéro de fin</label>
+          <input type="number" id="qr-batch-end" value="5" min="1">
+        </div>
+        <div class="form-group">
+          <label>Nom de base (optionnel)</label>
+          <input type="text" id="qr-batch-base-name" placeholder="Ex: SAC VSAV">
+        </div>
+        <button class="btn btn-primary" onclick="generateBatchQR()" style="margin-top: 10px;">🔲 Générer tous les QR codes</button>
+      </div>
+
+      <button class="btn btn-secondary" onclick="clearAllQR()" style="margin-top: 10px;">🗑️ Tout effacer</button>
+    </div>
+
+    <div class="qr-grid" id="qr-grid-main"></div>
+  </div>
+
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbyxFlO5vTm1l4iDwwvLyuyMu7oWwfAq6vEZxc-i1iy5j2PVM0FLzJpUVSLxOGTY6aeSoA/exec';
 
@@ -1705,6 +1890,14 @@
       document.getElementById('home-user-name').textContent = user.nom.split(' ')[0];
       document.getElementById('current-user-name').textContent = user.nom;
       
+      // Afficher le générateur QR pour admin et logistique
+      const qrCard = document.getElementById('qr-generator-card');
+      if (user.role === 'admin' || user.role === 'logistique') {
+        qrCard.style.display = 'flex';
+      } else {
+        qrCard.style.display = 'none';
+      }
+      
       updateHomeBadges();
       goToScreen('screen-home');
       showToast(`Bienvenue ${user.nom} !`, 'success');
@@ -1750,6 +1943,7 @@
         case 'intervention': populateBagList(); goToScreen('screen-scan'); break;
         case 'inventaire': populateInventaireBagList(); goToScreen('screen-inventaire-select'); break;
         case 'peremption': populatePeremption(); goToScreen('screen-peremption'); break;
+        case 'qrcode': goToScreen('screen-qrcode'); break;
       }
     }
 
@@ -2130,6 +2324,149 @@
       toast.className = `toast ${type}`;
       toast.classList.add('show');
       setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    // ===== QR CODE GENERATOR FUNCTIONS =====
+    let qrCounter = 0;
+
+    function switchQRMode(mode) {
+      document.querySelectorAll('.qr-gen-mode-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.mode === mode);
+      });
+      document.querySelectorAll('.qr-gen-section').forEach(section => {
+        section.classList.toggle('active', section.id === `qr-${mode}`);
+      });
+    }
+
+    function generateSingleQR() {
+      const name = document.getElementById('qr-bag-name').value.trim();
+      const id = document.getElementById('qr-bag-id').value.trim().toUpperCase();
+
+      if (!name || !id) {
+        showToast('Veuillez remplir le nom et l\'ID du sac', 'error');
+        return;
+      }
+
+      addQRCardToGrid(name, id);
+      showToast('QR code généré !', 'success');
+    }
+
+    function generateBatchQR() {
+      const prefix = document.getElementById('qr-batch-prefix').value.trim().toUpperCase();
+      const start = parseInt(document.getElementById('qr-batch-start').value);
+      const end = parseInt(document.getElementById('qr-batch-end').value);
+      const baseName = document.getElementById('qr-batch-base-name').value.trim();
+
+      if (!prefix) {
+        showToast('Veuillez entrer un préfixe', 'error');
+        return;
+      }
+
+      if (start > end) {
+        showToast('Le numéro de début doit être inférieur au numéro de fin', 'error');
+        return;
+      }
+
+      if (end - start > 50) {
+        if (!confirm('Vous allez générer plus de 50 QR codes. Continuer ?')) {
+          return;
+        }
+      }
+
+      for (let i = start; i <= end; i++) {
+        const id = prefix + String(i).padStart(3, '0');
+        const name = baseName ? `${baseName} ${i}` : id;
+        addQRCardToGrid(name, id);
+      }
+
+      showToast(`${end - start + 1} QR codes générés !`, 'success');
+    }
+
+    function addQRCardToGrid(name, id) {
+      qrCounter++;
+      const cardId = 'qr-card-' + qrCounter;
+      const canvasId = 'qr-canvas-' + qrCounter;
+
+      const card = document.createElement('div');
+      card.className = 'qr-card-mini';
+      card.id = cardId;
+      card.innerHTML = `
+        <h4>${name}</h4>
+        <div class="qr-id">${id}</div>
+        <div id="${canvasId}" class="qr-canvas-mini"></div>
+        <div class="qr-card-actions">
+          <button onclick="downloadQRCode('${canvasId}', '${id}')">💾</button>
+          <button onclick="removeQRCard('${cardId}')">🗑️</button>
+        </div>
+      `;
+
+      document.getElementById('qr-grid-main').appendChild(card);
+
+      // Générer le QR code avec QRCode.js
+      setTimeout(() => {
+        new QRCode(document.getElementById(canvasId), {
+          text: id,
+          width: 150,
+          height: 150,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }, 100);
+    }
+
+    function downloadQRCode(canvasId, filename) {
+      const canvas = document.querySelector(`#${canvasId} canvas`);
+      if (!canvas) {
+        showToast('Erreur lors de la génération du QR code', 'error');
+        return;
+      }
+
+      // Créer un canvas avec fond blanc et bordure
+      const finalCanvas = document.createElement('canvas');
+      const ctx = finalCanvas.getContext('2d');
+      const padding = 30;
+      finalCanvas.width = canvas.width + (padding * 2);
+      finalCanvas.height = canvas.height + (padding * 2);
+
+      // Fond blanc
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+      // Copier le QR code
+      ctx.drawImage(canvas, padding, padding);
+
+      // Télécharger
+      finalCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `QR_${filename}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('QR code téléchargé !', 'success');
+      });
+    }
+
+    function removeQRCard(cardId) {
+      document.getElementById(cardId).remove();
+      if (document.querySelectorAll('.qr-card-mini').length === 0) {
+        qrCounter = 0;
+      }
+    }
+
+    function clearAllQR() {
+      const cards = document.querySelectorAll('.qr-card-mini');
+      if (cards.length === 0) {
+        showToast('Aucun QR code à effacer', 'info');
+        return;
+      }
+
+      if (confirm('Voulez-vous vraiment supprimer tous les QR codes générés ?')) {
+        document.getElementById('qr-grid-main').innerHTML = '';
+        qrCounter = 0;
+        showToast('QR codes effacés', 'success');
+      }
     }
   </script>
 </body>
