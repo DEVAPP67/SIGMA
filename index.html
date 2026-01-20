@@ -2225,6 +2225,7 @@
         const totalMoved = movements.reduce((sum, m) => sum + m.quantite, 0);
         showToast(`${totalMoved} article${totalMoved > 1 ? 's' : ''} ajouté${totalMoved > 1 ? 's' : ''} !`, 'success');
         populateInventaireDetail();
+        populateInventaireBagList();
         updateHomeBadges();
       } catch (error) { showToast('Erreur lors du réassort', 'error'); }
       showLoading(false);
