@@ -1757,47 +1757,13 @@
 
     <div class="info-banner">
       <strong>💡 Comment l'utiliser :</strong><br>
-      Entrez les informations du sac, générez le QR code, puis imprimez et plastifiez.
+      Sélectionnez les sacs/armoires depuis Google Sheets, générez les QR codes, puis imprimez et plastifiez.
     </div>
 
     <div class="qr-gen-controls">
-      <div class="qr-gen-mode-tabs">
-        <button class="qr-gen-mode-tab active" data-mode="single" onclick="switchQRMode('single')">Un QR code</button>
-        <button class="qr-gen-mode-tab" data-mode="batch" onclick="switchQRMode('batch')">Lot</button>
-      </div>
-
-      <div class="qr-gen-section active" id="qr-single">
-        <div class="form-group">
-          <label>Nom du sac</label>
-          <input type="text" id="qr-bag-name" placeholder="Ex: SAC VSAV 1" value="">
-        </div>
-        <div class="form-group">
-          <label>ID du contenant</label>
-          <input type="text" id="qr-bag-id" placeholder="Ex: SAC001" value="">
-        </div>
-        <button class="btn btn-primary" onclick="generateSingleQR()" style="margin-top: 10px;">🔲 Générer le QR code</button>
-      </div>
-
-      <div class="qr-gen-section" id="qr-batch">
-        <div class="form-group">
-          <label>Préfixe des IDs</label>
-          <input type="text" id="qr-batch-prefix" placeholder="Ex: SAC" value="SAC">
-        </div>
-        <div class="form-group">
-          <label>Numéro de début</label>
-          <input type="number" id="qr-batch-start" value="1" min="1">
-        </div>
-        <div class="form-group">
-          <label>Numéro de fin</label>
-          <input type="number" id="qr-batch-end" value="5" min="1">
-        </div>
-        <div class="form-group">
-          <label>Nom de base (optionnel)</label>
-          <input type="text" id="qr-batch-base-name" placeholder="Ex: SAC VSAV">
-        </div>
-        <button class="btn btn-primary" onclick="generateBatchQR()" style="margin-top: 10px;">🔲 Générer tous les QR codes</button>
-      </div>
-
+      <div id="contenant-selection-list"></div>
+      
+      <button class="btn btn-primary" onclick="generateQRFromSelection()" style="margin-top: 10px;">🔲 Générer les QR codes sélectionnés</button>
       <button class="btn btn-secondary" onclick="clearAllQR()" style="margin-top: 10px;">🗑️ Tout effacer</button>
     </div>
 
@@ -1943,7 +1909,7 @@
         case 'intervention': populateBagList(); goToScreen('screen-scan'); break;
         case 'inventaire': populateInventaireBagList(); goToScreen('screen-inventaire-select'); break;
         case 'peremption': populatePeremption(); goToScreen('screen-peremption'); break;
-        case 'qrcode': goToScreen('screen-qrcode'); break;
+        case 'qrcode': populateContenantSelection(); goToScreen('screen-qrcode'); break;
       }
     }
 
@@ -2328,58 +2294,68 @@
 
     // ===== QR CODE GENERATOR FUNCTIONS =====
     let qrCounter = 0;
+    let selectedContenants = new Set();
 
-    function switchQRMode(mode) {
-      document.querySelectorAll('.qr-gen-mode-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.mode === mode);
-      });
-      document.querySelectorAll('.qr-gen-section').forEach(section => {
-        section.classList.toggle('active', section.id === `qr-${mode}`);
+    function populateContenantSelection() {
+      const list = document.getElementById('contenant-selection-list');
+      list.innerHTML = '';
+      
+      if (contenants.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="icon">📦</div><p>Aucun contenant disponible.</p></div>';
+        return;
+      }
+
+      contenants.forEach(contenant => {
+        const iconClass = contenant.type === 'armoire' ? 'armoire' : 'sac';
+        const icon = contenant.type === 'armoire' ? '🗄️' : '🎒';
+        const isSelected = selectedContenants.has(contenant.id_contenant);
+        
+        const item = document.createElement('div');
+        item.className = 'bag-card';
+        item.style.cursor = 'pointer';
+        item.style.position = 'relative';
+        item.style.border = isSelected ? '2px solid var(--accent-primary)' : '2px solid var(--border-color)';
+        item.style.background = isSelected ? 'var(--bg-highlight)' : 'var(--card-bg)';
+        item.onclick = () => toggleContenantSelection(contenant.id_contenant);
+        
+        item.innerHTML = `
+          <div class="bag-icon ${iconClass}">${icon}</div>
+          <div class="bag-info">
+            <h3>${contenant.nom}</h3>
+            <p>${contenant.localisation}</p>
+            <p class="bag-id">${contenant.id_contenant}</p>
+          </div>
+          ${isSelected ? '<div style="position: absolute; top: 10px; right: 10px; font-size: 24px;">✓</div>' : ''}
+        `;
+        list.appendChild(item);
       });
     }
 
-    function generateSingleQR() {
-      const name = document.getElementById('qr-bag-name').value.trim();
-      const id = document.getElementById('qr-bag-id').value.trim().toUpperCase();
-
-      if (!name || !id) {
-        showToast('Veuillez remplir le nom et l\'ID du sac', 'error');
-        return;
+    function toggleContenantSelection(id) {
+      if (selectedContenants.has(id)) {
+        selectedContenants.delete(id);
+      } else {
+        selectedContenants.add(id);
       }
-
-      addQRCardToGrid(name, id);
-      showToast('QR code généré !', 'success');
+      populateContenantSelection();
     }
 
-    function generateBatchQR() {
-      const prefix = document.getElementById('qr-batch-prefix').value.trim().toUpperCase();
-      const start = parseInt(document.getElementById('qr-batch-start').value);
-      const end = parseInt(document.getElementById('qr-batch-end').value);
-      const baseName = document.getElementById('qr-batch-base-name').value.trim();
-
-      if (!prefix) {
-        showToast('Veuillez entrer un préfixe', 'error');
+    function generateQRFromSelection() {
+      if (selectedContenants.size === 0) {
+        showToast('Veuillez sélectionner au moins un contenant', 'error');
         return;
       }
 
-      if (start > end) {
-        showToast('Le numéro de début doit être inférieur au numéro de fin', 'error');
-        return;
-      }
-
-      if (end - start > 50) {
-        if (!confirm('Vous allez générer plus de 50 QR codes. Continuer ?')) {
-          return;
+      selectedContenants.forEach(id => {
+        const contenant = contenants.find(c => c.id_contenant === id);
+        if (contenant) {
+          addQRCardToGrid(contenant.nom, contenant.id_contenant);
         }
-      }
+      });
 
-      for (let i = start; i <= end; i++) {
-        const id = prefix + String(i).padStart(3, '0');
-        const name = baseName ? `${baseName} ${i}` : id;
-        addQRCardToGrid(name, id);
-      }
-
-      showToast(`${end - start + 1} QR codes générés !`, 'success');
+      showToast(`${selectedContenants.size} QR code${selectedContenants.size > 1 ? 's' : ''} généré${selectedContenants.size > 1 ? 's' : ''} !`, 'success');
+      selectedContenants.clear();
+      populateContenantSelection();
     }
 
     function addQRCardToGrid(name, id) {
@@ -2465,6 +2441,8 @@
       if (confirm('Voulez-vous vraiment supprimer tous les QR codes générés ?')) {
         document.getElementById('qr-grid-main').innerHTML = '';
         qrCounter = 0;
+        selectedContenants.clear();
+        populateContenantSelection();
         showToast('QR codes effacés', 'success');
       }
     }
