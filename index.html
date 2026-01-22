@@ -1501,6 +1501,25 @@
       margin-bottom: 4px;
     }
 
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 6px;
+      margin-top: 4px;
+      background: rgba(136, 153, 166, 0.15);
+      color: var(--text-secondary);
+    }
+
+    .stat-badge.warning {
+      background: rgba(244, 162, 97, 0.2);
+      color: var(--accent-yellow);
+    }
+
     .tabs {
       display: flex;
       gap: 8px;
@@ -1826,7 +1845,36 @@
       margin-bottom: 20px;
       font-size: 20px;
     }
-  </style>
+
+    /* Spinner de chargement sur les boutons */
+    .btn-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spinner 0.6s linear infinite;
+    }
+
+    @keyframes spinner {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-loading span {
+      visibility: hidden;
+    }
   </style>
 </head>
 <body>
