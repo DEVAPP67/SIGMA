@@ -2300,6 +2300,7 @@
 
     <!-- Contracts Tab -->
     <div id="tab-contracts" class="tab-content">
+      <div id="next-contract-alert"></div>
       <button class="btn btn-success" onclick="showAddContractModal()" style="margin-bottom: 20px">
         <span>➕</span>
         Ajouter un contrat
@@ -3324,7 +3325,10 @@
       const v = vehicles.find(ve => ve.id === currentVehicleId);
       if (!v) return;
       
+      const alert = document.getElementById('next-contract-alert');
       const list = document.getElementById('contracts-list');
+      
+      alert.innerHTML = '';
       list.innerHTML = '';
       
       if (!v.contracts || v.contracts.length === 0) {
@@ -3335,6 +3339,57 @@
       const today = new Date();
       const alertDays = 30;
       
+      // Trouver le contrat le plus proche de son expiration
+      let closestContract = null;
+      let closestDays = Infinity;
+      let hasExpired = false;
+      
+      v.contracts.forEach(contract => {
+        const endDate = new Date(contract.date_fin);
+        const daysUntil = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+        
+        if (daysUntil < 0 && !hasExpired) {
+          // Contrat expiré
+          hasExpired = true;
+          closestContract = contract;
+          closestDays = daysUntil;
+        } else if (daysUntil >= 0 && daysUntil <= alertDays && daysUntil < closestDays) {
+          // Contrat proche de l'expiration
+          closestContract = contract;
+          closestDays = daysUntil;
+        }
+      });
+      
+      // Afficher l'alerte pour le contrat le plus urgent
+      if (closestContract) {
+        const endDate = new Date(closestContract.date_fin);
+        const daysUntil = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+        const contractType = closestContract.type === 'assurance' ? 'Assurance' : 'Contrat d\'entretien';
+        
+        if (daysUntil < 0) {
+          alert.innerHTML = `
+            <div class="next-revision-alert" style="background: linear-gradient(135deg, var(--accent-red), #ff6b6b);">
+              <div class="icon">🚨</div>
+              <div>
+                <h4>Contrat expiré !</h4>
+                <p>${contractType} de ${closestContract.fournisseur} expiré depuis ${Math.abs(daysUntil)} jour${Math.abs(daysUntil) > 1 ? 's' : ''}</p>
+              </div>
+            </div>
+          `;
+        } else if (daysUntil <= alertDays) {
+          alert.innerHTML = `
+            <div class="next-revision-alert">
+              <div class="icon">⚠️</div>
+              <div>
+                <h4>Contrat proche de l'expiration !</h4>
+                <p>${contractType} de ${closestContract.fournisseur} expire dans ${daysUntil} jour${daysUntil > 1 ? 's' : ''} (${endDate.toLocaleDateString('fr-FR')})</p>
+              </div>
+            </div>
+          `;
+        }
+      }
+      
+      // Afficher tous les contrats
       v.contracts.forEach(contract => {
         const typeIcon = contract.type === 'assurance' ? '🛡️' : '🔧';
         const dateDebut = new Date(contract.date_debut).toLocaleDateString('fr-FR');
