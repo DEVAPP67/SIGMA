@@ -1433,6 +1433,399 @@
     .info-banner strong {
       color: var(--accent-purple);
     }
+
+    /* Vehicle Styles */
+    .vehicle-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .vehicle-card:active {
+      transform: scale(0.98);
+      border-color: var(--accent-blue);
+    }
+
+    .vehicle-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .vehicle-icon.ambulance {
+      background: linear-gradient(135deg, var(--accent-red), #ff6b6b);
+    }
+
+    .vehicle-icon.car {
+      background: linear-gradient(135deg, var(--accent-blue), #5a9cff);
+    }
+
+    .vehicle-icon.quad {
+      background: linear-gradient(135deg, var(--accent-yellow), #ffb347);
+    }
+
+    .vehicle-icon.boat {
+      background: linear-gradient(135deg, var(--accent-purple), #c084fc);
+    }
+
+    .vehicle-icon.trailer {
+      background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+    }
+
+    .vehicle-info {
+      flex: 1;
+    }
+
+    .vehicle-info h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .vehicle-info p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding: 4px 0;
+    }
+
+    .tab {
+      padding: 12px 20px;
+      background: var(--bg-input);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab.active {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .info-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .info-item {
+      background: var(--bg-input);
+      padding: 16px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+    }
+
+    .info-item label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+
+    .info-item .value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* Style bulles de conversation pour les événements */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .message-bubble {
+      display: flex;
+      gap: 12px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), #5a9cff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .message-content {
+      flex: 1;
+      max-width: 85%;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .author-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .message-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .bubble {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border-top-left-radius: 4px;
+      padding: 14px 16px;
+      position: relative;
+      border: 2px solid var(--border);
+    }
+
+    .bubble.panne {
+      border-left: 4px solid var(--accent-red);
+      background: linear-gradient(90deg, rgba(230, 57, 70, 0.1) 0%, var(--bg-card) 20%);
+    }
+
+    .bubble.entretien {
+      border-left: 4px solid var(--accent-green);
+      background: linear-gradient(90deg, rgba(46, 196, 182, 0.1) 0%, var(--bg-card) 20%);
+    }
+
+    .bubble.info {
+      border-left: 4px solid var(--accent-blue);
+      background: linear-gradient(90deg, rgba(58, 134, 255, 0.1) 0%, var(--bg-card) 20%);
+    }
+
+    .event-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .event-type-badge.panne {
+      background: rgba(230, 57, 70, 0.15);
+      color: var(--accent-red);
+    }
+
+    .event-type-badge.entretien {
+      background: rgba(46, 196, 182, 0.15);
+      color: var(--accent-green);
+    }
+
+    .event-type-badge.info {
+      background: rgba(58, 134, 255, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .event-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .event-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Styles pour révisions et contrats */
+    .revision-item, .contract-item {
+      background: var(--bg-input);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .revision-header, .contract-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .event-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .event-icon.entretien {
+      background: rgba(46, 196, 182, 0.15);
+      color: var(--accent-green);
+    }
+
+    .event-icon.info {
+      background: rgba(58, 134, 255, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .revision-details h4, .contract-details h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .revision-date, .contract-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .revision-notes, .contract-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    .next-revision-alert {
+      background: linear-gradient(135deg, var(--accent-yellow), #ffb347);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .next-revision-alert .icon {
+      font-size: 32px;
+    }
+
+    .next-revision-alert h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .next-revision-alert p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 18px;
+      background: var(--bg-input);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      color: var(--text-primary);
+      font-size: 17px;
+      font-family: inherit;
+      transition: all 0.2s;
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 4px rgba(58, 134, 255, 0.15);
+    }
+
+    textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 9998;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .modal h3 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+  </style>
   </style>
 </head>
 <body>
@@ -1770,6 +2163,261 @@
     <div class="qr-grid" id="qr-grid-main"></div>
   </div>
 
+
+  <!-- Vehicles List Screen -->
+  <div class="screen" id="screen-vehicles">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+      <div class="header-title">
+        <h2>Véhicules</h2>
+        <p>Parc et entretien</p>
+      </div>
+    </div>
+
+    <button class="btn btn-success" onclick="goToScreen('screen-add-vehicle')" style="margin-bottom: 20px">
+      <span>➕</span>
+      Nouveau véhicule
+    </button>
+
+    <div class="filter-section">
+      <div class="filter-tab active" data-filter="all" onclick="filterVehicles('all')">Tous</div>
+      <div class="filter-tab" data-filter="car" onclick="filterVehicles('car')">🚗 Voitures</div>
+      <div class="filter-tab" data-filter="ambulance" onclick="filterVehicles('ambulance')">🚑 Ambulances</div>
+      <div class="filter-tab" data-filter="quad" onclick="filterVehicles('quad')">🏍️ Quad</div>
+      <div class="filter-tab" data-filter="boat" onclick="filterVehicles('boat')">🚤 Bateau</div>
+      <div class="filter-tab" data-filter="trailer" onclick="filterVehicles('trailer')">🚚 Remorques</div>
+    </div>
+
+    <div id="vehicles-list"></div>
+  </div>
+
+  <!-- Add/Edit Vehicle Screen -->
+  <div class="screen" id="screen-add-vehicle">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-vehicles')">←</button>
+      <div class="header-title">
+        <h2 id="vehicle-form-title">Nouveau véhicule</h2>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Nom du véhicule</label>
+      <input type="text" id="vehicle-nom" placeholder="Ex: VSAV 1">
+    </div>
+
+    <div class="form-group">
+      <label>Type</label>
+      <select id="vehicle-type">
+        <option value="ambulance">🚑 Ambulance</option>
+        <option value="car">🚗 Véhicule de liaison</option>
+        <option value="car">🚗 Jumpy de transport</option>
+        <option value="quad">🏍️ Quad</option>
+        <option value="boat">🚤 Bateau</option>
+        <option value="trailer">🚚 Remorque</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Immatriculation</label>
+      <input type="text" id="vehicle-immat" placeholder="Ex: AB-123-CD" style="text-transform: uppercase">
+    </div>
+
+    <div class="form-group">
+      <label>Marque</label>
+      <input type="text" id="vehicle-marque" placeholder="Ex: Peugeot">
+    </div>
+
+    <div class="form-group">
+      <label>Modèle</label>
+      <input type="text" id="vehicle-modele" placeholder="Ex: Expert">
+    </div>
+
+    <div class="form-group">
+      <label>Année</label>
+      <input type="number" id="vehicle-annee" placeholder="Ex: 2020">
+    </div>
+
+    <div class="form-group">
+      <label>Kilométrage actuel</label>
+      <input type="number" id="vehicle-km" placeholder="Ex: 45000">
+    </div>
+
+    <button class="btn btn-success" onclick="saveVehicle()">
+      <span>💾</span>
+      Enregistrer
+    </button>
+  </div>
+
+  <!-- Vehicle Detail Screen -->
+  <div class="screen" id="screen-vehicle-detail">
+    <div class="header">
+      <button class="back-btn" onclick="goToScreen('screen-vehicles')">←</button>
+      <div class="header-title">
+        <h2 id="vehicle-detail-title">Détail véhicule</h2>
+        <p id="vehicle-detail-subtitle"></p>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="info" onclick="switchVehicleTab('info')">
+        📋 Infos
+      </div>
+      <div class="tab" data-tab="contracts" onclick="switchVehicleTab('contracts')">
+        📄 Contrats
+      </div>
+      <div class="tab" data-tab="revisions" onclick="switchVehicleTab('revisions')">
+        🔧 Révisions
+      </div>
+      <div class="tab" data-tab="events" onclick="switchVehicleTab('events')">
+        📝 Journal
+      </div>
+    </div>
+
+    <!-- Info Tab -->
+    <div id="tab-info" class="tab-content active">
+      <div id="vehicle-info-grid" class="info-grid"></div>
+      <div style="display: flex; gap: 10px; margin-top: 20px">
+        <button class="btn btn-primary" onclick="editVehicle()" style="flex: 1">
+          <span>✏️</span>
+          Modifier
+        </button>
+        <button class="btn btn-danger" onclick="deleteVehicle()" style="flex: 1">
+          <span>🗑️</span>
+          Supprimer
+        </button>
+      </div>
+    </div>
+
+    <!-- Contracts Tab -->
+    <div id="tab-contracts" class="tab-content">
+      <button class="btn btn-success" onclick="showAddContractModal()" style="margin-bottom: 20px">
+        <span>➕</span>
+        Ajouter un contrat
+      </button>
+      <div id="contracts-list"></div>
+    </div>
+
+    <!-- Revisions Tab -->
+    <div id="tab-revisions" class="tab-content">
+      <div id="next-revision-alert"></div>
+      <button class="btn btn-success" onclick="showAddRevisionModal()" style="margin-bottom: 20px">
+        <span>➕</span>
+        Ajouter une révision
+      </button>
+      <div id="revisions-list"></div>
+    </div>
+
+    <!-- Events Tab -->
+    <div id="tab-events" class="tab-content">
+      <button class="btn btn-success" onclick="showAddEventModal()" style="margin-bottom: 20px">
+        <span>➕</span>
+        Ajouter un événement
+      </button>
+      <div id="events-list"></div>
+    </div>
+  </div>
+
+  <!-- Modal Backdrop -->
+  <div id="modal-backdrop" class="modal-backdrop" onclick="closeVehicleModal()"></div>
+
+  <!-- Add Contract Modal -->
+  <div id="modal-add-contract" class="modal">
+    <h3>Ajouter un contrat</h3>
+    <div class="form-group">
+      <label>Type</label>
+      <select id="contract-type">
+        <option value="assurance">Assurance</option>
+        <option value="entretien">Entretien</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Fournisseur</label>
+      <input type="text" id="contract-fournisseur" placeholder="Ex: Groupama">
+    </div>
+    <div class="form-group">
+      <label>Numéro de contrat</label>
+      <input type="text" id="contract-numero" placeholder="Ex: 123456789">
+    </div>
+    <div class="form-group">
+      <label>Date de début</label>
+      <input type="date" id="contract-date-debut">
+    </div>
+    <div class="form-group">
+      <label>Date de fin</label>
+      <input type="date" id="contract-date-fin">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="contract-description" placeholder="Détails du contrat..."></textarea>
+    </div>
+    <div style="display: flex; gap: 10px">
+      <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
+      <button class="btn btn-success" onclick="saveContract()" style="flex: 1">Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- Add Revision Modal -->
+  <div id="modal-add-revision" class="modal">
+    <h3>Ajouter une révision</h3>
+    <div class="form-group">
+      <label>Date de révision</label>
+      <input type="date" id="revision-date">
+    </div>
+    <div class="form-group">
+      <label>Kilométrage</label>
+      <input type="number" id="revision-km" placeholder="Ex: 50000">
+    </div>
+    <div class="form-group">
+      <label>Type de révision</label>
+      <input type="text" id="revision-type" placeholder="Ex: Révision complète, Vidange...">
+    </div>
+    <div class="form-group">
+      <label>Prochaine échéance (km)</label>
+      <input type="number" id="revision-next-km" placeholder="Ex: 60000">
+    </div>
+    <div class="form-group">
+      <label>Prochaine échéance (date)</label>
+      <input type="date" id="revision-next-date">
+    </div>
+    <div class="form-group">
+      <label>Compte rendu</label>
+      <textarea id="revision-notes" placeholder="Détails de la révision..."></textarea>
+    </div>
+    <div style="display: flex; gap: 10px">
+      <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
+      <button class="btn btn-success" onclick="saveRevision()" style="flex: 1">Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- Add Event Modal -->
+  <div id="modal-add-event" class="modal">
+    <h3>Ajouter un événement</h3>
+    <div class="form-group">
+      <label>Type</label>
+      <select id="event-type">
+        <option value="panne">🔴 Panne</option>
+        <option value="entretien">🔧 Entretien</option>
+        <option value="info">ℹ️ Information</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Titre</label>
+      <input type="text" id="event-title" placeholder="Ex: Problème de démarrage">
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="event-date">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="event-description" placeholder="Détails de l'événement..."></textarea>
+    </div>
+    <div style="display: flex; gap: 10px">
+      <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
+      <button class="btn btn-success" onclick="saveEvent()" style="flex: 1">Enregistrer</button>
+    </div>
+  </div>
+
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbyxFlO5vTm1l4iDwwvLyuyMu7oWwfAq6vEZxc-i1iy5j2PVM0FLzJpUVSLxOGTY6aeSoA/exec';
 
@@ -1779,6 +2427,7 @@
     let users = [];
     let contenants = [];
     let articles = [];
+    let vehicles = [];
     let stock = [];
     let pochons = [];
     let selectedItems = {};
@@ -1815,6 +2464,7 @@
         articles = data.articles || [];
         stock = data.stock || [];
         pochons = data.pochons || [];
+        vehicles = data.vehicles || [];
         populateUserSelect();
       } catch (error) {
         console.error('Error loading data:', error);
@@ -1910,6 +2560,7 @@
         case 'inventaire': populateInventaireBagList(); goToScreen('screen-inventaire-select'); break;
         case 'peremption': populatePeremption(); goToScreen('screen-peremption'); break;
         case 'qrcode': populateContenantSelection(); goToScreen('screen-qrcode'); break;
+        case 'vehicles': populateVehicles(); goToScreen('screen-vehicles'); break;
       }
     }
 
@@ -2447,6 +3098,495 @@
         showToast('QR codes effacés', 'success');
       }
     }
+
+    // ===== VEHICLES MODULE =====
+    let currentVehicleId = null;
+    let currentVehicleFilter = 'all';
+    let currentVehicleTab = 'info';
+
+    async function loadVehiclesData() {
+      // Les véhicules sont chargés avec getAllData au démarrage
+    }
+
+    function populateVehicles() {
+      const list = document.getElementById('vehicles-list');
+      list.innerHTML = '';
+      let filtered = vehicles.filter(v => currentVehicleFilter === 'all' || v.type === currentVehicleFilter);
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state">🚗<br>Aucun véhicule enregistré</div>';
+        return;
+      }
+      filtered.forEach(v => {
+        const iconMap = { ambulance: '🚑', car: '🚗', quad: '🏍️', boat: '🚤', trailer: '🚚' };
+        const icon = iconMap[v.type] || '🚗';
+        const revisions = v.revisions || [];
+        const lastRevision = revisions.length > 0 ? revisions[revisions.length - 1] : null;
+        const nextAlert = lastRevision && lastRevision.next_km && v.km >= lastRevision.next_km * 0.9;
+        list.innerHTML += `<div class="vehicle-card" onclick="showVehicleDetail('${v.id}')"><div class="vehicle-icon ${v.type}">${icon}</div><div class="vehicle-info"><h3>${v.nom}</h3><p>${v.marque} ${v.modele} - ${v.immat}</p><div style="margin-top: 8px"><span class="stat-badge">${v.km.toLocaleString()} km</span>${nextAlert ? '<span class="stat-badge warning">⚠️ Révision proche</span>' : ''}</div></div></div>`;
+      });
+    }
+
+    function filterVehicles(filter) {
+      currentVehicleFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.filter === filter);
+      });
+      populateVehicles();
+    }
+
+    async function saveVehicle() {
+      const nom = document.getElementById('vehicle-nom').value.trim();
+      const type = document.getElementById('vehicle-type').value;
+      const immat = document.getElementById('vehicle-immat').value.trim().toUpperCase();
+      const marque = document.getElementById('vehicle-marque').value.trim();
+      const modele = document.getElementById('vehicle-modele').value.trim();
+      const annee = parseInt(document.getElementById('vehicle-annee').value) || 0;
+      const km = parseInt(document.getElementById('vehicle-km').value) || 0;
+      
+      if (!nom || !immat || !marque || !modele) {
+        showToast('Remplis tous les champs obligatoires', 'error');
+        return;
+      }
+      
+      const vehicle = {
+        id: currentVehicleId || 'VEH' + String(Math.floor(Math.random() * 900) + 100).padStart(3, '0'),
+        nom, type, immat, marque, modele, annee, km
+      };
+      
+      showLoading(true);
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify({ vehicle }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const url = `${API_URL}?action=saveVehicle`;
+        const result = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({ vehicle })
+        }).then(r => r.json());
+        
+        if (result.success) {
+          await loadData(); // Recharger toutes les données
+          showToast('Véhicule enregistré !', 'success');
+          currentVehicleId = null;
+          document.getElementById('vehicle-nom').value = '';
+          document.getElementById('vehicle-immat').value = '';
+          document.getElementById('vehicle-marque').value = '';
+          document.getElementById('vehicle-modele').value = '';
+          document.getElementById('vehicle-annee').value = '';
+          document.getElementById('vehicle-km').value = '';
+          populateVehicles();
+          goToScreen('screen-vehicles');
+        } else {
+          showToast(result.error || 'Erreur d\'enregistrement', 'error');
+        }
+      } catch (error) {
+        showToast('Erreur de connexion', 'error');
+      }
+      showLoading(false);
+    }
+
+    function showVehicleDetail(id) {
+      currentVehicleId = id;
+      const v = vehicles.find(ve => ve.id === id);
+      if (!v) return;
+      
+      const iconMap = { ambulance: '🚑', car: '🚗', quad: '🏍️', boat: '🚤', trailer: '🚚' };
+      const icon = iconMap[v.type] || '🚗';
+      
+      document.getElementById('vehicle-detail-title').textContent = v.nom;
+      document.getElementById('vehicle-detail-subtitle').textContent = `${icon} ${v.immat}`;
+      
+      populateVehicleInfo();
+      populateVehicleContracts();
+      populateVehicleRevisions();
+      populateVehicleEvents();
+      
+      switchVehicleTab('info');
+      goToScreen('screen-vehicle-detail');
+    }
+
+    function switchVehicleTab(tabName) {
+      currentVehicleTab = tabName;
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+      });
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === 'tab-' + tabName);
+      });
+    }
+
+    function populateVehicleInfo() {
+      const v = vehicles.find(ve => ve.id === currentVehicleId);
+      if (!v) return;
+      
+      const typeMap = {
+        ambulance: '🚑 Ambulance', car: '🚗 Voiture',
+        quad: '🏍️ Quad', boat: '🚤 Bateau', trailer: '🚚 Remorque'
+      };
+      
+      const grid = document.getElementById('vehicle-info-grid');
+      grid.innerHTML = `
+        <div class="info-item"><label>Type</label><div class="value">${typeMap[v.type] || v.type}</div></div>
+        <div class="info-item"><label>Immatriculation</label><div class="value">${v.immat}</div></div>
+        <div class="info-item"><label>Marque</label><div class="value">${v.marque}</div></div>
+        <div class="info-item"><label>Modèle</label><div class="value">${v.modele}</div></div>
+        <div class="info-item"><label>Année</label><div class="value">${v.annee || 'Non renseignée'}</div></div>
+        <div class="info-item"><label>Kilométrage</label><div class="value">${v.km ? v.km.toLocaleString() + ' km' : 'Non renseigné'}</div></div>
+      `;
+    }
+
+    function editVehicle() {
+      const v = vehicles.find(ve => ve.id === currentVehicleId);
+      if (!v) return;
+      
+      document.getElementById('vehicle-nom').value = v.nom;
+      document.getElementById('vehicle-type').value = v.type;
+      document.getElementById('vehicle-immat').value = v.immat;
+      document.getElementById('vehicle-marque').value = v.marque;
+      document.getElementById('vehicle-modele').value = v.modele;
+      document.getElementById('vehicle-annee').value = v.annee || '';
+      document.getElementById('vehicle-km').value = v.km || '';
+      goToScreen('screen-add-vehicle');
+    }
+
+    async function deleteVehicle() {
+      if (!confirm('Supprimer ce véhicule et toutes ses données ?')) return;
+      
+      showLoading(true);
+      try {
+        const url = `${API_URL}?action=deleteVehicle`;
+        const result = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({ id_vehicule: currentVehicleId })
+        }).then(r => r.json());
+        
+        if (result.success) {
+          await loadData();
+          showToast('Véhicule supprimé', 'success');
+          populateVehicles();
+          goToScreen('screen-vehicles');
+        } else {
+          showToast(result.error || 'Erreur de suppression', 'error');
+        }
+      } catch (error) {
+        showToast('Erreur de connexion', 'error');
+      }
+      showLoading(false);
+    }
+
+    function populateVehicleContracts() {
+      const v = vehicles.find(ve => ve.id === currentVehicleId);
+      if (!v) return;
+      
+      const list = document.getElementById('contracts-list');
+      list.innerHTML = '';
+      
+      if (!v.contracts || v.contracts.length === 0) {
+        list.innerHTML = '<div class="empty-state">📄<br>Aucun contrat enregistré</div>';
+        return;
+      }
+      
+      v.contracts.forEach(contract => {
+        const typeIcon = contract.type === 'assurance' ? '🛡️' : '🔧';
+        const dateDebut = new Date(contract.date_debut).toLocaleDateString('fr-FR');
+        const dateFin = new Date(contract.date_fin).toLocaleDateString('fr-FR');
+        
+        list.innerHTML += `
+          <div class="contract-item">
+            <div class="contract-header">
+              <div class="event-icon info">${typeIcon}</div>
+              <div class="contract-details">
+                <h4>${contract.type === 'assurance' ? 'Assurance' : 'Contrat d\'entretien'} - ${contract.fournisseur}</h4>
+                <div class="contract-date">N° ${contract.numero}</div>
+              </div>
+            </div>
+            <div class="contract-description">
+              <strong>Période:</strong> ${dateDebut} → ${dateFin}<br>
+              ${contract.description || ''}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function populateVehicleRevisions() {
+      const v = vehicles.find(ve => ve.id === currentVehicleId);
+      if (!v) return;
+      
+      const alert = document.getElementById('next-revision-alert');
+      const list = document.getElementById('revisions-list');
+      
+      alert.innerHTML = '';
+      list.innerHTML = '';
+      
+      if (!v.revisions || v.revisions.length === 0) {
+        list.innerHTML = '<div class="empty-state">🔧<br>Aucune révision enregistrée</div>';
+        return;
+      }
+      
+      const sorted = [...v.revisions].sort((a, b) => new Date(b.date) - new Date(a.date));
+      const last = sorted[0];
+      
+      if (last.next_km && v.km) {
+        const remaining = last.next_km - v.km;
+        if (remaining <= last.next_km * 0.1) {
+          alert.innerHTML = `
+            <div class="next-revision-alert">
+              <div class="icon">⚠️</div>
+              <div>
+                <h4>Révision proche !</h4>
+                <p>Prochaine révision dans ${remaining.toLocaleString()} km</p>
+              </div>
+            </div>
+          `;
+        }
+      }
+      
+      sorted.forEach(revision => {
+        const date = new Date(revision.date).toLocaleDateString('fr-FR');
+        const nextKm = revision.next_km ? `${revision.next_km.toLocaleString()} km` : 'Non défini';
+        const nextDate = revision.next_date ? new Date(revision.next_date).toLocaleDateString('fr-FR') : 'Non définie';
+        
+        list.innerHTML += `
+          <div class="revision-item">
+            <div class="revision-header">
+              <div class="event-icon entretien">🔧</div>
+              <div class="revision-details">
+                <h4>${revision.type}</h4>
+                <div class="revision-date">${date} - ${revision.km.toLocaleString()} km</div>
+              </div>
+            </div>
+            <div class="revision-notes">
+              <strong>Prochaine échéance:</strong><br>
+              📅 ${nextDate}<br>
+              🛣️ ${nextKm}<br><br>
+              ${revision.notes || ''}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function populateVehicleEvents() {
+      const v = vehicles.find(ve => ve.id === currentVehicleId);
+      if (!v) return;
+      
+      const list = document.getElementById('events-list');
+      list.innerHTML = '';
+      
+      if (!v.events || v.events.length === 0) {
+        list.innerHTML = '<div class="empty-state">📝<br>Aucun événement enregistré</div>';
+        return;
+      }
+      
+      // Trier du plus ancien au plus récent
+      const sorted = [...v.events].sort((a, b) => new Date(a.date) - new Date(b.date));
+      
+      // Créer le conteneur de chat
+      const chatContainer = document.createElement('div');
+      chatContainer.className = 'chat-container';
+      
+      sorted.forEach(event => {
+        const iconMap = { panne: '🔴', entretien: '🔧', info: 'ℹ️' };
+        const typeMap = { panne: 'Panne', entretien: 'Entretien', info: 'Information' };
+        const icon = iconMap[event.type] || 'ℹ️';
+        const typeLabel = typeMap[event.type] || 'Info';
+        
+        // Formater la date avec heure si disponible
+        const dateObj = new Date(event.date);
+        const dateStr = dateObj.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+        const timeStr = dateObj.getHours() === 0 ? '' : dateObj.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        const fullDate = timeStr ? `${dateStr} • ${timeStr}` : dateStr;
+        
+        // Obtenir les initiales de l'utilisateur
+        const userName = event.user_name || 'Utilisateur inconnu';
+        const initials = userName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'message-bubble';
+        bubble.innerHTML = `
+          <div class="avatar">${initials}</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="author-name">${userName}</span>
+              <span class="message-date">${fullDate}</span>
+            </div>
+            <div class="bubble ${event.type}">
+              <div class="event-type-badge ${event.type}">${icon} ${typeLabel}</div>
+              <div class="event-title">${event.title}</div>
+              <div class="event-description">${event.description || ''}</div>
+            </div>
+          </div>
+        `;
+        
+        chatContainer.appendChild(bubble);
+      });
+      
+      list.appendChild(chatContainer);
+    }
+
+    function closeVehicleModal() {
+      document.getElementById('modal-backdrop').style.display = 'none';
+      document.getElementById('modal-add-contract').style.display = 'none';
+      document.getElementById('modal-add-revision').style.display = 'none';
+      document.getElementById('modal-add-event').style.display = 'none';
+    }
+
+    function showAddContractModal() {
+      document.getElementById('contract-type').value = 'assurance';
+      document.getElementById('contract-fournisseur').value = '';
+      document.getElementById('contract-numero').value = '';
+      document.getElementById('contract-date-debut').value = '';
+      document.getElementById('contract-date-fin').value = '';
+      document.getElementById('contract-description').value = '';
+      document.getElementById('modal-backdrop').style.display = 'block';
+      document.getElementById('modal-add-contract').style.display = 'block';
+    }
+
+    async function saveContract() {
+      const type = document.getElementById('contract-type').value;
+      const fournisseur = document.getElementById('contract-fournisseur').value.trim();
+      const numero = document.getElementById('contract-numero').value.trim();
+      const date_debut = document.getElementById('contract-date-debut').value;
+      const date_fin = document.getElementById('contract-date-fin').value;
+      const description = document.getElementById('contract-description').value.trim();
+      
+      if (!fournisseur || !numero || !date_debut || !date_fin) {
+        showToast('Remplis tous les champs', 'error');
+        return;
+      }
+      
+      const contract = {
+        id_vehicule: currentVehicleId,
+        type, fournisseur, numero, date_debut, date_fin, description
+      };
+      
+      showLoading(true);
+      try {
+        const url = `${API_URL}?action=addContract`;
+        const result = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({ contract })
+        }).then(r => r.json());
+        
+        if (result.success) {
+          await loadData();
+          showToast('Contrat ajouté !', 'success');
+          showVehicleDetail(currentVehicleId);
+          switchVehicleTab('contracts');
+          closeVehicleModal();
+        } else {
+          showToast(result.error || 'Erreur d\'ajout', 'error');
+        }
+      } catch (error) {
+        showToast('Erreur de connexion', 'error');
+      }
+      showLoading(false);
+    }
+
+    function showAddRevisionModal() {
+      document.getElementById('revision-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('revision-km').value = '';
+      document.getElementById('revision-type').value = '';
+      document.getElementById('revision-next-km').value = '';
+      document.getElementById('revision-next-date').value = '';
+      document.getElementById('revision-notes').value = '';
+      document.getElementById('modal-backdrop').style.display = 'block';
+      document.getElementById('modal-add-revision').style.display = 'block';
+    }
+
+    async function saveRevision() {
+      const date = document.getElementById('revision-date').value;
+      const km = parseInt(document.getElementById('revision-km').value);
+      const type = document.getElementById('revision-type').value.trim();
+      const next_km = parseInt(document.getElementById('revision-next-km').value) || null;
+      const next_date = document.getElementById('revision-next-date').value || null;
+      const notes = document.getElementById('revision-notes').value.trim();
+      
+      if (!date || !km || !type) {
+        showToast('Remplis les champs obligatoires', 'error');
+        return;
+      }
+      
+      const revision = {
+        id_vehicule: currentVehicleId,
+        date, km, type, next_km, next_date, notes
+      };
+      
+      showLoading(true);
+      try {
+        const url = `${API_URL}?action=addRevision`;
+        const result = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({ revision })
+        }).then(r => r.json());
+        
+        if (result.success) {
+          await loadData();
+          showToast('Révision ajoutée !', 'success');
+          showVehicleDetail(currentVehicleId);
+          switchVehicleTab('revisions');
+          closeVehicleModal();
+        } else {
+          showToast(result.error || 'Erreur d\'ajout', 'error');
+        }
+      } catch (error) {
+        showToast('Erreur de connexion', 'error');
+      }
+      showLoading(false);
+    }
+
+    function showAddEventModal() {
+      document.getElementById('event-type').value = 'info';
+      document.getElementById('event-title').value = '';
+      document.getElementById('event-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('event-description').value = '';
+      document.getElementById('modal-backdrop').style.display = 'block';
+      document.getElementById('modal-add-event').style.display = 'block';
+    }
+
+    async function saveEvent() {
+      const type = document.getElementById('event-type').value;
+      const title = document.getElementById('event-title').value.trim();
+      const date = document.getElementById('event-date').value;
+      const description = document.getElementById('event-description').value.trim();
+      
+      if (!title || !date) {
+        showToast('Remplis les champs obligatoires', 'error');
+        return;
+      }
+      
+      const event = {
+        id_vehicule: currentVehicleId,
+        id_utilisateur: currentUser.id,  // Ajouter l'utilisateur connecté
+        type, title, date, description
+      };
+      
+      showLoading(true);
+      try {
+        const url = `${API_URL}?action=addEvent`;
+        const result = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({ event })
+        }).then(r => r.json());
+        
+        if (result.success) {
+          await loadData();
+          showToast('Événement ajouté !', 'success');
+          showVehicleDetail(currentVehicleId);
+          switchVehicleTab('events');
+          closeVehicleModal();
+        } else {
+          showToast(result.error || 'Erreur d\'ajout', 'error');
+        }
+      } catch (error) {
+        showToast('Erreur de connexion', 'error');
+      }
+      showLoading(false);
+    }
+
   </script>
 </body>
 </html>
