@@ -2382,11 +2382,7 @@
       <input type="text" id="revision-type" placeholder="Ex: Révision complète, Vidange...">
     </div>
     <div class="form-group">
-      <label>Prochaine échéance (km)</label>
-      <input type="number" id="revision-next-km" placeholder="Ex: 60000">
-    </div>
-    <div class="form-group">
-      <label>Prochaine échéance (date)</label>
+      <label>Prochaine révision (date)</label>
       <input type="date" id="revision-next-date">
     </div>
     <div class="form-group">
@@ -3126,13 +3122,51 @@
         list.innerHTML = '<div class="empty-state">🚗<br>Aucun véhicule enregistré</div>';
         return;
       }
+      
+      const today = new Date();
+      const alertDays = 30; // Alerte 30 jours avant échéance
+      
       filtered.forEach(v => {
         const iconMap = { ambulance: '🚑', car: '🚗', quad: '🏍️', boat: '🚤', trailer: '🚚' };
         const icon = iconMap[v.type] || '🚗';
+        
+        // Vérifier les échéances de révision
         const revisions = v.revisions || [];
-        const lastRevision = revisions.length > 0 ? revisions[revisions.length - 1] : null;
-        const nextAlert = lastRevision && lastRevision.next_km && v.km >= lastRevision.next_km * 0.9;
-        list.innerHTML += `<div class="vehicle-card" onclick="showVehicleDetail('${v.id}')"><div class="vehicle-icon ${v.type}">${icon}</div><div class="vehicle-info"><h3>${v.nom}</h3><p>${v.marque} ${v.modele} - ${v.immat}</p><div style="margin-top: 8px"><span class="stat-badge">${v.km.toLocaleString()} km</span>${nextAlert ? '<span class="stat-badge warning">⚠️ Révision proche</span>' : ''}</div></div></div>`;
+        const sorted = [...revisions].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const lastRevision = sorted[0];
+        
+        let hasAlert = false;
+        let alertText = '';
+        
+        if (lastRevision && lastRevision.next_date) {
+          const nextDate = new Date(lastRevision.next_date);
+          const daysUntil = Math.ceil((nextDate - today) / (1000 * 60 * 60 * 24));
+          if (daysUntil <= alertDays && daysUntil >= 0) {
+            hasAlert = true;
+            alertText = `⚠️ Révision dans ${daysUntil}j`;
+          } else if (daysUntil < 0) {
+            hasAlert = true;
+            alertText = '⚠️ Révision dépassée';
+          }
+        }
+        
+        // Vérifier les échéances de contrats
+        const contracts = v.contracts || [];
+        contracts.forEach(c => {
+          if (c.date_fin) {
+            const endDate = new Date(c.date_fin);
+            const daysUntil = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+            if (daysUntil <= alertDays && daysUntil >= 0) {
+              hasAlert = true;
+              if (!alertText) alertText = `⚠️ Contrat dans ${daysUntil}j`;
+            } else if (daysUntil < 0) {
+              hasAlert = true;
+              if (!alertText) alertText = '⚠️ Contrat expiré';
+            }
+          }
+        });
+        
+        list.innerHTML += `<div class="vehicle-card" onclick="showVehicleDetail('${v.id}')"><div class="vehicle-icon ${v.type}">${icon}</div><div class="vehicle-info"><h3>${v.nom}</h3><p>${v.marque} ${v.modele} - ${v.immat}</p><div style="margin-top: 8px"><span class="stat-badge">${v.km.toLocaleString()} km</span>${hasAlert ? `<span class="stat-badge warning">${alertText}</span>` : ''}</div></div></div>`;
       });
     }
 
@@ -3298,17 +3332,29 @@
         return;
       }
       
+      const today = new Date();
+      const alertDays = 30;
+      
       v.contracts.forEach(contract => {
         const typeIcon = contract.type === 'assurance' ? '🛡️' : '🔧';
         const dateDebut = new Date(contract.date_debut).toLocaleDateString('fr-FR');
         const dateFin = new Date(contract.date_fin).toLocaleDateString('fr-FR');
+        const endDate = new Date(contract.date_fin);
+        const daysUntil = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+        
+        let alertBadge = '';
+        if (daysUntil <= alertDays && daysUntil >= 0) {
+          alertBadge = `<span class="stat-badge warning">⚠️ Expire dans ${daysUntil}j</span>`;
+        } else if (daysUntil < 0) {
+          alertBadge = '<span class="stat-badge warning" style="background: rgba(230, 57, 70, 0.2);">🚨 Expiré</span>';
+        }
         
         list.innerHTML += `
           <div class="contract-item">
             <div class="contract-header">
               <div class="event-icon info">${typeIcon}</div>
               <div class="contract-details">
-                <h4>${contract.type === 'assurance' ? 'Assurance' : 'Contrat d\'entretien'} - ${contract.fournisseur}</h4>
+                <h4>${contract.type === 'assurance' ? 'Assurance' : 'Contrat d\'entretien'} - ${contract.fournisseur} ${alertBadge}</h4>
                 <div class="contract-date">N° ${contract.numero}</div>
               </div>
             </div>
@@ -3339,15 +3385,30 @@
       const sorted = [...v.revisions].sort((a, b) => new Date(b.date) - new Date(a.date));
       const last = sorted[0];
       
-      if (last.next_km && v.km) {
-        const remaining = last.next_km - v.km;
-        if (remaining <= last.next_km * 0.1) {
+      // Alerte basée sur la DATE de prochaine révision
+      if (last.next_date) {
+        const today = new Date();
+        const nextDate = new Date(last.next_date);
+        const daysUntil = Math.ceil((nextDate - today) / (1000 * 60 * 60 * 24));
+        const alertDays = 30; // Alerte 30 jours avant
+        
+        if (daysUntil <= alertDays && daysUntil >= 0) {
           alert.innerHTML = `
             <div class="next-revision-alert">
               <div class="icon">⚠️</div>
               <div>
                 <h4>Révision proche !</h4>
-                <p>Prochaine révision dans ${remaining.toLocaleString()} km</p>
+                <p>Prochaine révision dans ${daysUntil} jour${daysUntil > 1 ? 's' : ''} (${nextDate.toLocaleDateString('fr-FR')})</p>
+              </div>
+            </div>
+          `;
+        } else if (daysUntil < 0) {
+          alert.innerHTML = `
+            <div class="next-revision-alert" style="background: linear-gradient(135deg, var(--accent-red), #ff6b6b);">
+              <div class="icon">🚨</div>
+              <div>
+                <h4>Révision dépassée !</h4>
+                <p>La révision devait avoir lieu le ${nextDate.toLocaleDateString('fr-FR')}</p>
               </div>
             </div>
           `;
@@ -3356,7 +3417,6 @@
       
       sorted.forEach(revision => {
         const date = new Date(revision.date).toLocaleDateString('fr-FR');
-        const nextKm = revision.next_km ? `${revision.next_km.toLocaleString()} km` : 'Non défini';
         const nextDate = revision.next_date ? new Date(revision.next_date).toLocaleDateString('fr-FR') : 'Non définie';
         
         list.innerHTML += `
@@ -3369,9 +3429,8 @@
               </div>
             </div>
             <div class="revision-notes">
-              <strong>Prochaine échéance:</strong><br>
-              📅 ${nextDate}<br>
-              🛣️ ${nextKm}<br><br>
+              <strong>Prochaine révision prévue :</strong><br>
+              📅 ${nextDate}<br><br>
               ${revision.notes || ''}
             </div>
           </div>
@@ -3500,7 +3559,6 @@
       document.getElementById('revision-date').value = new Date().toISOString().split('T')[0];
       document.getElementById('revision-km').value = '';
       document.getElementById('revision-type').value = '';
-      document.getElementById('revision-next-km').value = '';
       document.getElementById('revision-next-date').value = '';
       document.getElementById('revision-notes').value = '';
       document.getElementById('modal-backdrop').style.display = 'block';
@@ -3511,7 +3569,6 @@
       const date = document.getElementById('revision-date').value;
       const km = parseInt(document.getElementById('revision-km').value);
       const type = document.getElementById('revision-type').value.trim();
-      const next_km = parseInt(document.getElementById('revision-next-km').value) || null;
       const next_date = document.getElementById('revision-next-date').value || null;
       const notes = document.getElementById('revision-notes').value.trim();
       
@@ -3522,7 +3579,7 @@
       
       const revision = {
         id_vehicule: currentVehicleId,
-        date, km, type, next_km, next_date, notes
+        date, km, type, next_date, notes
       };
       
       showLoading(true);
