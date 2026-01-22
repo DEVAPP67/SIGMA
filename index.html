@@ -314,6 +314,7 @@
     .mode-icon.intervention { background: linear-gradient(135deg, var(--accent-red), #ff6b6b); }
     .mode-icon.inventaire { background: linear-gradient(135deg, var(--accent-blue), #5a9cff); }
     .mode-icon.peremption { background: linear-gradient(135deg, var(--accent-yellow), #f4c994); }
+    .mode-icon.vehicles { background: linear-gradient(135deg, var(--accent-green), #5ce0d8); }
     .mode-icon.qrcode { background: linear-gradient(135deg, var(--accent-purple), #c084fc); }
 
     .mode-info {
@@ -1908,6 +1909,15 @@
           <p>Gérer les dates de péremption du matériel</p>
         </div>
         <span id="peremption-badge" class="mode-badge" style="display: none;">0</span>
+        <span class="mode-arrow">›</span>
+      </div>
+
+      <div class="mode-card" onclick="enterMode('vehicles')">
+        <div class="mode-icon vehicles">🚑</div>
+        <div class="mode-info">
+          <h3>Véhicules</h3>
+          <p>Parc, entretien et révisions</p>
+        </div>
         <span class="mode-arrow">›</span>
       </div>
 
