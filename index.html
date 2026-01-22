@@ -3131,43 +3131,54 @@
         const iconMap = { ambulance: '🚑', car: '🚗', quad: '🏍️', boat: '🚤', trailer: '🚚' };
         const icon = iconMap[v.type] || '🚗';
         
+        let alerts = []; // Tableau pour stocker toutes les alertes
+        
         // Vérifier les échéances de révision
         const revisions = v.revisions || [];
         const sorted = [...revisions].sort((a, b) => new Date(b.date) - new Date(a.date));
         const lastRevision = sorted[0];
         
-        let hasAlert = false;
-        let alertText = '';
-        
         if (lastRevision && lastRevision.next_date) {
           const nextDate = new Date(lastRevision.next_date);
           const daysUntil = Math.ceil((nextDate - today) / (1000 * 60 * 60 * 24));
           if (daysUntil <= alertDays && daysUntil >= 0) {
-            hasAlert = true;
-            alertText = `⚠️ Révision dans ${daysUntil}j`;
+            alerts.push(`⚠️ Révision dans ${daysUntil}j`);
           } else if (daysUntil < 0) {
-            hasAlert = true;
-            alertText = '⚠️ Révision dépassée';
+            alerts.push('⚠️ Révision dépassée');
           }
         }
         
-        // Vérifier les échéances de contrats
+        // Vérifier les échéances de contrats (trouver le plus urgent)
         const contracts = v.contracts || [];
+        let closestContractDays = Infinity;
+        let contractAlert = null;
+        
         contracts.forEach(c => {
           if (c.date_fin) {
             const endDate = new Date(c.date_fin);
             const daysUntil = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
-            if (daysUntil <= alertDays && daysUntil >= 0) {
-              hasAlert = true;
-              if (!alertText) alertText = `⚠️ Contrat dans ${daysUntil}j`;
-            } else if (daysUntil < 0) {
-              hasAlert = true;
-              if (!alertText) alertText = '⚠️ Contrat expiré';
+            
+            // Contrat expiré (priorité absolue)
+            if (daysUntil < 0 && !contractAlert) {
+              contractAlert = '⚠️ Contrat expiré';
+              closestContractDays = daysUntil;
+            }
+            // Contrat proche de l'expiration
+            else if (daysUntil >= 0 && daysUntil <= alertDays && daysUntil < closestContractDays) {
+              contractAlert = `⚠️ Contrat dans ${daysUntil}j`;
+              closestContractDays = daysUntil;
             }
           }
         });
         
-        list.innerHTML += `<div class="vehicle-card" onclick="showVehicleDetail('${v.id}')"><div class="vehicle-icon ${v.type}">${icon}</div><div class="vehicle-info"><h3>${v.nom}</h3><p>${v.marque} ${v.modele} - ${v.immat}</p><div style="margin-top: 8px"><span class="stat-badge">${v.km.toLocaleString()} km</span>${hasAlert ? `<span class="stat-badge warning">${alertText}</span>` : ''}</div></div></div>`;
+        if (contractAlert) {
+          alerts.push(contractAlert);
+        }
+        
+        // Générer les badges d'alerte
+        const alertBadges = alerts.map(alert => `<span class="stat-badge warning">${alert}</span>`).join('');
+        
+        list.innerHTML += `<div class="vehicle-card" onclick="showVehicleDetail('${v.id}')"><div class="vehicle-icon ${v.type}">${icon}</div><div class="vehicle-info"><h3>${v.nom}</h3><p>${v.marque} ${v.modele} - ${v.immat}</p><div style="margin-top: 8px"><span class="stat-badge">${v.km.toLocaleString()} km</span>${alertBadges}</div></div></div>`;
       });
     }
 
