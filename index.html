@@ -3198,6 +3198,10 @@
         nom, type, immat, marque, modele, annee, km
       };
       
+      // Ajouter le spinner au bouton
+      const saveBtn = document.querySelector('#modal-add-revision .btn-success');
+      saveBtn.classList.add('btn-loading');
+      
       showLoading(true);
       try {
         const response = await fetch(API_URL, {
@@ -3229,6 +3233,7 @@
       } catch (error) {
         showToast('Erreur de connexion', 'error');
       }
+      if (saveBtn) saveBtn.classList.remove('btn-loading');
       showLoading(false);
     }
 
@@ -3587,6 +3592,10 @@
         type, fournisseur, numero, date_debut, date_fin, description
       };
       
+      // Ajouter le spinner au bouton
+      const saveBtn = document.querySelector('#modal-add-revision .btn-success');
+      saveBtn.classList.add('btn-loading');
+      
       showLoading(true);
       try {
         const url = `${API_URL}?action=addContract`;
@@ -3607,6 +3616,7 @@
       } catch (error) {
         showToast('Erreur de connexion', 'error');
       }
+      if (saveBtn) saveBtn.classList.remove('btn-loading');
       showLoading(false);
     }
 
@@ -3637,6 +3647,10 @@
         date, km, type, next_date, notes
       };
       
+      // Ajouter le spinner au bouton
+      const saveBtn = document.querySelector('#modal-add-revision .btn-success');
+      saveBtn.classList.add('btn-loading');
+      
       showLoading(true);
       try {
         const url = `${API_URL}?action=addRevision`;
@@ -3657,6 +3671,7 @@
       } catch (error) {
         showToast('Erreur de connexion', 'error');
       }
+      if (saveBtn) saveBtn.classList.remove('btn-loading');
       showLoading(false);
     }
 
@@ -3686,6 +3701,10 @@
         type, title, date, description
       };
       
+      // Ajouter le spinner au bouton
+      const saveBtn = document.querySelector('#modal-add-revision .btn-success');
+      saveBtn.classList.add('btn-loading');
+      
       showLoading(true);
       try {
         const url = `${API_URL}?action=addEvent`;
@@ -3706,6 +3725,7 @@
       } catch (error) {
         showToast('Erreur de connexion', 'error');
       }
+      if (saveBtn) saveBtn.classList.remove('btn-loading');
       showLoading(false);
     }
 
