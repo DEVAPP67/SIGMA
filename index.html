@@ -1872,8 +1872,14 @@
       to { transform: rotate(360deg); }
     }
 
-    .btn-loading span {
+    .btn-loading span,
+    .btn-loading::before {
       visibility: hidden;
+    }
+    
+    /* Cacher tout le texte du bouton en loading */
+    .btn-loading {
+      color: transparent !important;
     }
   </style>
 </head>
@@ -2411,7 +2417,7 @@
     </div>
     <div style="display: flex; gap: 10px">
       <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
-      <button class="btn btn-success" onclick="saveContract()" style="flex: 1">Enregistrer</button>
+      <button class="btn btn-success" onclick="saveContract()" style="flex: 1"><span>Enregistrer</span></button>
     </div>
   </div>
 
@@ -2440,7 +2446,7 @@
     </div>
     <div style="display: flex; gap: 10px">
       <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
-      <button class="btn btn-success" onclick="saveRevision()" style="flex: 1">Enregistrer</button>
+      <button class="btn btn-success" onclick="saveRevision()" style="flex: 1"><span>Enregistrer</span></button>
     </div>
   </div>
 
@@ -2469,7 +2475,7 @@
     </div>
     <div style="display: flex; gap: 10px">
       <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
-      <button class="btn btn-success" onclick="saveEvent()" style="flex: 1">Enregistrer</button>
+      <button class="btn btn-success" onclick="saveEvent()" style="flex: 1"><span>Enregistrer</span></button>
     </div>
   </div>
 
@@ -3759,6 +3765,12 @@
         id_utilisateur: currentUser.id,  // Ajouter l'utilisateur connecté
         type, title, date, description
       };
+      
+      console.log('🔍 Debug saveEvent:', {
+        currentUser: currentUser,
+        id_utilisateur: currentUser.id,
+        event: event
+      });
       
       // Ajouter le spinner au bouton
       const saveBtn = document.querySelector('#modal-add-event .btn-success');
