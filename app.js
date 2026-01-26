@@ -373,7 +373,7 @@ async function confirmMovement() {
   else if (destType === 'retour') { const armoire = contenants.find(c => c.type === 'armoire'); destination = armoire ? armoire.id_contenant : null; }
 
   const movements = Object.entries(selectedItems).map(([articleId, qty]) => ({
-    date_heure: new Date().toISOString(), id_utilisateur: currentUser.id_utilisateur, id_article: articleId, quantite: qty,
+    date_heure: new Date().toISOString(), id_utilisateur: currentUser.id, id_article: articleId, quantite: qty,
     id_contenant_source: currentBag.id_contenant, id_contenant_destination: destination, type_mouvement: destType, note: note
   }));
 
@@ -498,7 +498,7 @@ async function completerDepuis(sourceId) {
     const sourceStock = stock.find(s => s.id_contenant === sourceId && s.id_article === item.id_article);
     if (sourceStock && sourceStock.quantite > 0) {
       const qtyToMove = Math.min(item.manque, sourceStock.quantite);
-      movements.push({ date_heure: new Date().toISOString(), id_utilisateur: currentUser.id_utilisateur, id_article: item.id_article, quantite: qtyToMove, id_contenant_source: sourceId, id_contenant_destination: currentBag.id_contenant, type_mouvement: 'reassort', note: 'Complément inventaire' });
+      movements.push({ date_heure: new Date().toISOString(), id_utilisateur: currentUser.id, id_article: item.id_article, quantite: qtyToMove, id_contenant_source: sourceId, id_contenant_destination: currentBag.id_contenant, type_mouvement: 'reassort', note: 'Complément inventaire' });
     }
   });
   if (movements.length === 0) { showToast('Aucun article disponible dans cette source', 'error'); showLoading(false); return; }
@@ -1392,43 +1392,49 @@ async function loadLeaderboard() {
 }
 
 /**
- * Affiche le rang et les badges de l'utilisateur sur la page d'accueil
+ * Affiche le rang et la progression de l'utilisateur dans le header
  */
 function displayUserRank() {
   if (!currentUser) return;
   
-  const rankCard = document.getElementById('user-rank-card');
-  const rankEmoji = document.getElementById('user-rank-emoji');
-  const userNameDisplay = document.getElementById('user-name-display');
-  const rankTitle = document.getElementById('user-rank-title');
-  const rankProgress = document.getElementById('user-rank-progress');
-  const opsCount = document.getElementById('user-ops-count');
-  const progressText = document.getElementById('user-progress-text');
+  const avatarCircle = document.getElementById('avatar-circle');
+  const progressContainer = document.getElementById('progress-container');
+  const progressLabel = document.getElementById('progress-label');
+  const progressCount = document.getElementById('progress-count');
+  const progressFill = document.getElementById('progress-fill');
   
-  // Afficher la carte
-  rankCard.style.display = 'flex';
+  // Afficher la barre de progression
+  progressContainer.style.display = 'block';
   
-  // Afficher le nom de l'utilisateur
-  userNameDisplay.textContent = currentUser.nom;
-  
-  // Afficher le rang
+  // Mettre à jour le contenu
   if (currentUser.rank) {
-    rankEmoji.textContent = currentUser.rank.emoji;
-    rankTitle.textContent = currentUser.rank.name;
-    rankProgress.style.width = `${currentUser.rank.progress}%`;
+    // Mettre à jour l'emoji de l'avatar
+    avatarCircle.textContent = currentUser.rank.emoji;
+    
+    // Mettre à jour le label du rang
+    progressLabel.textContent = currentUser.rank.name;
+    
+    // Mettre à jour la progression
+    progressFill.style.width = `${currentUser.rank.progress}%`;
     
     // Texte de progression
     const currentOps = currentUser.total_operations || 0;
     if (currentUser.rank.max === 999999) {
-      // Niveau maximum
-      progressText.textContent = 'Niveau maximum atteint ! 🎉';
+      // Niveau maximum - Badge et barre dorés
+      progressCount.textContent = 'Niveau max ! 🎉';
+      avatarCircle.style.background = 'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)';
+      avatarCircle.style.boxShadow = '0 4px 16px rgba(255, 215, 0, 0.5)';
+      progressFill.style.background = 'linear-gradient(90deg, #ffd700 0%, #ffed4e 100%)';
+      progressFill.style.boxShadow = '0 0 12px rgba(255, 215, 0, 0.6)';
     } else {
-      progressText.textContent = `${currentOps}/${currentUser.rank.max} vers prochain rang`;
+      // Niveau normal
+      progressCount.textContent = `${currentOps}/${currentUser.rank.max}`;
+      avatarCircle.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+      avatarCircle.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+      progressFill.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
+      progressFill.style.boxShadow = '0 0 8px rgba(102, 126, 234, 0.5)';
     }
   }
-  
-  // Afficher le nombre d'opérations
-  opsCount.textContent = currentUser.total_operations || 0;
 }
 
 /**
