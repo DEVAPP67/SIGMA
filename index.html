@@ -67,31 +67,6 @@
       <p>Que souhaitez-vous faire ?</p>
     </div>
 
-    <!-- Carte de classement utilisateur -->
-    <div class="user-rank-card" id="user-rank-card" style="display: none;">
-      <div class="rank-header">
-        <div class="rank-emoji" id="user-rank-emoji">🩹</div>
-        <div class="rank-info">
-          <div class="rank-title" id="user-rank-title">Compteur de Pansements</div>
-          <div class="rank-progress-bar">
-            <div class="rank-progress-fill" id="user-rank-progress"></div>
-          </div>
-          <div class="rank-stats">
-            <span id="user-ops-count">0</span> opérations
-          </div>
-        </div>
-      </div>
-      
-      <div class="badges-container" id="user-badges" style="display: none;">
-        <div class="badges-title">🏅 Badges obtenus :</div>
-        <div class="badges-list" id="user-badges-list"></div>
-      </div>
-      
-      <button class="btn-link" onclick="enterMode('leaderboard')">
-        Voir le classement complet →
-      </button>
-    </div>
-
     <div class="mode-cards">
       <div class="mode-card" onclick="enterMode('intervention')">
         <div class="mode-icon intervention">🚑</div>
@@ -139,18 +114,7 @@
         </div>
         <span class="mode-arrow">›</span>
       </div>
-
-      <div class="mode-card" onclick="enterMode('leaderboard')">
-        <div class="mode-icon leaderboard">🏆</div>
-        <div class="mode-info">
-         <h3>Classement</h3>
-         <p>Voir les meilleurs logisticiens</p>
         </div>
-        <span class="mode-arrow">›</span>
-      </div>
-
-
-    </div>
 
     <button class="btn logout-btn" onclick="logout()">
       Déconnexion
@@ -647,84 +611,5 @@
   </div>
 
   <script src="app.js"></script>
-
-  <!-- Écran de classement -->
-  <div class="screen" id="screen-leaderboard">
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
-      <div class="header-title">
-        <h2>🏆 Classement</h2>
-        <p>Les meilleurs logisticiens</p>
-      </div>
-    </div>
-
-    <div class="leaderboard-container">
-      <!-- Podium -->
-      <div class="podium" id="podium">
-        <div class="podium-place second" id="podium-2">
-          <div class="podium-rank">🥈</div>
-          <div class="podium-name">-</div>
-          <div class="podium-rank-title">-</div>
-          <div class="podium-ops">0 ops</div>
-        </div>
-        
-        <div class="podium-place first" id="podium-1">
-          <div class="podium-rank">🥇</div>
-          <div class="podium-name">-</div>
-          <div class="podium-rank-title">-</div>
-          <div class="podium-ops">0 ops</div>
-        </div>
-        
-        <div class="podium-place third" id="podium-3">
-          <div class="podium-rank">🥉</div>
-          <div class="podium-name">-</div>
-          <div class="podium-rank-title">-</div>
-          <div class="podium-ops">0 ops</div>
-        </div>
-      </div>
-
-      <!-- Liste complète -->
-      <div class="leaderboard-list" id="leaderboard-list">
-        <!-- Généré dynamiquement -->
-      </div>
-    </div>
-
-    <!-- Légende des badges -->
-    <div class="badges-legend">
-      <h3>🏅 Badges disponibles</h3>
-      <div class="badges-grid">
-        <div class="badge-legend-item">
-          <span class="badge-icon">🔦</span>
-          <span class="badge-name">Flashouilleur</span>
-          <span class="badge-desc">100 scans QR</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">📦</span>
-          <span class="badge-name">Accro au Stock</span>
-          <span class="badge-desc">500 ops/mois</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">🌙</span>
-          <span class="badge-name">Hibou Logistique</span>
-          <span class="badge-desc">Op. après 22h</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">⚡</span>
-          <span class="badge-name">Éclair</span>
-          <span class="badge-desc">50 ops/jour</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">🔄</span>
-          <span class="badge-name">Marathonien</span>
-          <span class="badge-desc">7 jours consécutifs</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">🐓</span>
-          <span class="badge-name">Lève-tôt</span>
-          <span class="badge-desc">Op. 6h-8h</span>
-        </div>
-      </div>
-    </div>
-  </div>
 </body>
 </html>

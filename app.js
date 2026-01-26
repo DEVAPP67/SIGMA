@@ -44,10 +44,6 @@ async function loadData() {
     stock = data.stock || [];
     pochons = data.pochons || [];
     vehicles = data.vehicles || [];
-    
-    // Charger le classement
-    await loadLeaderboard();
-    
     populateUserSelect();
   } catch (error) {
     console.error('Error loading data:', error);
@@ -69,61 +65,37 @@ document.getElementById('login-pin').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') login();
 });
 
-async function login() {
+function login() {
   const userId = document.getElementById('login-user').value;
   const pin = document.getElementById('login-pin').value;
 
   if (!userId) {
-    showToast('Sélectionne un utilisateur', 'error');
+    showToast('Sélectionnez un utilisateur', 'error');
     return;
   }
 
-  showLoading(true);
-  
-  try {
-    const response = await fetch(`${API_URL}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'login',
-        userId: userId,
-        pin: pin
-      })
-    });
-    
-    const result = await response.json();
-    
-    if (!result.success) {
-      showToast('Code incorrect', 'error');
-      document.getElementById('login-pin').value = '';
-      showLoading(false);
-      return;
-    }
+  const user = users.find(u => u.id_utilisateur === userId);
+  if (!user || String(user.code_pin) !== pin) {
+    showToast('Code incorrect', 'error');
+    document.getElementById('login-pin').value = '';
+    return;
+  }
 
-    currentUser = result.user;
-    document.getElementById('home-user-name').textContent = currentUser.nom.split(' ')[0];
-    document.getElementById('current-user-name').textContent = currentUser.nom;
-    
-    // Afficher le générateur QR pour admin et logistique
-    const qrCard = document.getElementById('qr-generator-card');
-    if (currentUser.role === 'admin' || currentUser.role === 'logistique') {
-      qrCard.style.display = 'flex';
-    } else {
-      qrCard.style.display = 'none';
-    }
-    
-    // Afficher le rang et les badges
-    displayUserRank();
-    
-    updateHomeBadges();
-    goToScreen('screen-home');
-    showToast(`Bienvenue ${currentUser.nom} !`, 'success');
-  } catch (error) {
-    console.error('Erreur de connexion:', error);
-    showToast('Erreur de connexion', 'error');
+  currentUser = user;
+  document.getElementById('home-user-name').textContent = user.nom.split(' ')[0];
+  document.getElementById('current-user-name').textContent = user.nom;
+  
+  // Afficher le générateur QR pour admin et logistique
+  const qrCard = document.getElementById('qr-generator-card');
+  if (user.role === 'admin' || user.role === 'logistique') {
+    qrCard.style.display = 'flex';
+  } else {
+    qrCard.style.display = 'none';
   }
   
-  showLoading(false);
+  updateHomeBadges();
+  goToScreen('screen-home');
+  showToast(`Bienvenue ${user.nom} !`, 'success');
 }
 
 function logout() {
@@ -162,39 +134,12 @@ function updateHomeBadges() {
 
 function enterMode(mode) {
   currentMode = mode;
-  
   switch (mode) {
-    case 'intervention':
-      goToScreen('screen-scan');
-      if (qrScanner) {
-        qrScanner.stop();
-      }
-      document.getElementById('qr-reader').style.display = 'none';
-      document.getElementById('scan-placeholder').style.display = 'block';
-      break;
-      
-    case 'inventaire':
-      showBagSelector('inventaire');
-      break;
-      
-    case 'peremption':
-      showPeremptionScreen();
-      break;
-      
-    case 'vehicles':
-      showVehiclesScreen();
-      break;
-      
-    case 'qrcode':
-      showQRGenerator();
-      break;
-      
-    case 'leaderboard':
-      showLeaderboard();
-      break;
-      
-    default:
-      console.log('Mode inconnu:', mode);
+    case 'intervention': populateBagList(); goToScreen('screen-scan'); break;
+    case 'inventaire': populateInventaireBagList(); goToScreen('screen-inventaire-select'); break;
+    case 'peremption': populatePeremption(); goToScreen('screen-peremption'); break;
+    case 'qrcode': populateContenantSelection(); goToScreen('screen-qrcode'); break;
+    case 'vehicles': populateVehicles(); goToScreen('screen-vehicles'); break;
   }
 }
 
@@ -1370,148 +1315,5 @@ async function saveEvent() {
     showToast('Erreur de connexion', 'error');
   }
   if (saveBtn) saveBtn.classList.remove('btn-loading');
-  showLoading(false);
-}
-
-// Variable globale pour stocker le classement
-let leaderboardData = [];
-
-/**
- * Charge les données du classement
- */
-async function loadLeaderboard() {
-  try {
-    const response = await fetch(`${API_URL}?action=getLeaderboard`);
-    const data = await response.json();
-    leaderboardData = data;
-    return data;
-  } catch (error) {
-    console.error('Erreur lors du chargement du classement:', error);
-    return [];
-  }
-}
-
-/**
- * Affiche le rang et les badges de l'utilisateur sur la page d'accueil
- */
-function displayUserRank() {
-  if (!currentUser) return;
-  
-  const rankCard = document.getElementById('user-rank-card');
-  const rankEmoji = document.getElementById('user-rank-emoji');
-  const rankTitle = document.getElementById('user-rank-title');
-  const rankProgress = document.getElementById('user-rank-progress');
-  const opsCount = document.getElementById('user-ops-count');
-  const badgesContainer = document.getElementById('user-badges');
-  const badgesList = document.getElementById('user-badges-list');
-  
-  // Afficher la carte
-  rankCard.style.display = 'block';
-  
-  // Afficher le rang
-  if (currentUser.rank) {
-    rankEmoji.textContent = currentUser.rank.emoji;
-    rankTitle.textContent = currentUser.rank.name;
-    rankProgress.style.width = `${currentUser.rank.progress}%`;
-  }
-  
-  // Afficher le nombre d'opérations
-  opsCount.textContent = currentUser.total_operations || 0;
-  
-  // Afficher les badges
-  if (currentUser.badges && currentUser.badges.length > 0) {
-    badgesContainer.style.display = 'block';
-    badgesList.innerHTML = '';
-    
-    currentUser.badges.forEach(badge => {
-      const badgeElement = document.createElement('div');
-      badgeElement.className = 'badge-item';
-      badgeElement.innerHTML = `
-        <span class="badge-emoji">${badge.split(' ')[0]}</span>
-        <span>${badge.split(' ').slice(1).join(' ')}</span>
-      `;
-      badgesList.appendChild(badgeElement);
-    });
-  } else {
-    badgesContainer.style.display = 'none';
-  }
-}
-
-/**
- * Affiche la page de classement
- */
-async function showLeaderboard() {
-  showLoading(true);
-  
-  try {
-    const data = await loadLeaderboard();
-    
-    // Afficher le podium (top 3)
-    for (let i = 1; i <= 3; i++) {
-      const podiumPlace = document.getElementById(`podium-${i}`);
-      if (data[i - 1]) {
-        const user = data[i - 1];
-        podiumPlace.querySelector('.podium-name').textContent = user.nom.split(' ')[0];
-        podiumPlace.querySelector('.podium-rank-title').textContent = user.rank.name;
-        podiumPlace.querySelector('.podium-ops').textContent = `${user.total_operations} ops`;
-      } else {
-        podiumPlace.querySelector('.podium-name').textContent = '-';
-        podiumPlace.querySelector('.podium-rank-title').textContent = '-';
-        podiumPlace.querySelector('.podium-ops').textContent = '0 ops';
-      }
-    }
-    
-    // Afficher la liste complète (à partir du 4ème)
-    const leaderboardList = document.getElementById('leaderboard-list');
-    leaderboardList.innerHTML = '';
-    
-    data.slice(3).forEach(user => {
-      const item = document.createElement('div');
-      item.className = 'leaderboard-item';
-      
-      // Marquer l'utilisateur courant
-      if (currentUser && user.id === currentUser.id) {
-        item.classList.add('current-user');
-      }
-      
-      // Afficher les badges
-      let badgesHTML = '';
-      if (user.badges && user.badges.length > 0) {
-        badgesHTML = '<div class="leaderboard-user-badges">';
-        user.badges.forEach(badge => {
-          const badgeText = typeof badge === 'string' ? badge : `${badge.emoji} ${badge.name}`;
-          badgesHTML += `
-            <div class="leaderboard-badge">
-              <span>${badgeText.split(' ')[0]}</span>
-              <span>${badgeText.split(' ').slice(1).join(' ')}</span>
-            </div>
-          `;
-        });
-        badgesHTML += '</div>';
-      }
-      
-      item.innerHTML = `
-        <div class="leaderboard-position">${user.position}</div>
-        <div class="leaderboard-rank-emoji">${user.rank.emoji}</div>
-        <div class="leaderboard-user-info">
-          <div class="leaderboard-user-name">${user.nom}</div>
-          <div class="leaderboard-user-rank">${user.rank.name}</div>
-          ${badgesHTML}
-        </div>
-        <div class="leaderboard-ops">
-          ${user.total_operations}
-          <span class="leaderboard-ops-label">ops</span>
-        </div>
-      `;
-      
-      leaderboardList.appendChild(item);
-    });
-    
-    goToScreen('screen-leaderboard');
-  } catch (error) {
-    console.error('Erreur lors de l\'affichage du classement:', error);
-    showToast('Erreur lors du chargement du classement', 'error');
-  }
-  
   showLoading(false);
 }
