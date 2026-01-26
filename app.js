@@ -161,7 +161,7 @@ function enterMode(mode) {
   currentMode = mode;
   
   switch (mode) {
-    case 'intervention':
+    /*case 'intervention':
       goToScreen('screen-scan');
       if (qrScanner) {
         qrScanner.stop();
@@ -184,7 +184,13 @@ function enterMode(mode) {
       
     case 'qrcode':
       showQRGenerator();
-      break;
+      break;*/
+
+    case 'intervention': populateBagList(); goToScreen('screen-scan'); break;
+    case 'inventaire': populateInventaireBagList(); goToScreen('screen-inventaire-select'); break;
+    case 'peremption': populatePeremption(); goToScreen('screen-peremption'); break;
+    case 'qrcode': populateContenantSelection(); goToScreen('screen-qrcode'); break;
+    case 'vehicles': populateVehicles(); goToScreen('screen-vehicles'); break;
       
     case 'leaderboard':
       showLeaderboard();
