@@ -61,38 +61,41 @@
     </button>
   </div>
 
-   <!-- ############## -->
-   <!-- SCREEN HOME    -->
-   <!-- ############## -->
+<!-- ############## -->
+<!-- SCREEN HOME    -->
+<!-- ############## -->
 
-  <div class="screen" id="screen-home">
-     <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+<div class="screen" id="screen-home">
+  <!-- Bandeau SIGMA horizontal -->
+<div class="top-banner">
+  <div class="banner-logo">✚</div>
+  <div class="banner-text">
+    <span class="banner-title">SIGMA</span>
+    <span class="banner-dot">•</span>
+    <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
+  </div>
+</div>
+
+  <!-- Carte utilisateur centrée -->
+  <div class="user-card-wrapper">
+    <div class="user-card-centered">
+      <div class="avatar-circle" id="avatar-circle">🩹</div>
+      <div class="user-card-content">
+        <h2 class="user-greeting">Bonjour <span id="home-user-name">-</span> 👋</h2>
+        <p class="user-question">Que souhaitez-vous faire ?</p>
+        
+        <div class="progress-bar-container" id="progress-container" style="display: none;">
+          <div class="progress-info">
+            <span class="progress-label" id="progress-label">Compteur de Pansements</span>
+            <span class="progress-count" id="progress-count">0/50</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="home-header">
-      <div class="header-with-avatar">
-        <div class="avatar-circle" id="avatar-circle">🩹</div>
-        <div class="header-text">
-          <h2>Bonjour <span id="home-user-name">-</span> 👋</h2>
-          <p>Que souhaitez-vous faire ?</p>
-        </div>
-      </div>
-      
-      <div class="progress-bar-container" id="progress-container" style="display: none;">
-        <div class="progress-info">
-          <span class="progress-label" id="progress-label">Compteur de Pansements</span>
-          <span class="progress-count" id="progress-count">0/50</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-      </div>
-    </div>
+  </div>
 
     <div class="mode-cards">
       <div class="mode-card" onclick="enterMode('intervention')">
@@ -163,12 +166,13 @@
 
   <div class="screen" id="screen-scan">
 
-    <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
 
@@ -209,12 +213,13 @@
 
 
   <div class="screen" id="screen-inventory">
-    <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
     <div class="bag-header" id="bag-header">
@@ -253,12 +258,13 @@
 
   <div class="screen" id="screen-destination">
 
-    <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
 
@@ -329,14 +335,16 @@
 
   <div class="screen" id="screen-inventaire-select">
 
-    <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
+
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
       <div class="header-title">
@@ -355,12 +363,13 @@
 
   <div class="screen" id="screen-inventaire-detail">
 
-      <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
 
@@ -411,12 +420,13 @@
    <!-- ############## -->
 
   <div class="screen" id="screen-peremption">
-    <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
     <div class="header">
@@ -456,12 +466,13 @@
 
   <div class="screen" id="screen-qrcode">
 
-    <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
 
@@ -493,12 +504,13 @@
    <!-- ############## -->
 
   <div class="screen" id="screen-vehicles">
-       <!-- Logo SIGMA -->
-    <div class="page-logo">
-      <div class="page-logo-icon">✚</div>
-      <div class="page-logo-text">
-        <h3>SIGMA</h3>
-        <p>Suivi des Inventaires et Gestion du MAtériel</p>
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
       </div>
     </div>
     <div class="header">
@@ -528,6 +540,17 @@
 
   <!-- Add/Edit Vehicle Screen -->
   <div class="screen" id="screen-add-vehicle">
+
+    <!-- Bandeau SIGMA horizontal -->
+    <div class="top-banner">
+      <div class="banner-logo">✚</div>
+      <div class="banner-text">
+        <span class="banner-title">SIGMA</span>
+        <span class="banner-dot">•</span>
+        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
+      </div>
+    </div>
+
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-vehicles')">←</button>
       <div class="header-title">
@@ -585,6 +608,17 @@
 
   <!-- Vehicle Detail Screen -->
   <div class="screen" id="screen-vehicle-detail">
+
+    <!-- Bandeau SIGMA horizontal -->
+<div class="top-banner">
+  <div class="banner-logo">✚</div>
+  <div class="banner-text">
+    <span class="banner-title">SIGMA</span>
+    <span class="banner-dot">•</span>
+    <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
+  </div>
+</div>
+
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-vehicles')">←</button>
       <div class="header-title">
@@ -752,6 +786,17 @@
 
   <!-- Écran de classement -->
   <div class="screen" id="screen-leaderboard">
+
+    <!-- Bandeau SIGMA horizontal -->
+<div class="top-banner">
+  <div class="banner-logo">✚</div>
+  <div class="banner-text">
+    <span class="banner-title">SIGMA</span>
+    <span class="banner-dot">•</span>
+    <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
+  </div>
+</div>
+
     <div class="header">
       <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
       <div class="header-title">
