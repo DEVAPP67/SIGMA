@@ -70,7 +70,7 @@ document.getElementById('login-pin').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') login();
 });
 
-async function login() {
+function login() {
   const userId = document.getElementById('login-user').value;
   const pin = document.getElementById('login-pin').value;
 
@@ -79,52 +79,48 @@ async function login() {
     return;
   }
 
-  showLoading(true);
+  // Trouver l'utilisateur dans les données déjà chargées
+  const user = users.find(u => u.id_utilisateur === userId);
   
-  try {
-    const response = await fetch(`${API_URL}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'login',
-        userId: userId,
-        pin: pin
-      })
-    });
-    
-    const result = await response.json();
-    
-    if (!result.success) {
-      showToast('Code incorrect', 'error');
-      document.getElementById('login-pin').value = '';
-      showLoading(false);
-      return;
-    }
+  if (!user || String(user.code_pin) !== pin) {
+    showToast('Code incorrect', 'error');
+    document.getElementById('login-pin').value = '';
+    return;
+  }
 
-    currentUser = result.user;
-    document.getElementById('home-user-name').textContent = currentUser.nom.split(' ')[0];
-    document.getElementById('current-user-name').textContent = currentUser.nom;
-    
-    // Afficher le générateur QR pour admin et logistique
-    const qrCard = document.getElementById('qr-generator-card');
-    if (currentUser.role === 'admin' || currentUser.role === 'logistique') {
-      qrCard.style.display = 'flex';
-    } else {
-      qrCard.style.display = 'none';
-    }
-    
-    // Afficher le rang et les badges
-    displayUserRank();
-    
-    updateHomeBadges();
-    goToScreen('screen-home');
-    showToast(`Bienvenue ${currentUser.nom} !`, 'success');
-  } catch (error) {
-    console.error('Erreur de connexion:', error);
-    showToast('Erreur de connexion', 'error');
+  // Vérifier que l'utilisateur est actif
+  if (user.actif !== true && user.actif !== 'TRUE') {
+    showToast('Compte inactif', 'error');
+    return;
+  }
+
+  // Stocker l'utilisateur avec TOUTES ses données (y compris stats)
+  currentUser = {
+    id: user.id_utilisateur,
+    nom: user.nom,
+    role: user.role,
+    total_operations: parseInt(user.total_operations) || 0,
+    rank: user.rank,
+    badges: user.badges_list || []
+  };
+
+  document.getElementById('home-user-name').textContent = user.nom.split(' ')[0];
+  document.getElementById('current-user-name').textContent = user.nom;
+  
+  // Afficher le générateur QR pour admin et logistique
+  const qrCard = document.getElementById('qr-generator-card');
+  if (user.role === 'admin' || user.role === 'logistique') {
+    qrCard.style.display = 'flex';
+  } else {
+    qrCard.style.display = 'none';
   }
   
-  showLoading(false);
+  // Afficher le rang et les badges
+  displayUserRank();
+  
+  updateHomeBadges();
+  goToScreen('screen-home');
+  showToast(`Bienvenue ${user.nom} !`, 'success');
 }
 
 function logout() {
@@ -1373,10 +1369,6 @@ async function saveEvent() {
   if (saveBtn) saveBtn.classList.remove('btn-loading');
   showLoading(false);
 }
-
-/* ===================================
-   🎯 FONCTIONS POUR LE SYSTÈME DE CLASSEMENT
-   =================================== */
 
 /**
  * Charge les données du classement
