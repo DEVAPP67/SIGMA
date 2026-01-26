@@ -1866,3 +1866,374 @@ textarea::placeholder {
 .btn-loading {
   color: transparent !important;
 }
+
+/* ===================================
+   🎯 STYLES POUR LE SYSTÈME DE CLASSEMENT
+   =================================== */
+
+/* Carte de classement utilisateur sur la page d'accueil */
+.user-rank-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+  color: white;
+  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+.rank-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.rank-emoji {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.rank-info {
+  flex: 1;
+}
+
+.rank-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.rank-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.rank-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.rank-stats {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Badges */
+.badges-container {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badges-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.badges-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge-item {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.badge-item .badge-emoji {
+  font-size: 16px;
+}
+
+/* Bouton lien dans la carte */
+.btn-link {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  margin-top: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.btn-link:hover {
+  opacity: 1;
+}
+
+/* Icône du mode classement */
+.mode-icon.leaderboard {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* ===================================
+   📊 PAGE DE CLASSEMENT
+   =================================== */
+
+.leaderboard-container {
+  padding: 20px;
+}
+
+/* Podium */
+.podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 32px;
+  padding: 20px 0;
+}
+
+.podium-place {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+  color: white;
+  min-width: 100px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.podium-place.first {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #333;
+  min-height: 180px;
+  padding-top: 24px;
+  transform: scale(1.1);
+}
+
+.podium-place.second {
+  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+  color: #333;
+  min-height: 160px;
+}
+
+.podium-place.third {
+  background: linear-gradient(135deg, #cd7f32 0%, #e8a87c 100%);
+  color: #fff;
+  min-height: 140px;
+}
+
+.podium-rank {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.podium-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.podium-rank-title {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.podium-ops {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Liste de classement */
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leaderboard-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.leaderboard-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.leaderboard-item.current-user {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.leaderboard-position {
+  font-size: 20px;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+  color: #999;
+}
+
+.leaderboard-item.current-user .leaderboard-position {
+  color: #ffd700;
+}
+
+.leaderboard-rank-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.leaderboard-user-info {
+  flex: 1;
+}
+
+.leaderboard-user-name {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.leaderboard-user-rank {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.leaderboard-user-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.leaderboard-badge {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.leaderboard-item.current-user .leaderboard-badge {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.leaderboard-ops {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.leaderboard-ops-label {
+  font-size: 11px;
+  opacity: 0.7;
+  display: block;
+}
+
+/* Légende des badges */
+.badges-legend {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.badges-legend h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.badge-legend-item {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.badge-legend-item .badge-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.badge-legend-item .badge-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+}
+
+.badge-legend-item .badge-desc {
+  font-size: 11px;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .podium {
+    gap: 8px;
+  }
+  
+  .podium-place {
+    min-width: 90px;
+    padding: 12px 8px;
+  }
+  
+  .podium-rank {
+    font-size: 28px;
+  }
+  
+  .badges-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animation d'entrée pour les éléments du classement */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.leaderboard-item {
+  animation: slideInUp 0.3s ease forwards;
+}
+
+.leaderboard-item:nth-child(1) { animation-delay: 0.05s; }
+.leaderboard-item:nth-child(2) { animation-delay: 0.1s; }
+.leaderboard-item:nth-child(3) { animation-delay: 0.15s; }
+.leaderboard-item:nth-child(4) { animation-delay: 0.2s; }
+.leaderboard-item:nth-child(5) { animation-delay: 0.25s; }
