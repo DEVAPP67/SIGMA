@@ -69,27 +69,18 @@
 
     <!-- Carte de classement utilisateur -->
     <div class="user-rank-card" id="user-rank-card" style="display: none;">
-      <div class="rank-header">
-        <div class="rank-emoji" id="user-rank-emoji">🩹</div>
-        <div class="rank-info">
-          <div class="rank-title" id="user-rank-title">Compteur de Pansements</div>
-          <div class="rank-progress-bar">
-            <div class="rank-progress-fill" id="user-rank-progress"></div>
-          </div>
-          <div class="rank-stats">
-            <span id="user-ops-count">0</span> opérations
-          </div>
+      <div class="rank-circle" id="user-rank-emoji">🩹</div>
+      <div class="rank-content">
+        <div class="user-name" id="user-name-display">-</div>
+        <div class="rank-title" id="user-rank-title">Compteur de Pansements</div>
+        <div class="rank-progress-bar">
+          <div class="rank-progress-fill" id="user-rank-progress"></div>
+        </div>
+        <div class="rank-stats">
+          <span class="ops-count"><span id="user-ops-count">0</span> opérations</span>
+          <span class="progress-text" id="user-progress-text">0/50</span>
         </div>
       </div>
-      
-      <div class="badges-container" id="user-badges" style="display: none;">
-        <div class="badges-title">🏅 Badges obtenus :</div>
-        <div class="badges-list" id="user-badges-list"></div>
-      </div>
-      
-      <button class="btn-link" onclick="enterMode('leaderboard')">
-        Voir le classement complet →
-      </button>
     </div>
 
     <div class="mode-cards">

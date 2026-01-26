@@ -1393,42 +1393,36 @@ function displayUserRank() {
   
   const rankCard = document.getElementById('user-rank-card');
   const rankEmoji = document.getElementById('user-rank-emoji');
+  const userNameDisplay = document.getElementById('user-name-display');
   const rankTitle = document.getElementById('user-rank-title');
   const rankProgress = document.getElementById('user-rank-progress');
   const opsCount = document.getElementById('user-ops-count');
-  const badgesContainer = document.getElementById('user-badges');
-  const badgesList = document.getElementById('user-badges-list');
+  const progressText = document.getElementById('user-progress-text');
   
   // Afficher la carte
-  rankCard.style.display = 'block';
+  rankCard.style.display = 'flex';
+  
+  // Afficher le nom de l'utilisateur
+  userNameDisplay.textContent = currentUser.nom;
   
   // Afficher le rang
   if (currentUser.rank) {
     rankEmoji.textContent = currentUser.rank.emoji;
     rankTitle.textContent = currentUser.rank.name;
     rankProgress.style.width = `${currentUser.rank.progress}%`;
+    
+    // Texte de progression
+    const currentOps = currentUser.total_operations || 0;
+    if (currentUser.rank.max === 999999) {
+      // Niveau maximum
+      progressText.textContent = 'Niveau maximum atteint ! 🎉';
+    } else {
+      progressText.textContent = `${currentOps}/${currentUser.rank.max} vers prochain rang`;
+    }
   }
   
   // Afficher le nombre d'opérations
   opsCount.textContent = currentUser.total_operations || 0;
-  
-  // Afficher les badges
-  if (currentUser.badges && currentUser.badges.length > 0) {
-    badgesContainer.style.display = 'block';
-    badgesList.innerHTML = '';
-    
-    currentUser.badges.forEach(badge => {
-      const badgeElement = document.createElement('div');
-      badgeElement.className = 'badge-item';
-      badgeElement.innerHTML = `
-        <span class="badge-emoji">${badge.split(' ')[0]}</span>
-        <span>${badge.split(' ').slice(1).join(' ')}</span>
-      `;
-      badgesList.appendChild(badgeElement);
-    });
-  } else {
-    badgesContainer.style.display = 'none';
-  }
 }
 
 /**
