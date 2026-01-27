@@ -199,9 +199,11 @@ body {
    5️⃣ PAGE D'ACCUEIL (HOME)
    ═══════════════════════════════════════════════════════════════ */
 
-/* Section "Bonjour Justine" */
+/* Section "Bonjour xxx" */
 .home-header {
-  margin-bottom: 20px;
+  max-width: 600px; /* Limite la largeur */
+  margin: 32px auto 32px auto; /* 32px en haut et en bas, centré */
+  padding: 0 20px; /* Padding sur les côtés pour mobile */
 }
 
 .header-with-avatar {
@@ -2346,6 +2348,11 @@ textarea::placeholder {
 
   .banner-dot {
     display: none;
+  }
+
+   .home-header {
+    margin: 24px auto 24px auto; /* Moins d'espace sur mobile */
+    padding: 0 10px;
   }
 
   /* Avatar */
