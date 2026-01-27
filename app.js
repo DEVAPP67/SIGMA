@@ -305,7 +305,23 @@ function populateInventory() {
       const article = articles.find(a => a.id_article === item.id_article) || {};
       const stockClass = item.quantite >= item.quantite_cible ? 'stock-ok' : item.quantite >= item.quantite_cible / 2 ? 'stock-low' : 'stock-critical';
       const selected = selectedItems[item.id_article] || 0;
-      html += `<div class="item-card ${selected > 0 ? 'selected' : ''}" id="item-${item.id_article}"><div class="item-icon">${article.emoji || '📦'}</div><div class="item-details"><h4>${article.nom || 'Article inconnu'}</h4><p>${article.description || ''}</p></div><span class="stock-indicator ${stockClass}">×${item.quantite}</span><div class="item-qty"><button class="qty-btn" onclick="updateQty('${item.id_article}', -1, ${item.quantite})">−</button><span class="qty-value ${selected > 0 ? 'active' : ''}" id="qty-${item.id_article}">${selected}</span><button class="qty-btn" onclick="updateQty('${item.id_article}', 1, ${item.quantite})">+</button></div></div>`;
+      html += `<div class="item-card ${selected > 0 ? 'selected' : ''}" id="item-${item.id_article}">
+        <div class="item-top">
+          <div class="item-icon">${article.emoji || '📦'}</div>
+          <div class="item-details">
+            <h4>${article.nom || 'Article inconnu'}</h4>
+            <p>${article.description || ''}</p>
+          </div>
+        </div>
+        <div class="item-bottom">
+          <span class="stock-indicator ${stockClass}">×${item.quantite}</span>
+          <div class="item-qty">
+            <button class="qty-btn" onclick="updateQty('${item.id_article}', -1, ${item.quantite})">−</button>
+            <span class="qty-value ${selected > 0 ? 'active' : ''}" id="qty-${item.id_article}">${selected}</span>
+            <button class="qty-btn" onclick="updateQty('${item.id_article}', 1, ${item.quantite})">+</button>
+          </div>
+        </div>
+      </div>`;
     });
     html += '</div>';
     content.innerHTML += html;
@@ -457,7 +473,21 @@ function renderInventaireContent(bagStock) {
       let highlightClass = '', ecartText = '';
       if (ecart < 0) { highlightClass = Math.abs(ecart) >= item.quantite_cible / 2 ? 'highlight-critical' : 'highlight-low'; ecartText = `<span class="ecart negative">⚠️ ${Math.abs(ecart)} manquant${Math.abs(ecart) > 1 ? 's' : ''}</span>`; }
       else if (ecart > 0) { highlightClass = 'highlight-low'; ecartText = `<span class="ecart positive">↑ ${ecart} en plus</span>`; }
-      html += `<div class="item-card ${highlightClass}"><div class="item-icon">${article.emoji || '📦'}</div><div class="item-details"><h4>${article.nom || 'Article inconnu'}</h4><p>${article.description || ''}</p>${ecartText}</div><div class="stock-display"><div class="current">${item.quantite}</div><div class="target">/ ${item.quantite_cible}</div></div></div>`;
+      html += `<div class="item-card ${highlightClass}">
+        <div class="item-top">
+          <div class="item-icon">${article.emoji || '📦'}</div>
+          <div class="item-details">
+            <h4>${article.nom || 'Article inconnu'}</h4>
+            <p>${article.description || ''}</p>${ecartText}
+          </div>
+        </div>
+        <div class="item-bottom">
+          <div class="stock-display">
+            <div class="current">${item.quantite}</div>
+            <div class="target">/ ${item.quantite_cible}</div>
+          </div>
+        </div>
+      </div>`;
     });
     html += '</div>';
     content.innerHTML += html;
