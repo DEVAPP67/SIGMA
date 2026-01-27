@@ -1003,13 +1003,14 @@ textarea::placeholder {
 .item-card {
   background: var(--bg-card);
   border-radius: 16px;
-  padding: 16px;
+  padding: 18px 16px;
   display: flex;
   align-items: center;
   gap: 14px;
   margin-bottom: 10px;
   border: 2px solid transparent;
   transition: all 0.2s;
+  min-height: 78px;
 }
 
 .item-card.selected {
@@ -1050,15 +1051,24 @@ textarea::placeholder {
 .item-details h4 {
   font-size: 15px;
   font-weight: 500;
-  white-space: nowrap;
+  line-height: 1.3;
+  /* Permet l'affichage sur 2 lignes max sur mobile */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .item-details p {
   color: var(--text-muted);
   font-size: 12px;
-  margin-top: 2px;
+  margin-top: 3px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .item-details .ecart {
@@ -2387,5 +2397,45 @@ textarea::placeholder {
   /* Badges legend */
   .badges-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Cartes d'articles - optimisation mobile */
+  .item-card {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+
+  .item-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .item-details h4 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .item-details p {
+    font-size: 11px;
+  }
+
+  /* Améliorer la lisibilité des quantités sur mobile */
+  .item-qty {
+    flex-shrink: 0;
+  }
+
+  .qty-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stock-display {
+    min-width: 45px;
+  }
+
+  .stock-display .current {
+    font-size: 18px;
   }
 }
