@@ -758,6 +758,9 @@ textarea::placeholder {
 .bag-icon.blue { background: rgba(58, 134, 255, 0.15); }
 .bag-icon.green { background: rgba(46, 196, 182, 0.15); }
 .bag-icon.orange { background: rgba(244, 162, 97, 0.15); }
+.bag-icon.yellow { background: rgba(244, 162, 97, 0.15); }
+.bag-icon.purple { background: rgba(168, 85, 247, 0.15); }
+.bag-icon.pink { background: rgba(236, 72, 153, 0.15); }
 
 .bag-icon .alert-dot {
   position: absolute;
@@ -828,6 +831,9 @@ textarea::placeholder {
 .bag-header.blue { background: linear-gradient(135deg, var(--accent-blue), #5a9cff); }
 .bag-header.green { background: linear-gradient(135deg, var(--accent-green), #5ce0d8); }
 .bag-header.orange { background: linear-gradient(135deg, var(--accent-yellow), #f4c994); }
+.bag-header.yellow { background: linear-gradient(135deg, var(--accent-yellow), #f4c994); }
+.bag-header.purple { background: linear-gradient(135deg, var(--accent-purple), #c084fc); }
+.bag-header.pink { background: linear-gradient(135deg, #ec4899, #f9a8d4); }
 
 .bag-header .back-btn {
   background: rgba(255,255,255,0.2);
@@ -982,6 +988,8 @@ textarea::placeholder {
 .pochon-dot.yellow { background: var(--accent-yellow); }
 .pochon-dot.blue { background: var(--accent-blue); }
 .pochon-dot.green { background: var(--accent-green); }
+.pochon-dot.purple { background: var(--accent-purple); }
+.pochon-dot.pink { background: #ec4899; }
 .pochon-dot.gray { background: var(--text-muted); }
 
 .pochon-header h3 {
