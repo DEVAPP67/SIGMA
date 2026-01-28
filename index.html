@@ -33,6 +33,20 @@
     </div>
   </div>
 
+  <!-- Modale de réassort groupé -->
+  <div class="reassort-modal" id="reassort-modal">
+    <div class="reassort-modal-content">
+      <div class="reassort-modal-header">
+        <h3>Réassortir les articles</h3>
+        <button class="close-modal" onclick="closeReassortModal()">×</button>
+      </div>
+      
+      <div id="reassort-modal-content-inner">
+        <!-- Rempli dynamiquement -->
+      </div>
+    </div>
+  </div>
+
   <div class="screen active" id="screen-login">
     <div class="logo">
       <div class="logo-icon">✚</div>
@@ -408,8 +422,8 @@
     <div class="inventory-content" id="inventaire-content"></div>
 
     <div class="floating-container" id="inventaire-floating" style="display: none;">
-      <button class="btn btn-success" id="btn-completer">
-        Compléter les manques (<span id="manque-count">0</span>)
+      <button class="btn btn-success" id="btn-reassort-inventory" onclick="openReassortSourceModal()">
+        Réassortir (<span id="reassort-count">0</span> articles - <span id="reassort-articles-count">0</span> types)
         <span>→</span>
       </button>
     </div>

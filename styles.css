@@ -1020,6 +1020,11 @@ textarea::placeholder {
   gap: 12px;
 }
 
+.item-card.highlight-excess {
+  border-color: var(--accent-green);
+  background: rgba(46, 196, 182, 0.08);
+}
+
 .item-top {
   display: flex;
   align-items: center;
@@ -1103,6 +1108,7 @@ textarea::placeholder {
 .stock-ok { background: rgba(46, 196, 182, 0.15); color: var(--accent-green); }
 .stock-low { background: rgba(244, 162, 97, 0.15); color: var(--accent-yellow); }
 .stock-critical { background: rgba(230, 57, 70, 0.15); color: var(--accent-red); }
+.stock-excess { background: rgba(46, 196, 182, 0.15); color: var(--accent-green); }
 
 .stock-display {
   text-align: center;
@@ -1681,6 +1687,297 @@ textarea::placeholder {
   font-size: 14px;
   color: var(--accent-green);
   font-weight: 600;
+}
+
+/* Modale de réassort individuel */
+.reassort-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 20, 25, 0.95);
+  z-index: 1600;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.reassort-modal.show {
+  display: flex;
+}
+
+.reassort-modal-content {
+  background: var(--bg-card);
+  border-radius: 28px 28px 0 0;
+  padding: 24px 20px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 20px);
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+}
+
+.reassort-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.reassort-modal-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.reassort-article-info {
+  background: var(--bg-input);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reassort-article-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.reassort-article-details {
+  flex: 1;
+}
+
+.reassort-article-details h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.reassort-article-details p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.reassort-article-need {
+  text-align: right;
+}
+
+.reassort-article-need .need-value {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-red);
+}
+
+.reassort-article-need .need-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.reassort-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.reassort-option {
+  background: var(--bg-input);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.reassort-option:active {
+  border-color: var(--accent-blue);
+  transform: scale(0.98);
+}
+
+.reassort-option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reassort-option.disabled:active {
+  transform: none;
+  border-color: transparent;
+}
+
+.reassort-option .icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.reassort-option .icon.armoire { background: rgba(244, 162, 97, 0.15); }
+.reassort-option .icon.sac { background: rgba(58, 134, 255, 0.15); }
+.reassort-option .icon.manual { background: rgba(46, 196, 182, 0.15); }
+
+.reassort-option .info {
+  flex: 1;
+}
+
+.reassort-option .info h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.reassort-option .info p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.reassort-option .stock-info {
+  text-align: right;
+}
+
+.reassort-option .stock-value {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-green);
+}
+
+.reassort-option .stock-value.ok {
+  color: var(--accent-green);
+}
+
+.reassort-option .stock-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.reassort-option.disabled .stock-value {
+  color: var(--text-muted);
+}
+
+/* Modale d'entrée manuelle */
+.manual-input-section {
+  background: var(--bg-input);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.manual-input-section h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.qty-input-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.qty-input-group input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
+}
+
+.qty-input-group input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.manual-input-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.manual-input-buttons button {
+  flex: 1;
+}
+
+/* Récapitulatif des articles sélectionnés */
+.reassort-summary {
+  background: var(--bg-input);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.reassort-summary h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.reassort-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.reassort-summary-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.reassort-summary-item .emoji {
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.reassort-summary-item .name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.reassort-summary-item .qty {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-blue);
 }
 
 .modal-backdrop {

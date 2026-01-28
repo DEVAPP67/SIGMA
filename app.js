@@ -446,11 +446,15 @@ function populateInventaireDetail() {
   document.getElementById('inventaire-stat-exces').textContent = excesCount;
   document.getElementById('filter-count-manque').textContent = manqueCount;
   document.getElementById('filter-count-exces').textContent = excesCount;
-  inventaireManques = bagStock.filter(s => s.quantite < s.quantite_cible).map(s => ({ ...s, manque: s.quantite_cible - s.quantite }));
-  const totalManques = inventaireManques.reduce((sum, m) => sum + m.manque, 0);
-  document.getElementById('manque-count').textContent = totalManques;
-  document.getElementById('inventaire-floating').style.display = totalManques > 0 ? 'block' : 'none';
+  
+  // Réinitialiser les sélections
+  inventaireSelections = {};
+  
+  // Toujours afficher le bouton, il sera désactivé si rien n'est sélectionné
+  document.getElementById('inventaire-floating').style.display = 'block';
+  
   renderInventaireContent(bagStock);
+  updateInventaireButton();
 }
 
 function renderInventaireContent(bagStock) {
@@ -470,21 +474,40 @@ function renderInventaireContent(bagStock) {
     items.forEach(item => {
       const article = articles.find(a => a.id_article === item.id_article) || {};
       const ecart = item.quantite - item.quantite_cible;
-      let highlightClass = '', ecartText = '';
-      if (ecart < 0) { highlightClass = Math.abs(ecart) >= item.quantite_cible / 2 ? 'highlight-critical' : 'highlight-low'; ecartText = `<span class="ecart negative">⚠️ ${Math.abs(ecart)} manquant${Math.abs(ecart) > 1 ? 's' : ''}</span>`; }
-      else if (ecart > 0) { highlightClass = 'highlight-low'; ecartText = `<span class="ecart positive">↑ ${ecart} en plus</span>`; }
-      html += `<div class="item-card ${highlightClass}">
+      let highlightClass = '', stockClass = '';
+      
+      // Déterminer la classe de mise en évidence et le badge de stock
+      if (ecart < 0) {
+        highlightClass = Math.abs(ecart) >= item.quantite_cible / 2 ? 'highlight-critical' : 'highlight-low';
+        stockClass = Math.abs(ecart) >= item.quantite_cible / 2 ? 'stock-critical' : 'stock-low';
+      } else if (ecart > 0) {
+        highlightClass = 'highlight-excess';
+        stockClass = 'stock-excess';
+      } else {
+        stockClass = 'stock-ok';
+      }
+
+      const selectedQty = inventaireSelections[item.id_article] || 0;
+      const maxToAdd = Math.max(0, item.quantite_cible - item.quantite);
+
+      html += `<div class="item-card ${highlightClass} ${selectedQty > 0 ? 'selected' : ''}" id="inv-item-${item.id_article}">
         <div class="item-top">
           <div class="item-icon">${article.emoji || '📦'}</div>
           <div class="item-details">
             <h4>${article.nom || 'Article inconnu'}</h4>
-            <p>${article.description || ''}</p>${ecartText}
+            <p>${article.description || ''}</p>
           </div>
         </div>
         <div class="item-bottom">
-          <div class="stock-display">
-            <div class="current">${item.quantite}</div>
-            <div class="target">/ ${item.quantite_cible}</div>
+          <div class="stock-info">
+            <span class="stock-indicator ${stockClass}">×${item.quantite}</span>
+          </div>
+          <div class="item-qty">
+            <button class="qty-btn" onclick="updateInventaireQty('${item.id_article}', -1, ${maxToAdd}, ${item.quantite})">−</button>
+            <span class="qty-value ${selectedQty > 0 ? 'active' : ''}" id="inv-qty-${item.id_article}">${selectedQty}</span>
+            <span style="color: var(--text-muted); margin: 0 4px;">/</span>
+            <span class="qty-value target">${item.quantite_cible}</span>
+            <button class="qty-btn" onclick="updateInventaireQty('${item.id_article}', 1, ${maxToAdd}, ${item.quantite})">+</button>
           </div>
         </div>
       </div>`;
@@ -492,6 +515,7 @@ function renderInventaireContent(bagStock) {
     html += '</div>';
     content.innerHTML += html;
   });
+  updateInventaireButton();
 }
 
 function filterInventaire(filter) {
@@ -501,7 +525,6 @@ function filterInventaire(filter) {
   renderInventaireContent(bagStock);
 }
 
-document.getElementById('btn-completer').addEventListener('click', () => { openSourceModal(); });
 
 function openSourceModal() {
   const modal = document.getElementById('source-modal');
@@ -519,6 +542,286 @@ function openSourceModal() {
 }
 
 function closeSourceModal() { document.getElementById('source-modal').classList.remove('show'); }
+
+// ===== SYSTÈME DE SÉLECTION POUR RÉASSORT GROUPÉ =====
+let inventaireSelections = {}; // { id_article: quantité_à_ajouter }
+
+function updateInventaireQty(articleId, delta, maxToAdd, currentQty) {
+  const current = inventaireSelections[articleId] || 0;
+  const newQty = Math.max(0, Math.min(current + delta, maxToAdd));
+  
+  if (newQty === 0) {
+    delete inventaireSelections[articleId];
+  } else {
+    inventaireSelections[articleId] = newQty;
+  }
+  
+  // Mettre à jour l'affichage
+  const qtyEl = document.getElementById(`inv-qty-${articleId}`);
+  const cardEl = document.getElementById(`inv-item-${articleId}`);
+  
+  if (qtyEl) {
+    qtyEl.textContent = newQty;
+    qtyEl.classList.toggle('active', newQty > 0);
+  }
+  
+  if (cardEl) {
+    cardEl.classList.toggle('selected', newQty > 0);
+  }
+  
+  updateInventaireButton();
+}
+
+function updateInventaireButton() {
+  const totalArticles = Object.keys(inventaireSelections).length;
+  const totalQty = Object.values(inventaireSelections).reduce((sum, qty) => sum + qty, 0);
+  
+  const button = document.getElementById('btn-reassort-inventory');
+  const countSpan = document.getElementById('reassort-count');
+  const articlesSpan = document.getElementById('reassort-articles-count');
+  
+  if (button) {
+    button.disabled = totalArticles === 0;
+  }
+  
+  if (countSpan) {
+    countSpan.textContent = totalQty;
+  }
+  
+  if (articlesSpan) {
+    articlesSpan.textContent = totalArticles;
+  }
+}
+
+function openReassortSourceModal() {
+  // Vérifier qu'il y a des sélections
+  if (Object.keys(inventaireSelections).length === 0) {
+    showToast('Aucun article sélectionné', 'error');
+    return;
+  }
+
+  const modal = document.getElementById('reassort-modal');
+  const content = document.getElementById('reassort-modal-content-inner');
+  
+  // Construire le récapitulatif des articles sélectionnés
+  let recapHtml = '<div class="reassort-summary"><h4>Articles à réassortir</h4>';
+  
+  Object.keys(inventaireSelections).forEach(articleId => {
+    const qty = inventaireSelections[articleId];
+    const article = articles.find(a => a.id_article === articleId);
+    if (article) {
+      recapHtml += `
+        <div class="reassort-summary-item">
+          <span class="emoji">${article.emoji || '📦'}</span>
+          <span class="name">${article.nom}</span>
+          <span class="qty">×${qty}</span>
+        </div>
+      `;
+    }
+  });
+  
+  recapHtml += '</div>';
+  
+  // Options de source
+  let optionsHtml = '<div class="reassort-section-title">Choisir la source</div>';
+  
+  // 1. Armoire
+  const armoire = contenants.find(c => c.type === 'armoire');
+  if (armoire && currentBag.id_contenant !== armoire.id_contenant) {
+    const availability = checkSourceAvailability(armoire.id_contenant);
+    const disabled = availability.total === 0 ? 'disabled' : '';
+    
+    optionsHtml += `
+      <div class="reassort-option ${disabled}" onclick="${disabled ? '' : `reassortFromSource('${armoire.id_contenant}')`}">
+        <div class="icon armoire">🗄️</div>
+        <div class="info">
+          <h4>${armoire.nom}</h4>
+          <p>${availability.available} / ${availability.needed} articles disponibles</p>
+        </div>
+        <div class="stock-info">
+          <div class="stock-value ${availability.total === 0 ? '' : 'ok'}">${availability.total}</div>
+          <div class="stock-label">pièces</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  // 2. Autres sacs
+  const autresSacs = contenants.filter(c => 
+    c.id_contenant !== currentBag.id_contenant && 
+    c.type !== 'armoire'
+  );
+  
+  autresSacs.forEach(sac => {
+    const availability = checkSourceAvailability(sac.id_contenant);
+    const disabled = availability.total === 0 ? 'disabled' : '';
+    
+    optionsHtml += `
+      <div class="reassort-option ${disabled}" onclick="${disabled ? '' : `reassortFromSource('${sac.id_contenant}')`}">
+        <div class="icon sac">🎒</div>
+        <div class="info">
+          <h4>${sac.nom}</h4>
+          <p>${availability.available} / ${availability.needed} articles disponibles</p>
+        </div>
+        <div class="stock-info">
+          <div class="stock-value ${availability.total === 0 ? '' : 'ok'}">${availability.total}</div>
+          <div class="stock-label">pièces</div>
+        </div>
+      </div>
+    `;
+  });
+  
+  // 3. Entrée manuelle
+  optionsHtml += `
+    <div class="reassort-option" onclick="reassortManually()">
+      <div class="icon manual">✏️</div>
+      <div class="info">
+        <h4>Entrée manuelle</h4>
+        <p>Ajouter directement sans source</p>
+      </div>
+    </div>
+  `;
+  
+  content.innerHTML = recapHtml + optionsHtml;
+  modal.classList.add('show');
+}
+
+function checkSourceAvailability(sourceId) {
+  let needed = 0;
+  let available = 0;
+  let total = 0;
+  
+  Object.keys(inventaireSelections).forEach(articleId => {
+    const qtyNeeded = inventaireSelections[articleId];
+    needed++;
+    
+    const sourceStock = stock.find(s => s.id_contenant === sourceId && s.id_article === articleId);
+    const qtyAvailable = sourceStock ? sourceStock.quantite : 0;
+    total += qtyAvailable;
+    
+    if (qtyAvailable > 0) {
+      available++;
+    }
+  });
+  
+  return { needed, available, total };
+}
+
+function closeReassortModal() {
+  document.getElementById('reassort-modal').classList.remove('show');
+}
+
+async function reassortFromSource(sourceId) {
+  closeReassortModal();
+  showLoading(true);
+  
+  const movements = [];
+  
+  // Pour chaque article sélectionné
+  Object.keys(inventaireSelections).forEach(articleId => {
+    const qtyNeeded = inventaireSelections[articleId];
+    const sourceStock = stock.find(s => s.id_contenant === sourceId && s.id_article === articleId);
+    
+    if (sourceStock && sourceStock.quantite > 0) {
+      const qtyToMove = Math.min(qtyNeeded, sourceStock.quantite);
+      movements.push({
+        date_heure: new Date().toISOString(),
+        id_utilisateur: currentUser.id,
+        id_article: articleId,
+        quantite: qtyToMove,
+        id_contenant_source: sourceId,
+        id_contenant_destination: currentBag.id_contenant,
+        type_mouvement: 'reassort',
+        note: 'Réassort inventaire'
+      });
+    }
+  });
+  
+  if (movements.length === 0) {
+    showToast('Aucun article disponible dans cette source', 'error');
+    showLoading(false);
+    return;
+  }
+  
+  try {
+    await fetch(`${API_URL}?action=addMovements`, { method: 'POST', body: JSON.stringify({ movements }) });
+    
+    // Mettre à jour les stocks locaux
+    movements.forEach(mov => {
+      const sourceStock = stock.find(s => s.id_contenant === mov.id_contenant_source && s.id_article === mov.id_article);
+      if (sourceStock) sourceStock.quantite -= mov.quantite;
+      
+      const destStock = stock.find(s => s.id_contenant === mov.id_contenant_destination && s.id_article === mov.id_article);
+      if (destStock) destStock.quantite += mov.quantite;
+    });
+    
+    const totalMoved = movements.reduce((sum, m) => sum + m.quantite, 0);
+    const articlesCount = movements.length;
+    
+    showToast(`${articlesCount} type${articlesCount > 1 ? 's' : ''} d'articles réassortis (${totalMoved} pièces) !`, 'success');
+    
+    // Réinitialiser les sélections
+    inventaireSelections = {};
+    
+    // Rafraîchir l'affichage
+    populateInventaireDetail();
+    populateInventaireBagList();
+    updateHomeBadges();
+  } catch (error) {
+    showToast('Erreur lors du réassort', 'error');
+  }
+  
+  showLoading(false);
+}
+
+async function reassortManually() {
+  closeReassortModal();
+  showLoading(true);
+  
+  const movements = [];
+  
+  // Pour chaque article sélectionné
+  Object.keys(inventaireSelections).forEach(articleId => {
+    const qty = inventaireSelections[articleId];
+    movements.push({
+      date_heure: new Date().toISOString(),
+      id_utilisateur: currentUser.id,
+      id_article: articleId,
+      quantite: qty,
+      id_contenant_source: null, // null = entrée manuelle
+      id_contenant_destination: currentBag.id_contenant,
+      type_mouvement: 'entree',
+      note: 'Entrée manuelle (inventaire)'
+    });
+  });
+  
+  try {
+    await fetch(`${API_URL}?action=addMovements`, { method: 'POST', body: JSON.stringify({ movements }) });
+    
+    // Mettre à jour les stocks locaux
+    movements.forEach(mov => {
+      const destStock = stock.find(s => s.id_contenant === mov.id_contenant_destination && s.id_article === mov.id_article);
+      if (destStock) destStock.quantite += mov.quantite;
+    });
+    
+    const totalAdded = movements.reduce((sum, m) => sum + m.quantite, 0);
+    const articlesCount = movements.length;
+    
+    showToast(`${articlesCount} type${articlesCount > 1 ? 's' : ''} d'articles ajoutés (${totalAdded} pièces) !`, 'success');
+    
+    // Réinitialiser les sélections
+    inventaireSelections = {};
+    
+    // Rafraîchir l'affichage
+    populateInventaireDetail();
+    populateInventaireBagList();
+    updateHomeBadges();
+  } catch (error) {
+    showToast('Erreur lors de l\'ajout', 'error');
+  }
+  
+  showLoading(false);
+}
 
 async function completerDepuis(sourceId) {
   closeSourceModal();
