@@ -2664,6 +2664,141 @@ textarea::placeholder {
 .leaderboard-item:nth-child(5) { animation-delay: 0.25s; }
 
 
+/* Rangs disponibles */
+.ranks-legend {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--border);
+}
+
+.ranks-legend h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.ranks-legend-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.ranks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rank-legend-item {
+  background: var(--bg-input);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 2px solid var(--border);
+  transition: all 0.2s;
+}
+
+.rank-legend-item:hover {
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: translateX(4px);
+}
+
+/* Rang maximum - Style doré */
+.rank-legend-item.rank-max {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 237, 78, 0.05) 100%);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.rank-legend-item.rank-max:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+}
+
+.rank-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(102, 126, 234, 0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.rank-max .rank-icon {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 237, 78, 0.15));
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+.rank-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rank-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.rank-requirement {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.rank-level {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: right;
+  min-width: 70px;
+}
+
+.rank-max-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #333;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+/* Animation */
+.rank-legend-item {
+  animation: slideInLeft 0.3s ease forwards;
+  opacity: 0;
+}
+
+.rank-legend-item:nth-child(1) { animation-delay: 0.05s; }
+.rank-legend-item:nth-child(2) { animation-delay: 0.1s; }
+.rank-legend-item:nth-child(3) { animation-delay: 0.15s; }
+.rank-legend-item:nth-child(4) { animation-delay: 0.2s; }
+.rank-legend-item:nth-child(5) { animation-delay: 0.25s; }
+.rank-legend-item:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
 /* ═══════════════════════════════════════════════════════════════
    2️⃣7️⃣ RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
@@ -2717,5 +2852,30 @@ textarea::placeholder {
   /* Badges legend */
   .badges-grid {
     grid-template-columns: 1fr;
+  }
+
+  .rank-legend-item {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  /* Rangs */
+  .rank-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .rank-name {
+    font-size: 14px;
+  }
+
+  .rank-requirement {
+    font-size: 11px;
+  }
+
+  .rank-level {
+    min-width: 60px;
+    font-size: 11px;
   }
 }
