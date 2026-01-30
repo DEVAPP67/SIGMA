@@ -488,7 +488,6 @@ function renderInventaireContent(bagStock) {
       }
 
       const selectedQty = inventaireSelections[item.id_article] || 0;
-      const maxToAdd = Math.max(0, item.quantite_cible - item.quantite);
 
       html += `<div class="item-card ${highlightClass} ${selectedQty > 0 ? 'selected' : ''}" id="inv-item-${item.id_article}">
         <div class="item-top">
@@ -503,11 +502,11 @@ function renderInventaireContent(bagStock) {
             <span class="stock-indicator ${stockClass}">×${item.quantite}</span>
           </div>
           <div class="item-qty">
-            <button class="qty-btn" onclick="updateInventaireQty('${item.id_article}', -1, ${maxToAdd}, ${item.quantite})">−</button>
+            <button class="qty-btn" onclick="updateInventaireQty('${item.id_article}', -1, 999, ${item.quantite})">−</button>
             <span class="qty-value ${selectedQty > 0 ? 'active' : ''}" id="inv-qty-${item.id_article}">${selectedQty}</span>
             <span style="color: var(--text-muted); margin: 0 4px;">/</span>
             <span class="qty-value target">${item.quantite_cible}</span>
-            <button class="qty-btn" onclick="updateInventaireQty('${item.id_article}', 1, ${maxToAdd}, ${item.quantite})">+</button>
+            <button class="qty-btn" onclick="updateInventaireQty('${item.id_article}', 1, 999, ${item.quantite})">+</button>
           </div>
         </div>
       </div>`;
@@ -548,7 +547,8 @@ let inventaireSelections = {}; // { id_article: quantité_à_ajouter }
 
 function updateInventaireQty(articleId, delta, maxToAdd, currentQty) {
   const current = inventaireSelections[articleId] || 0;
-  const newQty = Math.max(0, Math.min(current + delta, maxToAdd));
+  // Limite à 999 au lieu de la quantité cible - permet de sur-stocker
+  const newQty = Math.max(0, Math.min(current + delta, 999));
   
   if (newQty === 0) {
     delete inventaireSelections[articleId];
@@ -578,7 +578,6 @@ function updateInventaireButton() {
   
   const button = document.getElementById('btn-reassort-inventory');
   const countSpan = document.getElementById('reassort-count');
-  const articlesSpan = document.getElementById('reassort-articles-count');
   
   if (button) {
     button.disabled = totalArticles === 0;
@@ -586,10 +585,6 @@ function updateInventaireButton() {
   
   if (countSpan) {
     countSpan.textContent = totalQty;
-  }
-  
-  if (articlesSpan) {
-    articlesSpan.textContent = totalArticles;
   }
 }
 
