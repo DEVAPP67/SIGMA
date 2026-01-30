@@ -1782,10 +1782,25 @@ async function showLeaderboard() {
         podiumPlace.querySelector('.podium-name').textContent = user.nom.split(' ')[0];
         podiumPlace.querySelector('.podium-rank-title').textContent = user.rank.name;
         podiumPlace.querySelector('.podium-ops').textContent = `${user.total_operations} ops`;
+        
+        // Afficher les badges sur le podium
+        const podiumBadgesDiv = podiumPlace.querySelector('.podium-badges');
+        if (user.badges && user.badges.length > 0) {
+          let badgesHTML = '';
+          user.badges.forEach(badge => {
+            const badgeEmoji = typeof badge === 'string' ? badge : badge.emoji;
+            const badgeName = typeof badge === 'string' ? badge : (badge.nom || badge.name);
+            badgesHTML += `<span class="podium-badge" title="${badgeName}">${badgeEmoji}</span>`;
+          });
+          podiumBadgesDiv.innerHTML = badgesHTML;
+        } else {
+          podiumBadgesDiv.innerHTML = '';
+        }
       } else {
         podiumPlace.querySelector('.podium-name').textContent = '-';
         podiumPlace.querySelector('.podium-rank-title').textContent = '-';
         podiumPlace.querySelector('.podium-ops').textContent = '0 ops';
+        podiumPlace.querySelector('.podium-badges').innerHTML = '';
       }
     }
     

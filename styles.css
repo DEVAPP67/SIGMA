@@ -2855,6 +2855,40 @@ textarea::placeholder {
     font-size: 28px;
   }
 
+  /* Badges sur le podium */
+  .podium-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .podium-badge {
+    font-size: 14px;
+    line-height: 1;
+    transition: transform 0.2s;
+    cursor: help;
+  }
+
+  .podium-badge:hover {
+    transform: scale(1.15);
+  }
+
+  .podium-place.first .podium-badge {
+    font-size: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .podium-badge {
+      font-size: 12px;
+    }
+    
+    .podium-place.first .podium-badge {
+      font-size: 14px;
+    }
+  }
+
   /* Badges legend */
   .badges-grid {
     grid-template-columns: 1fr;
