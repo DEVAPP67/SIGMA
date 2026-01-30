@@ -300,21 +300,25 @@
       
       <div class="destination-options">
         <div class="dest-option selected" data-dest="victime" onclick="selectDestination(this)">
-          <div class="dest-icon victim">🚑</div>
-          <div class="dest-info">
-            <h4>Utilisé sur victime</h4>
-            <p>Matériel consommé lors d'une intervention</p>
+          <div class="dest-option-content">
+            <div class="dest-icon victim">🚑</div>
+            <div class="dest-info">
+              <h4>Utilisé sur victime</h4>
+              <p>Matériel consommé lors d'une intervention</p>
+            </div>
+            <div class="dest-check">✓</div>
           </div>
-          <div class="dest-check">✓</div>
         </div>
 
         <div class="dest-option" data-dest="transfert" onclick="selectDestination(this)">
-          <div class="dest-icon transfer">↔️</div>
-          <div class="dest-info">
-            <h4>Transfert vers autre sac</h4>
-            <p>Déplacer vers un autre contenant</p>
+          <div class="dest-option-content">
+            <div class="dest-icon transfer">↔️</div>
+            <div class="dest-info">
+              <h4>Transfert vers autre sac</h4>
+              <p>Déplacer vers un autre contenant</p>
+            </div>
+            <div class="dest-check">✓</div>
           </div>
-          <div class="dest-check">✓</div>
           <div class="sub-options" style="display: none;">
             <select id="transfer-target">
               <option value="">Choisir le sac destination...</option>
@@ -323,12 +327,14 @@
         </div>
 
         <div class="dest-option" data-dest="retour" onclick="selectDestination(this)">
-          <div class="dest-icon return">🗄️</div>
-          <div class="dest-info">
-            <h4>Retour armoire</h4>
-            <p>Réintégrer dans la réserve</p>
+          <div class="dest-option-content">
+            <div class="dest-icon return">🗄️</div>
+            <div class="dest-info">
+              <h4>Retour armoire</h4>
+              <p>Réintégrer dans la réserve</p>
+            </div>
+            <div class="dest-check">✓</div>
           </div>
-          <div class="dest-check">✓</div>
         </div>
       </div>
     </div>
