@@ -1788,8 +1788,18 @@ async function showLeaderboard() {
         if (user.badges && user.badges.length > 0) {
           let badgesHTML = '';
           user.badges.forEach(badge => {
-            const badgeEmoji = typeof badge === 'string' ? badge : badge.emoji;
-            const badgeName = typeof badge === 'string' ? badge : (badge.nom || badge.name);
+            // Parser la string "🔦 Flashouilleur" pour extraire l'emoji et le nom
+            let badgeEmoji, badgeName;
+            
+            if (typeof badge === 'string') {
+              // Extraire l'emoji (premier caractère) et le nom (le reste)
+              badgeEmoji = badge.split(' ')[0];  // "🔦"
+              badgeName = badge.split(' ').slice(1).join(' ');  // "Flashouilleur"
+            } else {
+              badgeEmoji = badge.emoji;
+              badgeName = badge.nom || badge.name;
+            }
+            
             badgesHTML += `<span class="podium-badge" title="${badgeName}">${badgeEmoji}</span>`;
           });
           podiumBadgesDiv.innerHTML = badgesHTML;
@@ -1822,10 +1832,20 @@ async function showLeaderboard() {
       if (user.badges && user.badges.length > 0) {
         badgesHTML = '<div class="leaderboard-user-badges">';
         user.badges.forEach(badge => {
-          const badgeEmoji = typeof badge === 'string' ? badge : badge.emoji;
-          const badgeName = typeof badge === 'string' ? badge : (badge.nom || badge.name);
-          badgesHTML += `<span class="leaderboard-badge" title="${badgeName}">${badgeEmoji}</span>`;
-        });
+        // Parser la string "🔦 Flashouilleur" pour extraire l'emoji et le nom
+        let badgeEmoji, badgeName;
+        
+        if (typeof badge === 'string') {
+          // Extraire l'emoji (premier caractère) et le nom (le reste)
+          badgeEmoji = badge.split(' ')[0];  // "🔦"
+          badgeName = badge.split(' ').slice(1).join(' ');  // "Flashouilleur"
+        } else {
+          badgeEmoji = badge.emoji;
+          badgeName = badge.nom || badge.name;
+        }
+        
+        badgesHTML += `<span class="leaderboard-badge" title="${badgeName}">${badgeEmoji}</span>`;
+      });
         badgesHTML += '</div>';
       } else {
         badgesHTML = '<div class="leaderboard-user-badges"><span class="no-badges">Aucun badge</span></div>';
