@@ -1802,20 +1802,18 @@ async function showLeaderboard() {
         item.classList.add('current-user');
       }
       
-      // Afficher les badges
+ // Afficher les badges - Option 1 : Tous visibles
       let badgesHTML = '';
       if (user.badges && user.badges.length > 0) {
         badgesHTML = '<div class="leaderboard-user-badges">';
         user.badges.forEach(badge => {
-          const badgeText = typeof badge === 'string' ? badge : `${badge.emoji} ${badge.name}`;
-          badgesHTML += `
-            <div class="leaderboard-badge">
-              <span>${badgeText.split(' ')[0]}</span>
-              <span>${badgeText.split(' ').slice(1).join(' ')}</span>
-            </div>
-          `;
+          const badgeEmoji = typeof badge === 'string' ? badge : badge.emoji;
+          const badgeName = typeof badge === 'string' ? badge : (badge.nom || badge.name);
+          badgesHTML += `<span class="leaderboard-badge" title="${badgeName}">${badgeEmoji}</span>`;
         });
         badgesHTML += '</div>';
+      } else {
+        badgesHTML = '<div class="leaderboard-user-badges"><span class="no-badges">Aucun badge</span></div>';
       }
       
       item.innerHTML = `
