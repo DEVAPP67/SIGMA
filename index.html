@@ -98,31 +98,6 @@
     .ans-wrap.wrong .ans-expl{display:block;color:var(--red-dark);border-color:var(--red-border);}
     .ans-wrap.other{opacity:.55;}
     .ans-wrap.other .ans-expl{display:block;color:var(--muted);border-color:var(--border);}
-
-    /* QUESTIONS VISUELLES (images) */
-    .answers-img{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
-    .ans-img-wrap{border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--card);overflow:hidden;transition:border-color .2s,box-shadow .15s;position:relative;cursor:pointer;}
-    .ans-img-btn{width:100%;background:none;border:none;padding:0;cursor:pointer;display:block;position:relative;}
-    .ans-img-label{position:absolute;top:6px;left:6px;width:24px;height:24px;border-radius:6px;background:rgba(242,237,227,0.92);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--muted);z-index:2;font-family:'Nunito',sans-serif;}
-    .ans-img-photo{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
-    .ans-img-wrap:active{transform:scale(.97);}
-    .ans-img-wrap.correct{border-color:var(--c-green);box-shadow:0 0 0 2px var(--c-green-border);}
-    .ans-img-wrap.correct .ans-img-label{background:var(--c-green);color:#fff;}
-    .ans-img-wrap.wrong{border-color:var(--red);box-shadow:0 0 0 2px var(--red-border);}
-    .ans-img-wrap.wrong .ans-img-label{background:var(--red);color:var(--cream);}
-    .ans-img-wrap.other{opacity:.4;}
-    .img-expl-block{margin-bottom:12px;display:flex;flex-direction:column;gap:6px;}
-    .img-expl-correct{border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;font-weight:600;line-height:1.5;background:var(--c-green-bg);color:#2A6B3A;border:1.5px solid var(--c-green-border);}
-    .img-expl-wrong{border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;font-weight:600;line-height:1.5;background:var(--red-light);color:var(--red-dark);border:1.5px solid var(--red-border);}
-    .fmt-img-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;background:#E6F1FB;color:#378ADD;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;font-weight:700;}
-
-    /* TYPE ORDRE — images de référence dans la question */
-    .q-step-imgs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;}
-    .q-step-img-wrap{border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);overflow:hidden;position:relative;}
-    .q-step-num{position:absolute;top:5px;left:5px;width:20px;height:20px;border-radius:5px;background:var(--black);color:var(--cream);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:2;font-family:'Nunito',sans-serif;line-height:1;}
-    .q-step-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
-    .fmt-ordre-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;background:#FAEEDA;color:#EF9F27;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;font-weight:700;}
-
     #next-btn{width:100%;padding:15px;border-radius:var(--radius-sm);border:none;background:var(--black);color:var(--cream);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:none;transition:opacity .15s,transform .1s;margin-bottom:10px;}
     #next-btn:active{opacity:.8;transform:scale(.98);}
 
@@ -212,9 +187,65 @@
     .fmt-opt.wrong{background:var(--cream);color:var(--muted);}
     .fmt-opt-letter{font-size:11px;font-weight:800;min-width:18px;flex-shrink:0;margin-top:1px;}
     .fmt-expl{font-size:12px;color:var(--muted);font-style:italic;margin-left:26px;line-height:1.5;}
+
+    /* REF BADGE */
+    .ref-badge{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:5px 12px;margin-bottom:16px;font-size:11px;font-weight:700;color:var(--muted);}
+    .ref-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--c-green);flex-shrink:0;}
+
+    /* IMAGES QUESTIONS */
+    .answers-img{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+    .ans-img-wrap{border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--card);overflow:hidden;transition:border-color .2s,box-shadow .15s;position:relative;cursor:pointer;}
+    .ans-img-btn{width:100%;background:none;border:none;padding:0;cursor:pointer;display:block;position:relative;}
+    .ans-img-label{position:absolute;top:6px;left:6px;width:24px;height:24px;border-radius:6px;background:rgba(242,237,227,0.92);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--muted);z-index:2;font-family:'Nunito',sans-serif;}
+    .ans-img-photo{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+    .ans-img-wrap:active{transform:scale(.97);}
+    .ans-img-wrap.correct{border-color:var(--c-green);box-shadow:0 0 0 2px var(--c-green-border);}
+    .ans-img-wrap.correct .ans-img-label{background:var(--c-green);color:#fff;}
+    .ans-img-wrap.wrong{border-color:var(--red);box-shadow:0 0 0 2px var(--red-border);}
+    .ans-img-wrap.wrong .ans-img-label{background:var(--red);color:var(--cream);}
+    .ans-img-wrap.other{opacity:.4;}
+    .img-expl-block{margin-bottom:12px;display:flex;flex-direction:column;gap:6px;}
+    .img-expl-correct{border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;font-weight:600;line-height:1.5;background:var(--c-green-bg);color:#2A6B3A;border:1.5px solid var(--c-green-border);}
+    .img-expl-wrong{border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;font-weight:600;line-height:1.5;background:var(--red-light);color:var(--red-dark);border:1.5px solid var(--red-border);}
+    /* TYPE ORDRE */
+    .q-step-imgs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;}
+    .q-step-img-wrap{border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);overflow:hidden;position:relative;}
+    .q-step-num{position:absolute;top:5px;left:5px;width:20px;height:20px;border-radius:5px;background:var(--black);color:var(--cream);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:2;font-family:'Nunito',sans-serif;line-height:1;}
+    .q-step-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+    /* BADGES FORMATEUR */
+    .fmt-img-badge{display:inline-flex;align-items:center;font-size:10px;background:#E6F1FB;color:#378ADD;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;font-weight:700;}
+    .fmt-ordre-badge{display:inline-flex;align-items:center;font-size:10px;background:#FAEEDA;color:#EF9F27;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;font-weight:700;}
+
+    /* INTRO MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,26,26,.55);z-index:100;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.active{display:flex;}
+    .modal-card{background:var(--card);border-radius:var(--radius);padding:24px 22px;max-width:340px;width:100%;}
+    .modal-icon{width:44px;height:44px;border-radius:12px;background:var(--red-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+    .modal-icon svg{width:22px;height:22px;stroke:var(--red);}
+    .modal-title{font-size:17px;font-weight:800;margin-bottom:14px;color:var(--black);}
+    .modal-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+    .modal-list li{font-size:13px;font-weight:600;line-height:1.55;color:var(--muted);padding-left:16px;position:relative;}
+    .modal-list li::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--red);}
+    .modal-list li strong{color:var(--black);}
   </style>
 </head>
 <body>
+
+<!-- INTRO MODAL -->
+<div id="intro-modal-overlay" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    </div>
+    <div class="modal-title">Avant de commencer</div>
+    <ul class="modal-list">
+      <li>Chaque question n'a <strong>qu'une seule bonne réponse</strong>.</li>
+      <li>Elle est parfois évidente — mais les explications des <strong>mauvaises réponses</strong> valent aussi le coup d'œil, lis-les !</li>
+      <li>Une erreur, une formulation maladroite, une question à améliorer ? Utilise le bouton <strong>⚑ Signaler</strong> juste après avoir répondu.</li>
+    </ul>
+    <button class="btn-main" id="modal-close-btn">J'ai compris ⚡</button>
+  </div>
+</div>
 
 <!-- LOADING -->
 <div id="screen-loading" class="screen active">
@@ -249,14 +280,16 @@
       <span class="tagline-text">Révise · Joue · Sauve</span>
       <div class="tagline-line"></div>
     </div>
+    <div class="ref-badge" style="margin-top:14px;">
+      <span class="ref-badge-dot"></span>
+      <span>Référentiel PSE · Édition décembre 2023</span>
+    </div>
   </div>
 
-  <p style="font-size:13px;font-weight:600;color:var(--muted);text-align:center;margin-bottom:16px;line-height:1.6;">
+  <p style="font-size:16px;font-weight:600;color:var(--muted);text-align:center;margin-bottom:16px;line-height:1.6;">
     <strong id="q-per-game" style="color:var(--black);">10</strong> questions aléatoires
-    sur <strong id="q-total" style="color:var(--red);">…</strong> disponibles · PSE 2024
+    sur <strong id="q-total" style="color:var(--red);">…</strong> disponibles
   </p>
-
-  <div class="cats-row" id="cats-preview"></div>
 
   <label class="field-label" for="player-name">Ton prénom</label>
   <input class="field-input" type="text" id="player-name" placeholder="Ex : Marie" maxlength="30" autocomplete="off">
@@ -264,7 +297,7 @@
 
   <div class="cat-or-wrap">
     <div class="cat-or-line"></div>
-    <span class="cat-or-text">ou dans une catégorie</span>
+    <span class="cat-or-text" id="cat-or-text">ou 10 questions dans une des catégories</span>
     <div class="cat-or-line"></div>
   </div>
   <div class="cat-theme-grid" id="cat-theme-grid"></div>
@@ -358,7 +391,10 @@ const CATEGORIES = {
 
 let allQuestions=[], questions=[], currentQ=0, score=0, playerName='', answered=false, catScores={};
 
-window.addEventListener('DOMContentLoaded', loadQuestions);
+window.addEventListener('DOMContentLoaded', () => {
+  loadQuestions();
+  document.getElementById('modal-close-btn').onclick = closeIntroModal;
+});
 
 function loadQuestions() {
   // Pas d'URL configurée → démo immédiate
@@ -414,15 +450,6 @@ function splitCSV(line) {
 let selectedCat = null;
 
 function initIntro() {
-  // Pills statiques décoratives (comme avant)
-  const preview = document.getElementById('cats-preview');
-  preview.innerHTML = '';
-  Object.entries(CATEGORIES).forEach(([cat, c]) => {
-    preview.innerHTML += `<div class="cat-pill" style="background:${c.bg};color:${c.color};">
-      <span class="cat-pill-dot" style="background:${c.color};"></span>
-      <span>${cat.split(' ')[0]}</span></div>`;
-  });
-
   // Boutons de catégorie en grille sous "Commencer"
   const grid = document.getElementById('cat-theme-grid');
   grid.innerHTML = '';
@@ -439,9 +466,22 @@ function initIntro() {
 
   document.getElementById('q-total').textContent = allQuestions.length;
   document.getElementById('q-per-game').textContent = Math.min(NB_QUESTIONS, allQuestions.length);
+  document.getElementById('cat-or-text').textContent = `ou ${NB_QUESTIONS} questions dans une des catégories`;
   showScreen('screen-intro');
   document.getElementById('start-btn').onclick = startQuiz;
   document.getElementById('player-name').onkeydown = e => { if(e.key==='Enter') startQuiz(); };
+}
+
+function maybeShowIntroModal() {
+  try {
+    if (sessionStorage.getItem('defibrille_intro_seen')) return;
+  } catch(e) {}
+  document.getElementById('intro-modal-overlay').classList.add('active');
+}
+
+function closeIntroModal() {
+  document.getElementById('intro-modal-overlay').classList.remove('active');
+  try { sessionStorage.setItem('defibrille_intro_seen', '1'); } catch(e) {}
 }
 
 let selectionTimeout = null;
@@ -461,14 +501,31 @@ function startQuiz() {
     return;
   }
 
-  // Mode test visuel — questions image & ordre uniquement
+  // Mode test visuel — questions image & ordre (sheet + démo)
   if (playerName.toLowerCase() === 'images') {
-    const pool = allQuestions.filter(q => q.type === 'image' || q.type === 'ordre');
-    if (!pool.length) {
-      alert('Aucune question visuelle disponible pour le moment.');
-      return;
-    }
-    startQuizFromPool(pool, true);
+    const sheetVisual = allQuestions.filter(q => q.type === 'image' || q.type === 'ordre');
+    const demoVisual  = DEMO_QUESTIONS.filter(q => q.type === 'image' || q.type === 'ordre');
+    const sheetNums   = new Set(sheetVisual.map(q => q.num));
+    const pool = [...sheetVisual, ...demoVisual.filter(q => !sheetNums.has(q.num))];
+    if (selectionTimeout)  { clearTimeout(selectionTimeout);   selectionTimeout = null; }
+    if (selectionInterval) { clearInterval(selectionInterval); selectionInterval = null; }
+    questions = [...pool];
+    selectedCat = null;
+    currentQ=0; score=0; answered=false;
+    catScores={};
+    Object.keys(CATEGORIES).forEach(c => catScores[c]={correct:0,total:0});
+    showScreen('screen-selecting');
+    const amb = document.getElementById('ambulance');
+    amb.style.animation = 'none'; void amb.offsetWidth;
+    amb.style.animation = 'drive 2.8s cubic-bezier(.4,0,.6,1) forwards';
+    const el = document.getElementById('sel-label');
+    el.innerHTML = 'Chargement des questions visuelles ⚡';
+    selectionTimeout = setTimeout(() => {
+      selectionTimeout = null;
+      showScreen('screen-question');
+      buildDots(); renderQuestion();
+      maybeShowIntroModal();
+    }, 3100);
     return;
   }
 
@@ -477,15 +534,8 @@ function startQuiz() {
   if (selectionInterval) { clearInterval(selectionInterval); selectionInterval = null; }
 
   const pool = selectedCat ? allQuestions.filter(q => q.cat === selectedCat) : allQuestions;
-  startQuizFromPool(pool, false);
-}
-
-function startQuizFromPool(pool, allOfThem) {
-  if (selectionTimeout)  { clearTimeout(selectionTimeout);   selectionTimeout = null; }
-  if (selectionInterval) { clearInterval(selectionInterval); selectionInterval = null; }
-
-  questions = allOfThem ? [...pool] : shuffle([...pool]).slice(0, NB_QUESTIONS);
-  selectedCat = null;
+  questions = shuffle([...pool]).slice(0, NB_QUESTIONS);
+  selectedCat = null; // reset pour la prochaine partie
   currentQ=0; score=0; answered=false;
   catScores={};
   Object.keys(CATEGORIES).forEach(c => catScores[c]={correct:0,total:0});
@@ -515,6 +565,7 @@ function startQuizFromPool(pool, allOfThem) {
     selectionTimeout = null;
     showScreen('screen-question');
     buildDots(); renderQuestion();
+    maybeShowIntroModal();
   }, 3100);
 }
 
@@ -578,14 +629,11 @@ function renderQuestion() {
   document.getElementById('cat-name').textContent=q.cat;
   document.getElementById('q-text').textContent=q.q;
 
-  const cont=document.getElementById('answers');
-  cont.innerHTML='';
+  const cont=document.getElementById('answers'); cont.innerHTML='';
 
-  // Reset bloc d'explication image
+  // Reset blocs visuels
   const explBlock=document.getElementById('img-expl-block');
   explBlock.style.display='none'; explBlock.innerHTML='';
-
-  // Reset grille de référence (type ordre)
   const stepDiv=document.getElementById('q-step-imgs');
   stepDiv.style.display='none'; stepDiv.innerHTML='';
 
@@ -595,17 +643,14 @@ function renderQuestion() {
   } else {
     cont.className='answers';
     if(q.type==='ordre'){
-      // Afficher les images comme référence visuelle (non cliquables)
       const srcs=q.imgs||[1,2,3,4].map(n=>`img/questions/${q.num}_${n}.jpg`);
-      stepDiv.className='q-step-imgs';
-      stepDiv.style.display='grid';
+      stepDiv.className='q-step-imgs'; stepDiv.style.display='grid';
       stepDiv.innerHTML=srcs.map((src,i)=>`
         <div class="q-step-img-wrap">
           <span class="q-step-num">${i+1}</span>
           <img class="q-step-img" src="${src}" alt="Étape ${i+1}" loading="lazy">
         </div>`).join('');
     }
-    // Réponses texte (pour texte ET ordre)
     ['A','B','C','D'].forEach((l,i) => {
       const w=document.createElement('div'); w.className='ans-wrap'; w.id='aw-'+i;
       w.innerHTML=`<button class="ans-btn" onclick="checkAnswer(${i})">
@@ -630,7 +675,6 @@ function renderQuestion() {
 
 function renderImageAnswers(q, cont) {
   ['A','B','C','D'].forEach((l,i) => {
-    // En démo : q.imgs[] ; en prod : fichiers dans img/questions/
     const src = q.imgs ? q.imgs[i] : `img/questions/${q.num}_${l}.jpg`;
     const w=document.createElement('div'); w.className='ans-img-wrap'; w.id='aw-'+i;
     w.innerHTML=`<button class="ans-img-btn" onclick="checkAnswer(${i})">
@@ -653,11 +697,10 @@ function checkAnswer(chosen) {
     ['A','B','C','D'].forEach((_,i) => {
       const w=document.getElementById('aw-'+i); if(!w)return;
       w.querySelector('.ans-img-btn').onclick=null;
-      if(i===q.ok)          w.className='ans-img-wrap correct';
+      if(i===q.ok)             w.className='ans-img-wrap correct';
       else if(i===chosen&&!ok) w.className='ans-img-wrap wrong';
-      else                  w.className='ans-img-wrap other';
+      else                     w.className='ans-img-wrap other';
     });
-    // Bloc d'explication unifié
     const eb=document.getElementById('img-expl-block');
     eb.style.display='flex'; eb.innerHTML='';
     if(!ok && q.expls[chosen])
@@ -668,9 +711,9 @@ function checkAnswer(chosen) {
     ['A','B','C','D'].forEach((_,i) => {
       const w=document.getElementById('aw-'+i);
       w.querySelector('.ans-btn').onclick=null;
-      if(i===q.ok)          w.className='ans-wrap correct';
+      if(i===q.ok)             w.className='ans-wrap correct';
       else if(i===chosen&&!ok) w.className='ans-wrap wrong';
-      else                  w.className='ans-wrap other';
+      else                     w.className='ans-wrap other';
     });
   }
 
@@ -760,22 +803,12 @@ function exitFormateur() {
 }
 
 function filterQuestions() {
-  const q = document.getElementById('fmt-search').value.toLowerCase().trim();
-  const filtered = q.length > 0
-    ? allQuestions.filter(q2 =>
-        q2.q.toLowerCase().includes(q) ||
-        q2.cat.toLowerCase().includes(q) ||
-        (q2.num && q2.num.toLowerCase().includes(q)) ||
-        (q2.num && q2.num.toLowerCase().replace(/^q0*/, '') === q.replace(/^q0*/, ''))
-      )
+  const q = document.getElementById('fmt-search').value.toLowerCase();
+  const filtered = q.length > 1
+    ? allQuestions.filter(q2 => q2.q.toLowerCase().includes(q) || q2.cat.toLowerCase().includes(q))
     : allQuestions;
   document.getElementById('fmt-count').textContent = filtered.length + ' questions';
   renderFormateur(filtered);
-}
-
-function numToInt(num) {
-  const m = (num || '').match(/(\d+)/);
-  return m ? parseInt(m[1], 10) : 0;
 }
 
 function renderFormateur(qs) {
@@ -784,7 +817,6 @@ function renderFormateur(qs) {
   const letters = ['A','B','C','D'];
   const bycat   = {};
   qs.forEach(q => { (bycat[q.cat] = bycat[q.cat]||[]).push(q); });
-  Object.values(bycat).forEach(list => list.sort((a,b) => numToInt(a.num) - numToInt(b.num)));
 
   Object.entries(bycat).forEach(([cat, items]) => {
     const c = CATEGORIES[cat] || {color:'#888', bg:'#eee'};
@@ -842,30 +874,20 @@ function goHome() {
   showScreen('screen-intro');
 }
 
-// ── IMAGES DE DÉMO (remplacées en prod par img/questions/QXXX_A.jpg, etc.) ──
+// ── IMAGES DE DÉMO (en prod : img/questions/QXXX_A.jpg / QXXX_1.jpg) ──
 function svg2uri(s){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);}
 
-// Q_IMG_001 — Plan dur vs autres dispositifs
 const _PD=[
-  // A — Matelas coquille
   svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EAF3DE" rx="8"/><ellipse cx="48" cy="62" rx="33" ry="19" fill="#5BAD72" opacity=".18" stroke="#5BAD72" stroke-width="2"/><ellipse cx="112" cy="62" rx="33" ry="19" fill="#5BAD72" opacity=".18" stroke="#5BAD72" stroke-width="2"/><ellipse cx="48" cy="62" rx="33" ry="8" fill="none" stroke="#5BAD72" stroke-width="1.5" stroke-dasharray="4 2"/><ellipse cx="112" cy="62" rx="33" ry="8" fill="none" stroke="#5BAD72" stroke-width="1.5" stroke-dasharray="4 2"/><rect x="9" y="56" width="9" height="12" rx="2" fill="none" stroke="#5BAD72" stroke-width="1.5"/><rect x="142" y="56" width="9" height="12" rx="2" fill="none" stroke="#5BAD72" stroke-width="1.5"/><text x="80" y="98" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5BAD72">Matelas coquille</text></svg>`),
-  // B — Plan dur ✓ CORRECT
   svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FCEBEB" rx="8"/><rect x="20" y="47" width="120" height="30" rx="3" fill="#D4B896" stroke="#8B6040" stroke-width="2"/><rect x="20" y="47" width="28" height="30" rx="3" fill="#C4A078"/><line x1="48" y1="47" x2="48" y2="77" stroke="#8B6040" stroke-width="1"/><line x1="65" y1="47" x2="65" y2="77" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="95" y1="47" x2="95" y2="77" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="125" y1="47" x2="125" y2="77" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3 2"/><rect x="6" y="53" width="16" height="18" rx="4" fill="none" stroke="#8B6040" stroke-width="2"/><rect x="138" y="53" width="16" height="18" rx="4" fill="none" stroke="#8B6040" stroke-width="2"/><text x="80" y="100" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#E24B4A">Plan dur</text></svg>`),
-  // C — Brancard
   svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EEEDFE" rx="8"/><rect x="20" y="44" width="120" height="20" rx="3" fill="#C8C0F0" stroke="#7F77DD" stroke-width="2"/><rect x="6" y="48" width="16" height="12" rx="3" fill="none" stroke="#7F77DD" stroke-width="1.5"/><rect x="138" y="48" width="16" height="12" rx="3" fill="none" stroke="#7F77DD" stroke-width="1.5"/><line x1="36" y1="64" x2="36" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="54" y1="64" x2="54" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="106" y1="64" x2="106" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="124" y1="64" x2="124" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="28" y1="88" x2="62" y2="88" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/><line x1="98" y1="88" x2="132" y2="88" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/><text x="80" y="108" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#7F77DD">Brancard</text></svg>`),
-  // D — Portoir souple
   svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FAEEDA" rx="8"/><rect x="16" y="50" width="128" height="24" rx="12" fill="#F5D090" stroke="#EF9F27" stroke-width="2"/><rect x="6" y="54" width="13" height="16" rx="3" fill="none" stroke="#EF9F27" stroke-width="1.5"/><rect x="141" y="54" width="13" height="16" rx="3" fill="none" stroke="#EF9F27" stroke-width="1.5"/><path d="M38 62 Q60 57 80 62 Q100 67 122 62" stroke="#EF9F27" stroke-width="1.5" fill="none" stroke-dasharray="4 2"/><text x="80" y="97" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#EF9F27">Portoir souple</text></svg>`)
 ];
 
-// Q_IMG_002 — Étapes de l'écharpe triangulaire
 const _EC=[
-  // A — Étape 1 : positionner le triangle ✓ CORRECT
-  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FCEBEB" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#E24B4A"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 1</text><polygon points="80,26 22,96 138,96" fill="#E24B4A" opacity=".12" stroke="#E24B4A" stroke-width="2"/><text x="80" y="64" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#E24B4A" opacity=".7">△</text><line x1="80" y1="14" x2="80" y2="24" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#E24B4A">Positionner le triangle</text></svg>`),
-  // B — Étape 2 : glisser le bras
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FCEBEB" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#E24B4A"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 1</text><polygon points="80,26 22,96 138,96" fill="#E24B4A" opacity=".12" stroke="#E24B4A" stroke-width="2"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#E24B4A">Positionner le triangle</text></svg>`),
   svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FAEEDA" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#EF9F27"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 2</text><polygon points="80,26 22,96 138,96" fill="#EF9F27" opacity=".12" stroke="#EF9F27" stroke-width="2"/><rect x="52" y="56" width="56" height="16" rx="8" fill="#EF9F27" opacity=".35" stroke="#EF9F27" stroke-width="1.5"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#EF9F27">Glisser le bras</text></svg>`),
-  // C — Étape 3 : nouer derrière la nuque
   svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EEEDFE" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#7F77DD"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 3</text><circle cx="80" cy="38" r="10" fill="none" stroke="#7F77DD" stroke-width="2"/><line x1="70" y1="38" x2="46" y2="60" stroke="#7F77DD" stroke-width="2"/><line x1="90" y1="38" x2="114" y2="60" stroke="#7F77DD" stroke-width="2"/><path d="M28 82 Q80 66 132 82" fill="none" stroke="#7F77DD" stroke-width="2"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7F77DD">Nouer derrière la nuque</text></svg>`),
-  // D — Étape 4 : épingler la pointe
   svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EAF3DE" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#5BAD72"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 4</text><circle cx="80" cy="36" r="10" fill="none" stroke="#5BAD72" stroke-width="2"/><line x1="70" y1="36" x2="46" y2="58" stroke="#5BAD72" stroke-width="2"/><line x1="90" y1="36" x2="114" y2="58" stroke="#5BAD72" stroke-width="2"/><path d="M28 78 Q80 62 132 78" fill="none" stroke="#5BAD72" stroke-width="2"/><line x1="80" y1="78" x2="80" y2="92" stroke="#5BAD72" stroke-width="1.5"/><circle cx="80" cy="95" r="4" fill="#5BAD72"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5BAD72">Épingler la pointe</text></svg>`)
 ];
 
@@ -882,7 +904,7 @@ const DEMO_QUESTIONS=[
   {cat:'Malaises & Affections',q:"Quelle est la cause la plus fréquente d'AVC selon le PSE 2024 ?",opts:["Hémorragie cérébrale","Obstruction d'une artère cérébrale (85%)","Traumatisme crânien","Hypoglycémie"],ok:1,num:'Q016',expls:["L'hémorragie est la deuxième cause.","Correct. L'obstruction artérielle représente 85% des AVC (06AC01).","Le traumatisme crânien n'est pas une cause d'AVC.","L'hypoglycémie peut simuler un AVC."]},
   {cat:'Atteintes Particulières',q:"Face à une victime en contact avec un conducteur électrique, quelle est la première action ?",opts:["Tirer la victime","S'approcher prudemment","Ne pas s'approcher avant que l'alimentation soit coupée","Arroser avec de l'eau"],ok:2,num:'Q021',expls:["Cela expose le secouriste à l'électrisation.","S'approcher sans coupure du courant est mortel.","Correct. Ne jamais approcher ni toucher avant coupure certaine (07PR01).","L'eau est conductrice et aggraverait le danger."]},
 
-  // ── QUESTIONS VISUELLES DE DÉMO ─────────────────────────────
+  // ── QUESTIONS VISUELLES DE DÉMO ──────────────────────────────
   {
     cat:'Détresses & Bilans', type:'image', imgs:_PD, num:'Q_IMG_001',
     q:"Laquelle de ces images correspond au plan dur ?",
@@ -902,9 +924,9 @@ const DEMO_QUESTIONS=[
     opts:['① → ② → ④ → ③','② → ③ → ① → ④','① → ② → ③ → ④','③ → ① → ② → ④'],
     ok:2,
     expls:[
-      "Incorrect. L'épinglage (④) ne peut pas précéder le nœud (③) — le triangle doit d'abord être maintenu avant d'être fixé.",
+      "Incorrect. L'épinglage (④) ne peut pas précéder le nœud (③).",
       "Incorrect. On ne peut pas glisser le bras (②) avant d'avoir positionné le triangle (①).",
-      "Correct. ① Positionner le triangle → ② Glisser le bras → ③ Nouer derrière la nuque → ④ Épingler la pointe (08FT01).",
+      "Correct. ① Positionner → ② Glisser le bras → ③ Nouer derrière la nuque → ④ Épingler la pointe (08FT01).",
       "Incorrect. Nouer (③) avant de positionner (①) et glisser le bras (②) est impossible."
     ],
     validated:'oui'
