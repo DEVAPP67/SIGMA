@@ -2,972 +2,914 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0f1419">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>SIGMA - Croix Blanche</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23e63946' rx='20' width='100' height='100'/><text x='50' y='65' text-anchor='middle' font-size='50'>✚</text></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Défibrille — Quiz PSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red:        #E24B4A;
+      --red-dark:   #A32D2D;
+      --red-light:  #FCEBEB;
+      --red-border: #F7C1C1;
+      --cream:      #F2EDE3;
+      --cream-dark: #E8E0D0;
+      --black:      #1A1A1A;
+      --muted:      #7A6E64;
+      --card:       #FFFFFF;
+      --border:     #DDD6CB;
+      --c-blue:  #378ADD; --c-blue-bg:   #E6F1FB; --c-blue-border: #B5D4F4;
+      --c-green: #5BAD72; --c-green-bg:  #EAF3DE; --c-green-border:#C0DD97;
+      --c-amber: #EF9F27; --c-amber-bg:  #FAEEDA; --c-amber-border:#FAC775;
+      --c-purple:#7F77DD; --c-purple-bg: #EEEDFE; --c-purple-border:#CECBF6;
+      --radius:16px; --radius-sm:10px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+    .screen{display:none;width:100%;max-width:480px;padding:0 16px 48px;min-height:100vh;flex-direction:column;}
+    .screen.active{display:flex;}
+
+    /* LOADING */
+    #screen-loading{align-items:center;justify-content:center;gap:20px;}
+    .loader-ring{width:52px;height:52px;border:3px solid var(--cream-dark);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* LOGO */
+    .logo{display:flex;align-items:center;gap:11px;}
+    .logo-icon{background:var(--red);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .logo-icon svg{fill:var(--cream);}
+    .logo-defi{font-weight:900;color:var(--red);letter-spacing:-1px;}
+    .logo-brille{font-weight:200;color:var(--black);letter-spacing:-1px;}
+    .logo.sm .logo-icon{width:36px;height:36px;border-radius:10px;} .logo.sm .logo-icon svg{width:20px;height:20px;}
+    .logo.sm .logo-defi,.logo.sm .logo-brille{font-size:24px;}
+    .logo.lg .logo-icon{width:56px;height:56px;border-radius:16px;} .logo.lg .logo-icon svg{width:30px;height:30px;}
+    .logo.lg .logo-defi,.logo.lg .logo-brille{font-size:38px;}
+    .tagline{display:flex;align-items:center;gap:8px;margin-top:10px;}
+    .tagline-line{height:1.5px;width:32px;background:var(--red);border-radius:2px;}
+    .tagline-text{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+
+    /* INTRO */
+    #screen-intro{padding-top:52px;gap:0;}
+    .intro-logo-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:28px;}
+    .cats-row{display:flex;gap:6px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;}
+    .cat-pill{display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+    .cat-pill-dot{width:7px;height:7px;border-radius:50%;}
+    .field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;display:block;}
+    .field-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;background:var(--card);color:var(--black);outline:none;transition:border-color .2s;margin-bottom:14px;}
+    .field-input:focus{border-color:var(--red);}
+    .field-input::placeholder{color:#C0B8AE;}
+    .btn-main{width:100%;padding:16px;background:var(--red);color:var(--cream);border:none;border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:background .15s,transform .1s;letter-spacing:.2px;}
+    .btn-main:active{background:var(--red-dark);transform:scale(.98);}
+    .btn-outline{width:100%;padding:14px;background:transparent;color:var(--black);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;transition:border-color .15s;}
+    .btn-outline:active{border-color:var(--red);}
+
+    /* QUESTION */
+    #screen-question{padding-top:18px;gap:0;}
+    .q-navbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0 10px;gap:8px;}
+    .q-home-btn{background:none;border:none;cursor:pointer;padding:6px;color:var(--muted);border-radius:8px;display:flex;align-items:center;flex-shrink:0;transition:color .15s,background .15s;}
+    .q-home-btn:active{background:var(--cream-dark);}
+    .q-home-btn svg{width:20px;height:20px;}
+    .q-topbar{display:flex;justify-content:flex-start;align-items:center;margin-bottom:10px;}
+    .q-num{font-size:13px;font-weight:700;color:var(--muted);}
+    .q-pts{display:flex;gap:6px;align-items:center;}
+    .q-pts-ok{font-size:13px;font-weight:800;color:#2A6B3A;background:var(--c-green-bg);padding:3px 10px;border-radius:20px;}
+    .q-pts-ko{font-size:13px;font-weight:800;color:var(--red-dark);background:var(--red-light);padding:3px 10px;border-radius:20px;}
+    .progress-track{height:5px;background:var(--cream-dark);border-radius:5px;margin-bottom:18px;overflow:hidden;}
+    .progress-fill{height:100%;background:var(--red);border-radius:5px;transition:width .4s ease;}
+    .tp-dots{display:flex;gap:5px;justify-content:center;margin-bottom:18px;}
+    .tp-dot{width:9px;height:9px;border-radius:50%;border:2px solid transparent;transition:all .25s;}
+    .tp-dot.current{transform:scale(1.5);}
+    .cat-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+    .cat-tag-dot{width:7px;height:7px;border-radius:50%;}
+    .q-card{background:var(--card);border-radius:var(--radius);padding:20px;margin-bottom:12px;border:1.5px solid var(--border);}
+    .q-text{font-size:16px;font-weight:700;line-height:1.5;color:var(--black);}
+    .answers{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
+    .ans-wrap{border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);overflow:hidden;transition:border-color .2s,background .2s;}
+    .ans-btn{width:100%;background:none;border:none;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--black);line-height:1.45;}
+    .ans-letter{flex-shrink:0;width:23px;height:23px;border-radius:6px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--muted);margin-top:1px;}
+    .ans-expl{display:none;padding:8px 14px 11px 47px;font-size:12px;font-weight:600;line-height:1.55;border-top:1px solid transparent;}
+    .ans-wrap.correct{border-color:var(--c-green);background:var(--c-green-bg);}
+    .ans-wrap.correct .ans-btn{color:#2A6B3A;}
+    .ans-wrap.correct .ans-letter{background:var(--c-green);color:#fff;}
+    .ans-wrap.correct .ans-expl{display:block;color:#2A6B3A;border-color:var(--c-green-border);}
+    .ans-wrap.wrong{border-color:var(--red);background:var(--red-light);}
+    .ans-wrap.wrong .ans-btn{color:var(--red-dark);}
+    .ans-wrap.wrong .ans-letter{background:var(--red);color:var(--cream);}
+    .ans-wrap.wrong .ans-expl{display:block;color:var(--red-dark);border-color:var(--red-border);}
+    .ans-wrap.other{opacity:.55;}
+    .ans-wrap.other .ans-expl{display:block;color:var(--muted);border-color:var(--border);}
+
+    /* QUESTIONS VISUELLES (images) */
+    .answers-img{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+    .ans-img-wrap{border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--card);overflow:hidden;transition:border-color .2s,box-shadow .15s;position:relative;cursor:pointer;}
+    .ans-img-btn{width:100%;background:none;border:none;padding:0;cursor:pointer;display:block;position:relative;}
+    .ans-img-label{position:absolute;top:6px;left:6px;width:24px;height:24px;border-radius:6px;background:rgba(242,237,227,0.92);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--muted);z-index:2;font-family:'Nunito',sans-serif;}
+    .ans-img-photo{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+    .ans-img-wrap:active{transform:scale(.97);}
+    .ans-img-wrap.correct{border-color:var(--c-green);box-shadow:0 0 0 2px var(--c-green-border);}
+    .ans-img-wrap.correct .ans-img-label{background:var(--c-green);color:#fff;}
+    .ans-img-wrap.wrong{border-color:var(--red);box-shadow:0 0 0 2px var(--red-border);}
+    .ans-img-wrap.wrong .ans-img-label{background:var(--red);color:var(--cream);}
+    .ans-img-wrap.other{opacity:.4;}
+    .img-expl-block{margin-bottom:12px;display:flex;flex-direction:column;gap:6px;}
+    .img-expl-correct{border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;font-weight:600;line-height:1.5;background:var(--c-green-bg);color:#2A6B3A;border:1.5px solid var(--c-green-border);}
+    .img-expl-wrong{border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;font-weight:600;line-height:1.5;background:var(--red-light);color:var(--red-dark);border:1.5px solid var(--red-border);}
+    .fmt-img-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;background:#E6F1FB;color:#378ADD;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;font-weight:700;}
+
+    /* TYPE ORDRE — images de référence dans la question */
+    .q-step-imgs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;}
+    .q-step-img-wrap{border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);overflow:hidden;position:relative;}
+    .q-step-num{position:absolute;top:5px;left:5px;width:20px;height:20px;border-radius:5px;background:var(--black);color:var(--cream);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:2;font-family:'Nunito',sans-serif;line-height:1;}
+    .q-step-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+    .fmt-ordre-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;background:#FAEEDA;color:#EF9F27;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;font-weight:700;}
+
+    #next-btn{width:100%;padding:15px;border-radius:var(--radius-sm);border:none;background:var(--black);color:var(--cream);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:none;transition:opacity .15s,transform .1s;margin-bottom:10px;}
+    #next-btn:active{opacity:.8;transform:scale(.98);}
+
+    /* REPORT */
+    #report-section{display:none;margin-top:4px;}
+    .report-toggle{background:none;border:none;font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;padding:6px 0;display:flex;align-items:center;gap:5px;text-decoration:underline;text-underline-offset:2px;}
+    .report-toggle:hover{color:var(--red);}
+    #report-form{display:none;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-top:8px;}
+    .report-num{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+    .report-textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--black);background:var(--cream);outline:none;resize:none;height:72px;transition:border-color .2s;}
+    .report-textarea:focus{border-color:var(--red);}
+    .report-textarea::placeholder{color:#C0B8AE;}
+    .report-send{margin-top:8px;padding:9px 18px;background:var(--black);color:var(--cream);border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+    .report-confirm{display:none;font-size:12px;font-weight:700;color:var(--c-green);margin-top:8px;}
+
+    /* SELECTING SCREEN — ambulance */
+    #screen-selecting{align-items:center;justify-content:center;gap:0;}
+    .sel-inner{display:flex;flex-direction:column;align-items:center;width:100%;gap:32px;}
+    .ambulance-wrap{width:100%;position:relative;height:64px;overflow:hidden;}
+    .ambulance-emoji{position:absolute;top:4px;font-size:44px;transform:scaleX(-1);animation:drive 2.8s cubic-bezier(.4,0,.6,1) forwards;will-change:transform;}
+    .road{position:absolute;bottom:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,var(--muted) 0,var(--muted) 18px,transparent 18px,transparent 36px);opacity:.35;}
+    @keyframes drive{from{left:-70px;}to{left:calc(100% + 10px);}}
+    .sel-label{font-size:15px;font-weight:700;color:var(--muted);letter-spacing:.3px;}
+    .sel-dots span{animation:blink 1.2s infinite;} .sel-dots span:nth-child(2){animation-delay:.2s;} .sel-dots span:nth-child(3){animation-delay:.4s;}
+    @keyframes blink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+
+    /* END SCREEN — redesign */
+    #screen-end{padding-top:32px;align-items:center;gap:0;}
+    .end-logo-wrap{margin-bottom:28px;}
+    .end-score-ring{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;border:4px solid;}
+    .end-pct{font-size:34px;font-weight:900;line-height:1;}
+    .end-fraction{font-size:13px;font-weight:700;opacity:.7;margin-top:2px;}
+    .end-msg{font-size:16px;font-weight:800;text-align:center;line-height:1.5;max-width:280px;margin:0 auto 28px;color:var(--black);}
+    .end-divider{width:100%;height:1.5px;background:var(--border);margin-bottom:20px;}
+    .end-body{width:100%;padding:0 0 8px;}
+    .section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;}
+    .cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:24px;}
+    .cat-result{border-radius:var(--radius-sm);padding:12px 14px;}
+    .cat-result-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:5px;margin-bottom:6px;}
+    .cat-result-score{font-size:22px;font-weight:900;margin-bottom:6px;}
+    .cat-result-bar{height:3px;background:rgba(0,0,0,.1);border-radius:3px;overflow:hidden;}
+    .cat-result-fill{height:100%;border-radius:3px;}
+    .leaderboard{width:100%;margin-bottom:20px;}
+    .lb-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--card);border-radius:var(--radius-sm);border:1.5px solid var(--border);margin-bottom:6px;}
+    .lb-row.me{border-color:var(--red);}
+    .lb-rank{font-size:14px;font-weight:800;color:var(--muted);width:20px;flex-shrink:0;}
+    .lb-name{flex:1;font-size:14px;font-weight:700;}
+    .lb-score{font-size:14px;font-weight:800;color:var(--red);}
+    .lb-pct{font-size:12px;color:var(--muted);font-weight:600;min-width:34px;text-align:right;}
+
+    /* SVG bolt */
+    .bolt-svg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+
+    /* CATEGORY FILTER */
+    .cat-filter{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:24px;}
+    .cat-filter-btn{padding:7px 13px;border-radius:20px;border:2px solid transparent;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;background:var(--cream-dark);color:var(--muted);}
+    .cat-filter-btn:active{transform:scale(.95);}
+    .cat-filter-btn.active-all{background:var(--black);color:var(--cream);border-color:var(--black);}
+    .cat-filter-btn.active-cat{border-width:2px;opacity:1;}
+    .cat-filter-btn.inactive-cat{opacity:.45;}
+    /* OR separator */
+    .cat-or-wrap{display:flex;align-items:center;gap:10px;margin:28px 0 16px;}
+    .cat-or-line{flex:1;height:1px;background:var(--border);}
+    .cat-or-text{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;letter-spacing:.5px;text-transform:uppercase;}
+    /* Category theme grid */
+    .cat-theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px;}
+    .cat-theme-btn{padding:12px 14px;border-radius:var(--radius-sm);border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;transition:opacity .15s,transform .1s;line-height:1.3;}
+    .cat-theme-btn:active{transform:scale(.97);}
+
+    /* FORMATEUR */
+    #screen-formateur{padding-top:0;gap:0;background:var(--cream);}
+    .fmt-header{position:sticky;top:0;background:var(--black);padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:10;margin:0 -16px;width:calc(100% + 32px);}
+    .fmt-back{background:none;border:none;color:var(--cream);cursor:pointer;padding:4px;font-size:20px;line-height:1;display:flex;align-items:center;}
+    .fmt-title{color:var(--cream);font-size:16px;font-weight:800;flex:1;}
+    .fmt-count{color:#888;font-size:12px;font-weight:700;}
+    .fmt-search{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;background:var(--card);outline:none;margin:12px 0;transition:border-color .2s;}
+    .fmt-search:focus{border-color:var(--red);}
+    .fmt-cat-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:8px 0 6px;margin-top:8px;display:flex;align-items:center;gap:8px;}
+    .fmt-q-card{background:var(--card);border-radius:var(--radius-sm);border:1.5px solid var(--border);margin-bottom:10px;overflow:hidden;}
+    .fmt-q-head{padding:12px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;}
+    .fmt-q-num{font-size:10px;font-weight:800;color:var(--muted);flex-shrink:0;margin-top:3px;min-width:28px;}
+    .fmt-q-text{font-size:14px;font-weight:700;line-height:1.45;flex:1;}
+    .fmt-q-body{border-top:1px solid var(--border);padding:10px 14px;display:none;flex-direction:column;gap:6px;}
+    .fmt-q-card.open .fmt-q-body{display:flex;}
+    .fmt-opt{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:600;}
+    .fmt-opt.correct{background:var(--c-green-bg);color:#2A6B3A;}
+    .fmt-opt.wrong{background:var(--cream);color:var(--muted);}
+    .fmt-opt-letter{font-size:11px;font-weight:800;min-width:18px;flex-shrink:0;margin-top:1px;}
+    .fmt-expl{font-size:12px;color:var(--muted);font-style:italic;margin-left:26px;line-height:1.5;}
+  </style>
 </head>
 <body>
 
-  <div class="loading-overlay" id="loading">
-    <div class="spinner"></div>
-    <div class="loading-text">Chargement...</div>
-  </div>
+<!-- LOADING -->
+<div id="screen-loading" class="screen active">
+  <div class="loader-ring"></div>
+  <p style="font-size:13px;font-weight:700;color:var(--muted);">Chargement…</p>
+</div>
 
-  <div class="toast" id="toast"></div>
-
-  <div class="source-modal" id="source-modal">
-    <div class="source-modal-content">
-      <div class="source-modal-header">
-        <h3>Compléter depuis...</h3>
-        <button class="close-modal" onclick="closeSourceModal()">×</button>
-      </div>
-      <div id="source-options"></div>
+<!-- SELECTING — ambulance -->
+<div id="screen-selecting" class="screen">
+  <div class="sel-inner">
+    <div class="logo lg">
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="logo-text"><span class="logo-defi">Défi</span><span class="logo-brille">brille</span></div>
     </div>
-  </div>
-
-  <!-- Modale de réassort groupé -->
-  <div class="reassort-modal" id="reassort-modal">
-    <div class="reassort-modal-content">
-      <div class="reassort-modal-header">
-        <h3>Réassortir les articles</h3>
-        <button class="close-modal" onclick="closeReassortModal()">×</button>
-      </div>
-      
-      <div id="reassort-modal-content-inner">
-        <!-- Rempli dynamiquement -->
-      </div>
+    <div class="ambulance-wrap">
+      <div class="ambulance-emoji" id="ambulance">🚑</div>
+      <div class="road"></div>
     </div>
-  </div>
-
-  <div class="screen active" id="screen-login">
-    <div class="logo">
-      <div class="logo-icon">✚</div>
-      <h1>SIGMA</h1>
-      <div class="acronym-detail">Suivi des Inventaires et Gestion du MAtériel</div>
-      <div class="org-name">Secouristes Français Croix Blanche</div>
-    </div>
-
-    <div class="form-group">
-      <label>Identifiant</label>
-      <select id="login-user">
-        <option value="">Choisir un utilisateur...</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Code personnel</label>
-      <input type="password" id="login-pin" class="code-input" placeholder="••••••••" maxlength="8" inputmode="numeric">
-    </div>
-
-    <div style="height: 30px"></div>
-
-    <button class="btn btn-primary" id="btn-login">
-      Connexion
-      <span>→</span>
-    </button>
-  </div>
-
-<!-- ############## -->
-<!-- SCREEN HOME    -->
-<!-- ############## -->
-
-<div class="screen" id="screen-home">
-  <!-- Bandeau SIGMA (sans cadre) -->
-  <div class="top-banner">
-    <div class="banner-logo">✚</div>
-    <div class="banner-text">
-      <span class="banner-title">SIGMA</span>
-      <span class="banner-dot">•</span>
-      <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-    </div>
-  </div>
-
-  <!-- Section utilisateur (comme avant) -->
-  <div class="home-header">
-    <div class="header-with-avatar">
-      <div class="avatar-circle" id="avatar-circle">🩹</div>
-      <div class="header-text">
-        <h2>Bonjour <span id="home-user-name">-</span> 👋</h2>
-        <p>Que souhaitez-vous faire ?</p>
-      </div>
-    </div>
-    
-    <div class="progress-bar-container" id="progress-container" style="display: none;">
-      <div class="progress-info">
-        <span class="progress-label" id="progress-label">Compteur de Pansements</span>
-        <span class="progress-count" id="progress-count">0/50</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-    </div>
-  </div>
-
-    <div class="mode-cards">
-      <div class="mode-card" onclick="enterMode('intervention')">
-        <div class="mode-icon intervention">🚑</div>
-        <div class="mode-info">
-          <h3>Intervention</h3>
-          <p>Sortir du matériel utilisé sur victime ou transférer entre sacs</p>
-        </div>
-        <span class="mode-arrow">›</span>
-      </div>
-
-      <div class="mode-card" onclick="enterMode('inventaire')">
-        <div class="mode-icon inventaire">📋</div>
-        <div class="mode-info">
-          <h3>Inventaire</h3>
-          <p>Vérifier le contenu d'un sac et compléter les manques</p>
-        </div>
-        <span id="inventaire-badge" class="mode-badge" style="display: none;">!</span>
-        <span class="mode-arrow">›</span>
-      </div>
-
-      <div class="mode-card" onclick="enterMode('peremption')">
-        <div class="mode-icon peremption">⏰</div>
-        <div class="mode-info">
-          <h3>Péremptions</h3>
-          <p>Gérer les dates de péremption du matériel</p>
-        </div>
-        <span id="peremption-badge" class="mode-badge" style="display: none;">0</span>
-        <span class="mode-arrow">›</span>
-      </div>
-
-      <div class="mode-card" onclick="enterMode('vehicles')">
-        <div class="mode-icon vehicles">🚑</div>
-        <div class="mode-info">
-          <h3>Véhicules</h3>
-          <p>Parc, entretien et révisions</p>
-        </div>
-        <span class="mode-arrow">›</span>
-      </div>
-
-      <div class="mode-card" id="qr-generator-card" style="display: none;" onclick="enterMode('qrcode')">
-        <div class="mode-icon qrcode">🔲</div>
-        <div class="mode-info">
-          <h3>Générateur QR</h3>
-          <p>Créer des QR codes pour les sacs</p>
-        </div>
-        <span class="mode-arrow">›</span>
-      </div>
-
-      <div class="mode-card" onclick="enterMode('leaderboard')">
-        <div class="mode-icon leaderboard">🏆</div>
-        <div class="mode-info">
-          <h3>Classement</h3>
-          <p>Voir les meilleurs logisticiens</p>
-        </div>
-        <span class="mode-arrow">›</span>
-      </div>
-    </div>
-
-    <button class="btn logout-btn" onclick="logout()">
-      Déconnexion
-    </button>
-  </div>
-
-  <!-- ############## -->
-   <!-- SCREEN SCAN    -->
-   <!-- ############## -->
-
-  <div class="screen" id="screen-scan">
-
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
-      <div class="header-title">
-        <h2>Intervention</h2>
-        <p>Scannez ou choisissez un sac</p>
-      </div>
-      <div class="user-badge" id="user-badge">
-        <span>👤</span>
-        <span id="current-user-name">-</span>
-      </div>
-    </div>
-
-    <div class="scan-area" id="scan-area">
-      <div id="qr-reader" style="display: none;"></div>
-      <div class="scan-placeholder" id="scan-placeholder">
-        <div class="corner-tr"></div>
-        <div class="corner-bl"></div>
-        <div class="scan-icon">📷</div>
-      </div>
-      <p>Scanner le QR code du sac</p>
-      <p class="hint">Positionnez le code dans le cadre</p>
-      <button class="btn btn-secondary scan-btn" id="btn-scan">
-        📷 Activer la caméra
-      </button>
-    </div>
-
-    <div class="divider">ou sélectionner manuellement</div>
-
-    <div class="bag-list" id="bag-list"></div>
-  </div>
-
-   <!-- ############## -->
-   <!-- SCREEN INVENT  -->
-   <!-- ############## -->
-
-
-  <div class="screen" id="screen-inventory">
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-    <div class="bag-header" id="bag-header">
-      <button class="back-btn" onclick="goToScreen('screen-scan')">←</button>
-      <h2 id="bag-title">-</h2>
-      <p id="bag-subtitle">-</p>
-      <div class="bag-stats">
-        <div class="stat">
-          <div class="stat-value" id="stat-articles">0</div>
-          <div class="stat-label">Articles</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="stat-pochons">0</div>
-          <div class="stat-label">Pochons</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="stat-status">-</div>
-          <div class="stat-label">État</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="inventory-content" id="inventory-content"></div>
-
-    <div class="floating-container">
-      <button class="btn btn-primary" id="btn-validate" disabled>
-        Valider la sortie (<span id="selected-count">0</span> articles)
-        <span>→</span>
-      </button>
-    </div>
-  </div>
-
-   <!-- ############## -->
-   <!-- SCREEN DEST    -->
-   <!-- ############## -->
-
-  <div class="screen" id="screen-destination">
-
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-inventory')">←</button>
-      <div class="header-title">
-        <h2>Destination</h2>
-        <p>Où va ce matériel ?</p>
-      </div>
-    </div>
-
-    <div class="selection-summary">
-      <h3>Matériel sélectionné</h3>
-      <div class="selected-items" id="selected-items"></div>
-    </div>
-
-    <div class="destination-section">
-      <h3>Choisir la destination</h3>
-      
-      <div class="destination-options">
-        <div class="dest-option selected" data-dest="victime" onclick="selectDestination(this)">
-          <div class="dest-option-content">
-            <div class="dest-icon victim">🚑</div>
-            <div class="dest-info">
-              <h4>Utilisé sur victime</h4>
-              <p>Matériel consommé lors d'une intervention</p>
-            </div>
-            <div class="dest-check">✓</div>
-          </div>
-        </div>
-
-        <div class="dest-option" data-dest="transfert" onclick="selectDestination(this)">
-          <div class="dest-option-content">
-            <div class="dest-icon transfer">↔️</div>
-            <div class="dest-info">
-              <h4>Transfert vers autre sac</h4>
-              <p>Déplacer vers un autre contenant</p>
-            </div>
-            <div class="dest-check">✓</div>
-          </div>
-          <div class="sub-options" style="display: none;">
-            <select id="transfer-target">
-              <option value="">Choisir le sac destination...</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="dest-option" data-dest="retour" onclick="selectDestination(this)">
-          <div class="dest-option-content">
-            <div class="dest-icon return">🗄️</div>
-            <div class="dest-info">
-              <h4>Retour armoire</h4>
-              <p>Réintégrer dans la réserve</p>
-            </div>
-            <div class="dest-check">✓</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="confirm-section">
-      <div class="note">
-        <textarea id="movement-note" placeholder="Note optionnelle (n° intervention, remarque...)"></textarea>
-      </div>
-      <button class="btn btn-danger" id="btn-confirm">
-        ✓ Confirmer la sortie
-      </button>
-    </div>
-  </div>
-
-  <!-- ############## -->
-   <!-- SCREEN INV SELECT    -->
-   <!-- ############## -->
-
-  <div class="screen" id="screen-inventaire-select">
-
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
-      <div class="header-title">
-        <h2>Inventaire</h2>
-        <p>Choisissez un sac à inventorier</p>
-      </div>
-    </div>
-
-    <div class="bag-list" id="inventaire-bag-list"></div>
-  </div>
-
-
-    <!-- ############## -->
-   <!-- SCREEN INV DETAIL    -->
-   <!-- ############## -->
-
-  <div class="screen" id="screen-inventaire-detail">
-
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-
-    <div class="bag-header blue" id="inventaire-header">
-      <button class="back-btn" onclick="goToScreen('screen-inventaire-select')">←</button>
-      <h2 id="inventaire-title">-</h2>
-      <p id="inventaire-subtitle">Inventaire du contenu</p>
-      <div class="bag-stats">
-        <div class="stat">
-          <div class="stat-value" id="inventaire-stat-ok">0</div>
-          <div class="stat-label">Complet</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="inventaire-stat-manque">0</div>
-          <div class="stat-label">Manquant</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="inventaire-stat-exces">0</div>
-          <div class="stat-label">Excès</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="filter-tabs" id="inventaire-filters">
-      <button class="filter-tab active" data-filter="all" onclick="filterInventaire('all')">
-        Tout
-      </button>
-      <button class="filter-tab" data-filter="manque" onclick="filterInventaire('manque')">
-        Manquants <span class="count" id="filter-count-manque">0</span>
-      </button>
-      <button class="filter-tab" data-filter="exces" onclick="filterInventaire('exces')">
-        Excès <span class="count" id="filter-count-exces">0</span>
-      </button>
-    </div>
-
-    <div class="inventory-content" id="inventaire-content"></div>
-
-    <div class="floating-container" id="inventaire-floating" style="display: none;">
-      <button class="btn btn-success" id="btn-reassort-inventory" onclick="openReassortSourceModal()">
-        Réassortir <span id="reassort-count">0</span> articles
-        <span>→</span>
-      </button>
-    </div>
-  </div>
-
-      <!-- ############## -->
-   <!-- SCREEN INV PEREMP    -->
-   <!-- ############## -->
-
-  <div class="screen" id="screen-peremption">
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
-      <div class="header-title">
-        <h2>Péremptions</h2>
-        <p>Suivi des dates de validité</p>
-      </div>
-    </div>
-
-    <div class="alert-summary" id="peremption-summary">
-      <div class="alert-box expired">
-        <div class="number" id="peremption-expired-count">0</div>
-        <div class="label">Périmés</div>
-      </div>
-      <div class="alert-box warning">
-        <div class="number" id="peremption-warning-count">0</div>
-        <div class="label">< 30 jours</div>
-      </div>
-    </div>
-
-    <div class="filter-tabs" id="peremption-filters">
-      <button class="filter-tab active" data-filter="alerts" onclick="filterPeremption('alerts')">
-        🚨 Alertes
-      </button>
-      <button class="filter-tab" data-filter="all" onclick="filterPeremption('all')">
-        Tous
-      </button>
-    </div>
-
-    <div id="peremption-content"></div>
-  </div>
-
-   <!-- ############## -->
-   <!-- SCREEN QR     -->
-   <!-- ############## -->
-
-  <div class="screen" id="screen-qrcode">
-
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
-      <div class="header-title">
-        <h2>Générateur QR</h2>
-        <p>Créez vos QR codes</p>
-      </div>
-    </div>
-
-    <div class="info-banner">
-      <strong>💡 Comment l'utiliser :</strong><br>
-      Sélectionnez les sacs/armoires depuis Google Sheets, générez les QR codes, puis imprimez et plastifiez.
-    </div>
-
-    <div class="qr-gen-controls">
-      <div id="contenant-selection-list"></div>
-      
-      <button class="btn btn-primary" onclick="generateQRFromSelection()" style="margin-top: 10px;">🔲 Générer les QR codes sélectionnés</button>
-      <button class="btn btn-secondary" onclick="clearAllQR()" style="margin-top: 10px;">🗑️ Tout effacer</button>
-    </div>
-
-    <div class="qr-grid" id="qr-grid-main"></div>
-  </div>
-
-  <!-- ############## -->
-   <!-- SCREEN VEHICULE     -->
-   <!-- ############## -->
-
-  <div class="screen" id="screen-vehicles">
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
-      <div class="header-title">
-        <h2>Véhicules</h2>
-        <p>Parc et entretien</p>
-      </div>
-    </div>
-
-    <button class="btn btn-success" onclick="goToScreen('screen-add-vehicle')" style="margin-bottom: 20px">
-      <span>➕</span>
-      Nouveau véhicule
-    </button>
-
-    <div class="filter-section">
-      <div class="filter-tab active" data-filter="all" onclick="filterVehicles('all')">Tous</div>
-      <div class="filter-tab" data-filter="car" onclick="filterVehicles('car')">🚗 Voitures</div>
-      <div class="filter-tab" data-filter="ambulance" onclick="filterVehicles('ambulance')">🚑 Ambulances</div>
-      <div class="filter-tab" data-filter="quad" onclick="filterVehicles('quad')">🏍️ Quad</div>
-      <div class="filter-tab" data-filter="boat" onclick="filterVehicles('boat')">🚤 Bateau</div>
-      <div class="filter-tab" data-filter="trailer" onclick="filterVehicles('trailer')">🚚 Remorques</div>
-    </div>
-
-    <div id="vehicles-list"></div>
-  </div>
-
-  <!-- Add/Edit Vehicle Screen -->
-  <div class="screen" id="screen-add-vehicle">
-
-    <!-- Bandeau SIGMA horizontal -->
-    <div class="top-banner">
-      <div class="banner-logo">✚</div>
-      <div class="banner-text">
-        <span class="banner-title">SIGMA</span>
-        <span class="banner-dot">•</span>
-        <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
-      </div>
-    </div>
-
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-vehicles')">←</button>
-      <div class="header-title">
-        <h2 id="vehicle-form-title">Nouveau véhicule</h2>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Nom du véhicule</label>
-      <input type="text" id="vehicle-nom" placeholder="Ex: VSAV 1">
-    </div>
-
-    <div class="form-group">
-      <label>Type</label>
-      <select id="vehicle-type">
-        <option value="ambulance">🚑 Ambulance</option>
-        <option value="car">🚗 Véhicule de liaison</option>
-        <option value="car">🚗 Jumpy de transport</option>
-        <option value="quad">🏍️ Quad</option>
-        <option value="boat">🚤 Bateau</option>
-        <option value="trailer">🚚 Remorque</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Immatriculation</label>
-      <input type="text" id="vehicle-immat" placeholder="Ex: AB-123-CD" style="text-transform: uppercase">
-    </div>
-
-    <div class="form-group">
-      <label>Marque</label>
-      <input type="text" id="vehicle-marque" placeholder="Ex: Peugeot">
-    </div>
-
-    <div class="form-group">
-      <label>Modèle</label>
-      <input type="text" id="vehicle-modele" placeholder="Ex: Expert">
-    </div>
-
-    <div class="form-group">
-      <label>Année</label>
-      <input type="number" id="vehicle-annee" placeholder="Ex: 2020">
-    </div>
-
-    <div class="form-group">
-      <label>Kilométrage actuel</label>
-      <input type="number" id="vehicle-km" placeholder="Ex: 45000">
-    </div>
-
-    <button class="btn btn-success" onclick="saveVehicle()">
-      <span>💾</span>
-      Enregistrer
-    </button>
-  </div>
-
-  <!-- Vehicle Detail Screen -->
-  <div class="screen" id="screen-vehicle-detail">
-
-    <!-- Bandeau SIGMA horizontal -->
-<div class="top-banner">
-  <div class="banner-logo">✚</div>
-  <div class="banner-text">
-    <span class="banner-title">SIGMA</span>
-    <span class="banner-dot">•</span>
-    <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
+    <p class="sel-label" id="sel-label">Sélection des questions<span class="sel-dots"><span>.</span><span>.</span><span>.</span></span></p>
   </div>
 </div>
 
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-vehicles')">←</button>
-      <div class="header-title">
-        <h2 id="vehicle-detail-title">Détail véhicule</h2>
-        <p id="vehicle-detail-subtitle"></p>
-      </div>
+<!-- INTRO -->
+<div id="screen-intro" class="screen">
+  <div class="intro-logo-wrap">
+    <div class="logo lg" style="margin-bottom:12px;">
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="logo-text"><span class="logo-defi">Défi</span><span class="logo-brille">brille</span></div>
     </div>
-
-    <div class="tabs">
-      <div class="tab active" data-tab="info" onclick="switchVehicleTab('info')">
-        📋 Infos
-      </div>
-      <div class="tab" data-tab="contracts" onclick="switchVehicleTab('contracts')">
-        📄 Contrats
-      </div>
-      <div class="tab" data-tab="revisions" onclick="switchVehicleTab('revisions')">
-        🔧 Révisions
-      </div>
-      <div class="tab" data-tab="events" onclick="switchVehicleTab('events')">
-        📝 Journal
-      </div>
-    </div>
-
-    <!-- Info Tab -->
-    <div id="tab-info" class="tab-content active">
-      <div id="vehicle-info-grid" class="info-grid"></div>
-      <div style="display: flex; gap: 10px; margin-top: 20px">
-        <button class="btn btn-primary" onclick="editVehicle()" style="flex: 1">
-          <span>✏️</span>
-          Modifier
-        </button>
-        <button class="btn btn-danger" onclick="deleteVehicle()" style="flex: 1">
-          <span>🗑️</span>
-          Supprimer
-        </button>
-      </div>
-    </div>
-
-    <!-- Contracts Tab -->
-    <div id="tab-contracts" class="tab-content">
-      <div id="next-contract-alert"></div>
-      <button class="btn btn-success" onclick="showAddContractModal()" style="margin-bottom: 20px">
-        <span>➕</span>
-        Ajouter un contrat
-      </button>
-      <div id="contracts-list"></div>
-    </div>
-
-    <!-- Revisions Tab -->
-    <div id="tab-revisions" class="tab-content">
-      <div id="next-revision-alert"></div>
-      <button class="btn btn-success" onclick="showAddRevisionModal()" style="margin-bottom: 20px">
-        <span>➕</span>
-        Ajouter une révision
-      </button>
-      <div id="revisions-list"></div>
-    </div>
-
-    <!-- Events Tab -->
-    <div id="tab-events" class="tab-content">
-      <button class="btn btn-success" onclick="showAddEventModal()" style="margin-bottom: 20px">
-        <span>➕</span>
-        Ajouter un événement
-      </button>
-      <div id="events-list"></div>
+    <div class="tagline">
+      <div class="tagline-line"></div>
+      <span class="tagline-text">Révise · Joue · Sauve</span>
+      <div class="tagline-line"></div>
     </div>
   </div>
 
-  <!-- Modal Backdrop -->
-  <div id="modal-backdrop" class="modal-backdrop" onclick="closeVehicleModal()"></div>
+  <p style="font-size:13px;font-weight:600;color:var(--muted);text-align:center;margin-bottom:16px;line-height:1.6;">
+    <strong id="q-per-game" style="color:var(--black);">10</strong> questions aléatoires
+    sur <strong id="q-total" style="color:var(--red);">…</strong> disponibles · PSE 2024
+  </p>
 
-  <!-- Add Contract Modal -->
-  <div id="modal-add-contract" class="modal">
-    <h3>Ajouter un contrat</h3>
-    <div class="form-group">
-      <label>Type</label>
-      <select id="contract-type">
-        <option value="assurance">Assurance</option>
-        <option value="entretien">Entretien</option>
-      </select>
+  <div class="cats-row" id="cats-preview"></div>
+
+  <label class="field-label" for="player-name">Ton prénom</label>
+  <input class="field-input" type="text" id="player-name" placeholder="Ex : Marie" maxlength="30" autocomplete="off">
+  <button class="btn-main" id="start-btn">Commencer ⚡</button>
+
+  <div class="cat-or-wrap">
+    <div class="cat-or-line"></div>
+    <span class="cat-or-text">ou dans une catégorie</span>
+    <div class="cat-or-line"></div>
+  </div>
+  <div class="cat-theme-grid" id="cat-theme-grid"></div>
+</div>
+
+<!-- QUESTION -->
+<div id="screen-question" class="screen">
+  <div class="q-navbar">
+    <button class="q-home-btn" onclick="goHome()" title="Retour à l'accueil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="logo sm">
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="logo-text"><span class="logo-defi">Défi</span><span class="logo-brille">brille</span></div>
     </div>
-    <div class="form-group">
-      <label>Fournisseur</label>
-      <input type="text" id="contract-fournisseur" placeholder="Ex: Groupama">
-    </div>
-    <div class="form-group">
-      <label>Numéro de contrat</label>
-      <input type="text" id="contract-numero" placeholder="Ex: 123456789">
-    </div>
-    <div class="form-group">
-      <label>Date de début</label>
-      <input type="date" id="contract-date-debut">
-    </div>
-    <div class="form-group">
-      <label>Date de fin</label>
-      <input type="date" id="contract-date-fin">
-    </div>
-    <div class="form-group">
-      <label>Description</label>
-      <textarea id="contract-description" placeholder="Détails du contrat..."></textarea>
-    </div>
-    <div style="display: flex; gap: 10px">
-      <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
-      <button class="btn btn-success" onclick="saveContract()" style="flex: 1"><span>Enregistrer</span></button>
+    <div class="q-pts">
+      <span class="q-pts-ok" id="q-score-ok">0 ✓</span>
+      <span class="q-pts-ko" id="q-score-ko">0 ✗</span>
     </div>
   </div>
-
-  <!-- Add Revision Modal -->
-  <div id="modal-add-revision" class="modal">
-    <h3>Ajouter une révision</h3>
-    <div class="form-group">
-      <label>Date de révision</label>
-      <input type="date" id="revision-date">
-    </div>
-    <div class="form-group">
-      <label>Kilométrage</label>
-      <input type="number" id="revision-km" placeholder="Ex: 50000">
-    </div>
-    <div class="form-group">
-      <label>Type de révision</label>
-      <input type="text" id="revision-type" placeholder="Ex: Révision complète, Vidange...">
-    </div>
-    <div class="form-group">
-      <label>Prochaine révision (date)</label>
-      <input type="date" id="revision-next-date">
-    </div>
-    <div class="form-group">
-      <label>Compte rendu</label>
-      <textarea id="revision-notes" placeholder="Détails de la révision..."></textarea>
-    </div>
-    <div style="display: flex; gap: 10px">
-      <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
-      <button class="btn btn-success" onclick="saveRevision()" style="flex: 1"><span>Enregistrer</span></button>
-    </div>
+  <div class="q-topbar">
+    <span class="q-num" id="q-counter">1 / 10</span>
   </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="tp-dots" id="tp-dots"></div>
+  <div id="cat-tag" class="cat-tag"><span class="cat-tag-dot"></span><span id="cat-name"></span></div>
+  <div class="q-card"><p class="q-text" id="q-text"></p></div>
+  <div id="q-step-imgs" style="display:none;"></div>
+  <div class="answers" id="answers"></div>
+  <div id="img-expl-block" style="display:none;"></div>
+  <button id="next-btn">Question suivante →</button>
 
-  <!-- Add Event Modal -->
-  <div id="modal-add-event" class="modal">
-    <h3>Ajouter un événement</h3>
-    <div class="form-group">
-      <label>Type</label>
-      <select id="event-type">
-        <option value="panne">🔴 Panne</option>
-        <option value="entretien">🔧 Entretien</option>
-        <option value="info">ℹ️ Information</option>
-      </select>
+  <!-- REPORT -->
+  <div id="report-section">
+    <button class="report-toggle" onclick="toggleReport()">⚑ Signaler une imprécision sur cette question</button>
+    <div id="report-form">
+      <p class="report-num" id="report-num">Question #—</p>
+      <textarea class="report-textarea" id="report-text" placeholder="Décris le problème ou la précision à apporter…"></textarea>
+      <button class="report-send" onclick="sendReport()">Envoyer</button>
+      <p class="report-confirm" id="report-confirm">✓ Signalement envoyé, merci !</p>
     </div>
-    <div class="form-group">
-      <label>Titre</label>
-      <input type="text" id="event-title" placeholder="Ex: Problème de démarrage">
-    </div>
-    <div class="form-group">
-      <label>Date</label>
-      <input type="date" id="event-date">
-    </div>
-    <div class="form-group">
-      <label>Description</label>
-      <textarea id="event-description" placeholder="Détails de l'événement..."></textarea>
-    </div>
-    <div style="display: flex; gap: 10px">
-      <button class="btn btn-secondary" onclick="closeVehicleModal()" style="flex: 1">Annuler</button>
-      <button class="btn btn-success" onclick="saveEvent()" style="flex: 1"><span>Enregistrer</span></button>
-    </div>
-  </div>
-
-  <!-- Écran de classement -->
-  <div class="screen" id="screen-leaderboard">
-
-    <!-- Bandeau SIGMA horizontal -->
-<div class="top-banner">
-  <div class="banner-logo">✚</div>
-  <div class="banner-text">
-    <span class="banner-title">SIGMA</span>
-    <span class="banner-dot">•</span>
-    <span class="banner-subtitle">Suivi des Inventaires et Gestion du MAtériel</span>
   </div>
 </div>
 
-    <div class="header">
-      <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
-      <div class="header-title">
-        <h2>🏆 Classement</h2>
-        <p>Les meilleurs logisticiens</p>
-      </div>
-    </div>
+<!-- FORMATEUR -->
+<div id="screen-formateur" class="screen">
+  <div class="fmt-header">
+    <button class="fmt-back" onclick="exitFormateur()">←</button>
+    <span class="fmt-title">⚡ Mode Formateur</span>
+    <span class="fmt-count" id="fmt-count"></span>
+  </div>
+  <input class="fmt-search" type="search" id="fmt-search" placeholder="Rechercher une question…" oninput="filterQuestions()">
+  <div id="fmt-list"></div>
+</div>
 
-    <div class="leaderboard-container">
-      <!-- Podium -->
-      <div class="podium" id="podium">
-        <div class="podium-place second" id="podium-2">
-          <div class="podium-rank">🥈</div>
-          <div class="podium-name">-</div>
-          <div class="podium-rank-title">-</div>
-          <div class="podium-ops">0 ops</div>
-          <div class="podium-badges"></div>
-        </div>
-        
-        <div class="podium-place first" id="podium-1">
-          <div class="podium-rank">🥇</div>
-          <div class="podium-name">-</div>
-          <div class="podium-rank-title">-</div>
-          <div class="podium-ops">0 ops</div>
-          <div class="podium-badges"></div>
-        </div>
-        
-        <div class="podium-place third" id="podium-3">
-          <div class="podium-rank">🥉</div>
-          <div class="podium-name">-</div>
-          <div class="podium-rank-title">-</div>
-          <div class="podium-ops">0 ops</div>
-          <div class="podium-badges"></div>
-        </div>
-      </div>
-
-      <!-- Liste complète -->
-      <div class="leaderboard-list" id="leaderboard-list">
-        <!-- Généré dynamiquement -->
-      </div>
-    </div>
-
-    <!-- Rangs disponibles -->
-    <div class="ranks-legend">
-      <h3>🎖️ Rangs disponibles</h3>
-      <p class="ranks-legend-subtitle">Progression basée sur le nombre d'opérations</p>
-      <div class="ranks-list">
-        
-        <!-- Rang 1 -->
-        <div class="rank-legend-item">
-          <div class="rank-icon">🩹</div>
-          <div class="rank-info">
-            <div class="rank-name">Compteur de Pansements</div>
-            <div class="rank-requirement">0 - 50 opérations</div>
-          </div>
-          <div class="rank-level">Niveau 1</div>
-        </div>
-
-        <!-- Rang 2 -->
-        <div class="rank-legend-item">
-          <div class="rank-icon">🎯</div>
-          <div class="rank-info">
-            <div class="rank-name">Maître du Sparadrap</div>
-            <div class="rank-requirement">51 - 200 opérations</div>
-          </div>
-          <div class="rank-level">Niveau 2</div>
-        </div>
-
-        <!-- Rang 3 -->
-        <div class="rank-legend-item">
-          <div class="rank-icon">⚡</div>
-          <div class="rank-info">
-            <div class="rank-name">Ninja du Défibrillateur</div>
-            <div class="rank-requirement">201 - 500 opérations</div>
-          </div>
-          <div class="rank-level">Niveau 3</div>
-        </div>
-
-        <!-- Rang 4 -->
-        <div class="rank-legend-item">
-          <div class="rank-icon">👑</div>
-          <div class="rank-info">
-            <div class="rank-name">Seigneur des Attelles</div>
-            <div class="rank-requirement">501 - 1000 opérations</div>
-          </div>
-          <div class="rank-level">Niveau 4</div>
-        </div>
-
-        <!-- Rang 5 -->
-        <div class="rank-legend-item">
-          <div class="rank-icon">🔱</div>
-          <div class="rank-info">
-            <div class="rank-name">Dieu de la Trousse de Secours</div>
-            <div class="rank-requirement">1001 - 2500 opérations</div>
-          </div>
-          <div class="rank-level">Niveau 5</div>
-        </div>
-
-        <!-- Rang 6 (MAX) -->
-        <div class="rank-legend-item rank-max">
-          <div class="rank-icon">🏆</div>
-          <div class="rank-info">
-            <div class="rank-name">MacGyver Médical</div>
-            <div class="rank-requirement">2501+ opérations</div>
-          </div>
-          <div class="rank-level">
-            <span class="rank-max-badge">MAX</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Légende des badges -->
-    <div class="badges-legend">
-      <h3>🏅 Badges disponibles</h3>
-      <div class="badges-grid">
-        <div class="badge-legend-item">
-          <span class="badge-icon">🔦</span>
-          <span class="badge-name">Flashouilleur</span>
-          <span class="badge-desc">100 scans QR</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">📦</span>
-          <span class="badge-name">Accro au Stock</span>
-          <span class="badge-desc">500 ops/mois</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">🌙</span>
-          <span class="badge-name">Hibou Logistique</span>
-          <span class="badge-desc">Op. après 22h</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">⚡</span>
-          <span class="badge-name">Éclair</span>
-          <span class="badge-desc">50 ops/jour</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">🔄</span>
-          <span class="badge-name">Marathonien</span>
-          <span class="badge-desc">7 jours consécutifs</span>
-        </div>
-        <div class="badge-legend-item">
-          <span class="badge-icon">🐓</span>
-          <span class="badge-name">Lève-tôt</span>
-          <span class="badge-desc">Op. 6h-8h</span>
-        </div>
-      </div>
+<!-- END -->
+<div id="screen-end" class="screen">
+  <div class="end-logo-wrap">
+    <div class="logo sm" style="justify-content:center;">
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="logo-text"><span class="logo-defi">Défi</span><span class="logo-brille">brille</span></div>
     </div>
   </div>
+  <div class="end-score-ring" id="end-ring">
+    <span class="end-pct" id="end-pct">0%</span>
+    <span class="end-fraction" id="end-fraction">0 / 10</span>
+  </div>
+  <p class="end-msg" id="end-msg"></p>
+  <div class="end-divider"></div>
+  <div class="end-body">
+    <p class="section-title">Par catégorie</p>
+    <div class="cat-grid" id="cat-breakdown"></div>
+    <button class="btn-main" onclick="restartQuiz()">⚡ Rejouer</button>
+  </div>
+</div>
 
-  <script src="app.js"></script>
+<script>
+// ================================================================
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1YlZ5K4aEeISSeK4tc_DleUtBLXwaSlmGEqb7LMZ8v1g/gviz/tq?tqx=out:csv&sheet=Questions';
+const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycby1t0oPO3mnu5orXWY-9AYVUZr-ylV-1JS-jNB5E3YIC1tfyuMV6EQTxI2Fd-jLnp2O/exec';
+const NB_QUESTIONS  = 10; // Nombre de questions par partie
+// ================================================================
+
+const CATEGORIES = {
+  'Urgences Vitales':        { color:'#E24B4A', bg:'#FCEBEB', border:'#F7C1C1', emoji:'🚨' },
+  'Détresses & Bilans':      { color:'#378ADD', bg:'#E6F1FB', border:'#B5D4F4', emoji:'📋' },
+  'Hygiène & Protection':    { color:'#5BAD72', bg:'#EAF3DE', border:'#C0DD97', emoji:'🧤' },
+  'Malaises & Affections':   { color:'#EF9F27', bg:'#FAEEDA', border:'#FAC775', emoji:'💊' },
+  'Atteintes Particulières': { color:'#7F77DD', bg:'#EEEDFE', border:'#CECBF6', emoji:'⚡' },
+};
+
+let allQuestions=[], questions=[], currentQ=0, score=0, playerName='', answered=false, catScores={};
+
+window.addEventListener('DOMContentLoaded', loadQuestions);
+
+function loadQuestions() {
+  // Pas d'URL configurée → démo immédiate
+  if (!SHEET_CSV_URL || SHEET_CSV_URL === 'REMPLACER_ICI_URL_CSV_QUESTIONS') {
+    loadDemoQuestions(); return;
+  }
+  // Fallback garanti si le fetch ne répond pas dans 6s
+  const fallback = setTimeout(loadDemoQuestions, 6000);
+  try {
+    fetch(SHEET_CSV_URL)
+      .then(r => r.text())
+      .then(csv => {
+        clearTimeout(fallback);
+        const q = parseCSV(csv);
+        allQuestions = q.length ? q : DEMO_QUESTIONS;
+        initIntro();
+      })
+      .catch(() => { clearTimeout(fallback); loadDemoQuestions(); });
+  } catch(e) {
+    clearTimeout(fallback); loadDemoQuestions();
+  }
+}
+
+function loadDemoQuestions() {
+  allQuestions = DEMO_QUESTIONS;
+  initIntro();
+}
+function parseCSV(csv) {
+  const lines = csv.trim().split('\n'), qs = [];
+  for (let i = 1; i < lines.length; i++) {
+    const c = splitCSV(lines[i]);
+    if (c.length < 11) continue;
+    qs.push({
+      cat:  c[0].trim(),
+      q:    c[1].trim(),
+      opts: [c[2].trim(), c[3].trim(), c[4].trim(), c[5].trim()],
+      ok:   ['A','B','C','D'].indexOf(c[6].trim().toUpperCase()),
+      expls:[c[7].trim(), c[8].trim(), c[9].trim(), c[10].trim()],
+      num:  c[11] ? c[11].trim() : `Q${String(i).padStart(3,'0')}`,
+      validated: c[12] ? c[12].trim().toLowerCase() : '',
+      type: c[13] ? c[13].trim().toLowerCase() : 'texte'
+    });
+  }
+  return qs;
+}
+
+function splitCSV(line) {
+  const r=[];let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){r.push(cur);cur='';continue;}cur+=c;}
+  r.push(cur);return r;
+}
+
+let selectedCat = null;
+
+function initIntro() {
+  // Pills statiques décoratives (comme avant)
+  const preview = document.getElementById('cats-preview');
+  preview.innerHTML = '';
+  Object.entries(CATEGORIES).forEach(([cat, c]) => {
+    preview.innerHTML += `<div class="cat-pill" style="background:${c.bg};color:${c.color};">
+      <span class="cat-pill-dot" style="background:${c.color};"></span>
+      <span>${cat.split(' ')[0]}</span></div>`;
+  });
+
+  // Boutons de catégorie en grille sous "Commencer"
+  const grid = document.getElementById('cat-theme-grid');
+  grid.innerHTML = '';
+  Object.entries(CATEGORIES).forEach(([cat, c]) => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-theme-btn';
+    btn.style.background = c.bg;
+    btn.style.color = c.color;
+    btn.innerHTML = `<span style="font-size:18px;flex-shrink:0;">${c.emoji}</span>
+      <span>${cat}</span>`;
+    btn.onclick = () => startQuizWithCat(cat);
+    grid.appendChild(btn);
+  });
+
+  document.getElementById('q-total').textContent = allQuestions.length;
+  document.getElementById('q-per-game').textContent = Math.min(NB_QUESTIONS, allQuestions.length);
+  showScreen('screen-intro');
+  document.getElementById('start-btn').onclick = startQuiz;
+  document.getElementById('player-name').onkeydown = e => { if(e.key==='Enter') startQuiz(); };
+}
+
+let selectionTimeout = null;
+let selectionInterval = null;
+
+function startQuizWithCat(cat) {
+  selectedCat = cat;
+  startQuiz();
+}
+
+function startQuiz() {
+  playerName = document.getElementById('player-name').value.trim() || 'Anonyme';
+
+  // Mode formateur
+  if (playerName.toLowerCase() === 'formateur') {
+    showFormateurMode();
+    return;
+  }
+
+  // Mode test visuel — questions image & ordre uniquement
+  if (playerName.toLowerCase() === 'images') {
+    const pool = allQuestions.filter(q => q.type === 'image' || q.type === 'ordre');
+    if (!pool.length) {
+      alert('Aucune question visuelle disponible pour le moment.');
+      return;
+    }
+    startQuizFromPool(pool, true);
+    return;
+  }
+
+  // Annuler toute transition précédente encore en cours
+  if (selectionTimeout)  { clearTimeout(selectionTimeout);   selectionTimeout = null; }
+  if (selectionInterval) { clearInterval(selectionInterval); selectionInterval = null; }
+
+  const pool = selectedCat ? allQuestions.filter(q => q.cat === selectedCat) : allQuestions;
+  startQuizFromPool(pool, false);
+}
+
+function startQuizFromPool(pool, allOfThem) {
+  if (selectionTimeout)  { clearTimeout(selectionTimeout);   selectionTimeout = null; }
+  if (selectionInterval) { clearInterval(selectionInterval); selectionInterval = null; }
+
+  questions = allOfThem ? [...pool] : shuffle([...pool]).slice(0, NB_QUESTIONS);
+  selectedCat = null;
+  currentQ=0; score=0; answered=false;
+  catScores={};
+  Object.keys(CATEGORIES).forEach(c => catScores[c]={correct:0,total:0});
+
+  // Ambulance screen
+  showScreen('screen-selecting');
+
+  // Reset ambulance animation explicitement
+  const amb = document.getElementById('ambulance');
+  amb.style.animation = 'none';
+  void amb.offsetWidth;
+  amb.style.animation = 'drive 2.8s cubic-bezier(.4,0,.6,1) forwards';
+
+  // Messages séquentiels
+  const labels = ['Mélange des questions', 'Sélection en cours', 'C\'est parti !'];
+  const el = document.getElementById('sel-label');
+  const dots = '<span class="sel-dots"><span>.</span><span>.</span><span>.</span></span>';
+  let li = 0;
+  el.innerHTML = labels[0] + dots;
+  selectionInterval = setInterval(() => {
+    li++;
+    if (li < labels.length) el.innerHTML = labels[li] + (li < labels.length-1 ? dots : ' ⚡');
+    else { clearInterval(selectionInterval); selectionInterval = null; }
+  }, 1000);
+
+  selectionTimeout = setTimeout(() => {
+    selectionTimeout = null;
+    showScreen('screen-question');
+    buildDots(); renderQuestion();
+  }, 3100);
+}
+
+function shuffle(a) {
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+// Affiche un seul écran, masque tous les autres
+const ALL_SCREENS = ['screen-loading','screen-selecting','screen-intro','screen-question','screen-end','screen-formateur'];
+function showScreen(id) {
+  ALL_SCREENS.forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.classList.toggle('active', s === id);
+  });
+}
+
+function cancelSelection() {
+  if (selectionTimeout)  { clearTimeout(selectionTimeout);   selectionTimeout = null; }
+  if (selectionInterval) { clearInterval(selectionInterval); selectionInterval = null; }
+}
+
+function buildDots() {
+  const el=document.getElementById('tp-dots'); el.innerHTML='';
+  questions.forEach((q,i) => {
+    const c=CATEGORIES[q.cat]||CATEGORIES['Urgences Vitales'];
+    const d=document.createElement('div');
+    d.className='tp-dot'+(i===0?' current':'');
+    d.id='dot-'+i;
+    d.style.background=i===0?c.color:c.bg;
+    d.style.borderColor=c.color;
+    el.appendChild(d);
+  });
+}
+
+function updateDots() {
+  questions.forEach((q,i) => {
+    const d=document.getElementById('dot-'+i); if(!d)return;
+    const c=CATEGORIES[q.cat]||CATEGORIES['Urgences Vitales'];
+    if(i<currentQ){d.className='tp-dot';d.style.background=c.color;d.style.borderColor='transparent';}
+    else if(i===currentQ){d.className='tp-dot current';d.style.background=c.color;d.style.borderColor=c.color;}
+    else{d.className='tp-dot';d.style.background=c.bg;d.style.borderColor=c.color;}
+  });
+}
+
+function renderQuestion() {
+  answered=false;
+  const q=questions[currentQ], c=CATEGORIES[q.cat]||CATEGORIES['Urgences Vitales'];
+
+  document.getElementById('q-counter').textContent=`${currentQ+1} / ${questions.length}`;
+  document.getElementById('q-score-ok').textContent=`${score} ✓`;
+  document.getElementById('q-score-ko').textContent=`${currentQ - score} ✗`;
+  const fill=document.getElementById('progress-fill');
+  fill.style.width=Math.round((currentQ/questions.length)*100)+'%';
+  fill.style.background=c.color;
+  updateDots();
+
+  const tag=document.getElementById('cat-tag');
+  tag.style.background=c.bg; tag.style.color=c.color;
+  tag.querySelector('.cat-tag-dot').style.background=c.color;
+  document.getElementById('cat-name').textContent=q.cat;
+  document.getElementById('q-text').textContent=q.q;
+
+  const cont=document.getElementById('answers');
+  cont.innerHTML='';
+
+  // Reset bloc d'explication image
+  const explBlock=document.getElementById('img-expl-block');
+  explBlock.style.display='none'; explBlock.innerHTML='';
+
+  // Reset grille de référence (type ordre)
+  const stepDiv=document.getElementById('q-step-imgs');
+  stepDiv.style.display='none'; stepDiv.innerHTML='';
+
+  if(q.type==='image'){
+    cont.className='answers-img';
+    renderImageAnswers(q, cont);
+  } else {
+    cont.className='answers';
+    if(q.type==='ordre'){
+      // Afficher les images comme référence visuelle (non cliquables)
+      const srcs=q.imgs||[1,2,3,4].map(n=>`img/questions/${q.num}_${n}.jpg`);
+      stepDiv.className='q-step-imgs';
+      stepDiv.style.display='grid';
+      stepDiv.innerHTML=srcs.map((src,i)=>`
+        <div class="q-step-img-wrap">
+          <span class="q-step-num">${i+1}</span>
+          <img class="q-step-img" src="${src}" alt="Étape ${i+1}" loading="lazy">
+        </div>`).join('');
+    }
+    // Réponses texte (pour texte ET ordre)
+    ['A','B','C','D'].forEach((l,i) => {
+      const w=document.createElement('div'); w.className='ans-wrap'; w.id='aw-'+i;
+      w.innerHTML=`<button class="ans-btn" onclick="checkAnswer(${i})">
+        <span class="ans-letter">${l}</span><span>${q.opts[i]}</span></button>
+        <div class="ans-expl" id="expl-${i}">${q.expls[i]}</div>`;
+      cont.appendChild(w);
+    });
+  }
+
+  const btn=document.getElementById('next-btn');
+  btn.style.display='none'; btn.style.background=c.color;
+  btn.textContent=currentQ<questions.length-1?'Question suivante →':'Voir mon résultat →';
+  btn.onclick=nextQuestion;
+
+  // Reset report section
+  document.getElementById('report-section').style.display='none';
+  document.getElementById('report-form').style.display='none';
+  document.getElementById('report-num').textContent='Question #'+q.num;
+  document.getElementById('report-text').value='';
+  document.getElementById('report-confirm').style.display='none';
+}
+
+function renderImageAnswers(q, cont) {
+  ['A','B','C','D'].forEach((l,i) => {
+    // En démo : q.imgs[] ; en prod : fichiers dans img/questions/
+    const src = q.imgs ? q.imgs[i] : `img/questions/${q.num}_${l}.jpg`;
+    const w=document.createElement('div'); w.className='ans-img-wrap'; w.id='aw-'+i;
+    w.innerHTML=`<button class="ans-img-btn" onclick="checkAnswer(${i})">
+      <span class="ans-img-label">${l}</span>
+      <img class="ans-img-photo" src="${src}" alt="Option ${l}" loading="lazy">
+    </button>`;
+    cont.appendChild(w);
+  });
+}
+
+function checkAnswer(chosen) {
+  if(answered)return; answered=true;
+  const q=questions[currentQ], ok=(chosen===q.ok);
+  if(ok) score++;
+  catScores[q.cat].total++;
+  if(ok) catScores[q.cat].correct++;
+
+  if(q.type==='image'){
+    const letters=['A','B','C','D'];
+    ['A','B','C','D'].forEach((_,i) => {
+      const w=document.getElementById('aw-'+i); if(!w)return;
+      w.querySelector('.ans-img-btn').onclick=null;
+      if(i===q.ok)          w.className='ans-img-wrap correct';
+      else if(i===chosen&&!ok) w.className='ans-img-wrap wrong';
+      else                  w.className='ans-img-wrap other';
+    });
+    // Bloc d'explication unifié
+    const eb=document.getElementById('img-expl-block');
+    eb.style.display='flex'; eb.innerHTML='';
+    if(!ok && q.expls[chosen])
+      eb.innerHTML+=`<div class="img-expl-wrong"><strong>${letters[chosen]} —</strong> ${q.expls[chosen]}</div>`;
+    if(q.expls[q.ok])
+      eb.innerHTML+=`<div class="img-expl-correct"><strong>${letters[q.ok]} ✓ —</strong> ${q.expls[q.ok]}</div>`;
+  } else {
+    ['A','B','C','D'].forEach((_,i) => {
+      const w=document.getElementById('aw-'+i);
+      w.querySelector('.ans-btn').onclick=null;
+      if(i===q.ok)          w.className='ans-wrap correct';
+      else if(i===chosen&&!ok) w.className='ans-wrap wrong';
+      else                  w.className='ans-wrap other';
+    });
+  }
+
+  document.getElementById('q-score-ok').textContent=`${score} ✓`;
+  document.getElementById('q-score-ko').textContent=`${currentQ + 1 - score} ✗`;
+
+  const btn=document.getElementById('next-btn');
+  btn.style.display='block';
+  btn.onclick=nextQuestion;
+
+  // Montrer le bouton de signalement après la réponse
+  document.getElementById('report-section').style.display='block';
+
+  setTimeout(()=>btn.scrollIntoView({behavior:'smooth',block:'nearest'}),200);
+}
+
+function nextQuestion() {
+  currentQ++;
+  if(currentQ>=questions.length){showEnd();}else{renderQuestion();window.scrollTo(0,0);}
+}
+
+function toggleReport() {
+  const form=document.getElementById('report-form');
+  form.style.display=form.style.display==='none'?'block':'none';
+}
+
+function sendReport() {
+  const text=document.getElementById('report-text').value.trim();
+  if(!text) return;
+  const q=questions[currentQ];
+  document.getElementById('report-confirm').style.display='none';
+  if(SCRIPT_URL!=='REMPLACER_ICI_URL_APPS_SCRIPT') {
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      body:   JSON.stringify({type:'report', numero:q.num, prenom:playerName, commentaire:text})
+    }).catch(()=>{});
+  }
+  document.getElementById('report-text').value='';
+  document.getElementById('report-confirm').style.display='block';
+  setTimeout(()=>{document.getElementById('report-form').style.display='none';},2000);
+}
+
+function showEnd() {
+  cancelSelection();
+  showScreen('screen-end');
+  window.scrollTo(0,0);
+  const pct=Math.round((score/questions.length)*100);
+  const l = pct>=80 ? {color:'#5BAD72', bg:'#EAF3DE', emoji:'🏆'}
+          : pct>=50 ? {color:'#EF9F27', bg:'#FAEEDA', emoji:'💪'}
+          :           {color:'#E24B4A', bg:'#FCEBEB', emoji:'📖'};
+  const msg = pct>=80 ? `${l.emoji} Excellent ${playerName} ! Tu maîtrises les gestes qui sauvent.`
+            : pct>=50 ? `${l.emoji} Bien joué ! Encore quelques révisions et tu brilles.`
+            :           `${l.emoji} Continue à t'entraîner — ces gestes peuvent sauver des vies.`;
+
+  const ring=document.getElementById('end-ring');
+  ring.style.background=l.bg; ring.style.borderColor=l.color;
+  const pctEl=document.getElementById('end-pct');
+  pctEl.textContent=pct+'%'; pctEl.style.color=l.color;
+  document.getElementById('end-fraction').textContent=score+' / '+questions.length;
+  document.getElementById('end-msg').textContent=msg;
+
+  const bd=document.getElementById('cat-breakdown'); bd.innerHTML='';
+  Object.entries(catScores).forEach(([cat,data])=>{
+    if(!data.total)return;
+    const c=CATEGORIES[cat], p=Math.round((data.correct/data.total)*100);
+    bd.innerHTML+=`<div class="cat-result" style="background:${c.bg};">
+      <div class="cat-result-label" style="color:${c.color};">
+        <span style="width:8px;height:8px;border-radius:50%;background:${c.color};flex-shrink:0;display:inline-block;"></span>
+        <span>${cat.split(' ')[0]}</span></div>
+      <div class="cat-result-score" style="color:${c.color};">${data.correct}/${data.total}</div>
+      <div class="cat-result-bar"><div class="cat-result-fill" style="width:${p}%;background:${c.color};"></div></div></div>`;
+  });
+  saveScore(pct);
+}
+
+// ── MODE FORMATEUR ────────────────────────────────────────────
+function showFormateurMode() {
+  showScreen('screen-formateur');
+  document.getElementById('fmt-count').textContent = allQuestions.length + ' questions';
+  renderFormateur(allQuestions);
+}
+
+function exitFormateur() {
+  showScreen('screen-intro');
+  document.getElementById('player-name').value = '';
+}
+
+function filterQuestions() {
+  const q = document.getElementById('fmt-search').value.toLowerCase().trim();
+  const filtered = q.length > 0
+    ? allQuestions.filter(q2 =>
+        q2.q.toLowerCase().includes(q) ||
+        q2.cat.toLowerCase().includes(q) ||
+        (q2.num && q2.num.toLowerCase().includes(q)) ||
+        (q2.num && q2.num.toLowerCase().replace(/^q0*/, '') === q.replace(/^q0*/, ''))
+      )
+    : allQuestions;
+  document.getElementById('fmt-count').textContent = filtered.length + ' questions';
+  renderFormateur(filtered);
+}
+
+function numToInt(num) {
+  const m = (num || '').match(/(\d+)/);
+  return m ? parseInt(m[1], 10) : 0;
+}
+
+function renderFormateur(qs) {
+  const container = document.getElementById('fmt-list');
+  container.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  const bycat   = {};
+  qs.forEach(q => { (bycat[q.cat] = bycat[q.cat]||[]).push(q); });
+  Object.values(bycat).forEach(list => list.sort((a,b) => numToInt(a.num) - numToInt(b.num)));
+
+  Object.entries(bycat).forEach(([cat, items]) => {
+    const c = CATEGORIES[cat] || {color:'#888', bg:'#eee'};
+    const catDiv = document.createElement('div');
+    catDiv.innerHTML = `<div class="fmt-cat-title" style="color:${c.color};">
+      <span style="width:10px;height:10px;border-radius:50%;background:${c.color};display:inline-block;flex-shrink:0;"></span>
+      ${cat} <span style="font-weight:400;color:var(--muted);">(${items.length})</span></div>`;
+    container.appendChild(catDiv);
+
+    items.forEach((q, i) => {
+      const card = document.createElement('div');
+      card.className = 'fmt-q-card';
+      const opts = q.opts.map((o, j) => {
+        const correct = j === q.ok;
+        return `<div class="fmt-opt ${correct?'correct':'wrong'}">
+          <span class="fmt-opt-letter" style="${correct?'color:#2A6B3A;':'color:var(--muted);'}">${letters[j]}${correct?' ✓':''}</span>
+          <div>
+            <div>${o}</div>
+            ${q.expls && q.expls[j] ? `<div class="fmt-expl">${q.expls[j]}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('');
+
+      const vColor = q.validated==='oui' ? '#5BAD72' : q.validated==='non' ? '#E24B4A' : '#C0B8AE';
+      const vTitle = q.validated==='oui' ? 'Validée ✓' : q.validated==='non' ? 'À revoir' : 'Non renseignée';
+      card.innerHTML = `
+        <div class="fmt-q-head" onclick="this.parentElement.classList.toggle('open')">
+          <span class="fmt-q-num">${q.num||''}</span>
+          <span class="fmt-q-text">${q.q}${q.type==='image'?'<span class="fmt-img-badge">📷 Visuelle</span>':q.type==='ordre'?'<span class="fmt-ordre-badge">🔢 Ordre</span>':''}</span>
+          <span style="flex-shrink:0;margin-left:8px;width:10px;height:10px;border-radius:50%;display:inline-block;background:${vColor};" title="${vTitle}"></span>
+          <span style="font-size:16px;color:var(--muted);flex-shrink:0;margin-left:4px;">▾</span>
+        </div>
+        <div class="fmt-q-body">${opts}</div>`;
+      container.appendChild(card);
+    });
+  });
+}
+
+function saveScore(pct) {
+  if(SCRIPT_URL==='REMPLACER_ICI_URL_APPS_SCRIPT')return;
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode:   'no-cors',
+    body:   JSON.stringify({prenom:playerName, score, total:questions.length, pct})
+  }).catch(()=>{});
+}
+
+function restartQuiz() {
+  cancelSelection();
+  showScreen('screen-intro');
+}
+
+function goHome() {
+  cancelSelection();
+  showScreen('screen-intro');
+}
+
+// ── IMAGES DE DÉMO (remplacées en prod par img/questions/QXXX_A.jpg, etc.) ──
+function svg2uri(s){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);}
+
+// Q_IMG_001 — Plan dur vs autres dispositifs
+const _PD=[
+  // A — Matelas coquille
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EAF3DE" rx="8"/><ellipse cx="48" cy="62" rx="33" ry="19" fill="#5BAD72" opacity=".18" stroke="#5BAD72" stroke-width="2"/><ellipse cx="112" cy="62" rx="33" ry="19" fill="#5BAD72" opacity=".18" stroke="#5BAD72" stroke-width="2"/><ellipse cx="48" cy="62" rx="33" ry="8" fill="none" stroke="#5BAD72" stroke-width="1.5" stroke-dasharray="4 2"/><ellipse cx="112" cy="62" rx="33" ry="8" fill="none" stroke="#5BAD72" stroke-width="1.5" stroke-dasharray="4 2"/><rect x="9" y="56" width="9" height="12" rx="2" fill="none" stroke="#5BAD72" stroke-width="1.5"/><rect x="142" y="56" width="9" height="12" rx="2" fill="none" stroke="#5BAD72" stroke-width="1.5"/><text x="80" y="98" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5BAD72">Matelas coquille</text></svg>`),
+  // B — Plan dur ✓ CORRECT
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FCEBEB" rx="8"/><rect x="20" y="47" width="120" height="30" rx="3" fill="#D4B896" stroke="#8B6040" stroke-width="2"/><rect x="20" y="47" width="28" height="30" rx="3" fill="#C4A078"/><line x1="48" y1="47" x2="48" y2="77" stroke="#8B6040" stroke-width="1"/><line x1="65" y1="47" x2="65" y2="77" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="95" y1="47" x2="95" y2="77" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="125" y1="47" x2="125" y2="77" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3 2"/><rect x="6" y="53" width="16" height="18" rx="4" fill="none" stroke="#8B6040" stroke-width="2"/><rect x="138" y="53" width="16" height="18" rx="4" fill="none" stroke="#8B6040" stroke-width="2"/><text x="80" y="100" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#E24B4A">Plan dur</text></svg>`),
+  // C — Brancard
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EEEDFE" rx="8"/><rect x="20" y="44" width="120" height="20" rx="3" fill="#C8C0F0" stroke="#7F77DD" stroke-width="2"/><rect x="6" y="48" width="16" height="12" rx="3" fill="none" stroke="#7F77DD" stroke-width="1.5"/><rect x="138" y="48" width="16" height="12" rx="3" fill="none" stroke="#7F77DD" stroke-width="1.5"/><line x1="36" y1="64" x2="36" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="54" y1="64" x2="54" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="106" y1="64" x2="106" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="124" y1="64" x2="124" y2="88" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="round"/><line x1="28" y1="88" x2="62" y2="88" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/><line x1="98" y1="88" x2="132" y2="88" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/><text x="80" y="108" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#7F77DD">Brancard</text></svg>`),
+  // D — Portoir souple
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FAEEDA" rx="8"/><rect x="16" y="50" width="128" height="24" rx="12" fill="#F5D090" stroke="#EF9F27" stroke-width="2"/><rect x="6" y="54" width="13" height="16" rx="3" fill="none" stroke="#EF9F27" stroke-width="1.5"/><rect x="141" y="54" width="13" height="16" rx="3" fill="none" stroke="#EF9F27" stroke-width="1.5"/><path d="M38 62 Q60 57 80 62 Q100 67 122 62" stroke="#EF9F27" stroke-width="1.5" fill="none" stroke-dasharray="4 2"/><text x="80" y="97" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#EF9F27">Portoir souple</text></svg>`)
+];
+
+// Q_IMG_002 — Étapes de l'écharpe triangulaire
+const _EC=[
+  // A — Étape 1 : positionner le triangle ✓ CORRECT
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FCEBEB" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#E24B4A"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 1</text><polygon points="80,26 22,96 138,96" fill="#E24B4A" opacity=".12" stroke="#E24B4A" stroke-width="2"/><text x="80" y="64" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#E24B4A" opacity=".7">△</text><line x1="80" y1="14" x2="80" y2="24" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="3"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#E24B4A">Positionner le triangle</text></svg>`),
+  // B — Étape 2 : glisser le bras
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#FAEEDA" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#EF9F27"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 2</text><polygon points="80,26 22,96 138,96" fill="#EF9F27" opacity=".12" stroke="#EF9F27" stroke-width="2"/><rect x="52" y="56" width="56" height="16" rx="8" fill="#EF9F27" opacity=".35" stroke="#EF9F27" stroke-width="1.5"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#EF9F27">Glisser le bras</text></svg>`),
+  // C — Étape 3 : nouer derrière la nuque
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EEEDFE" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#7F77DD"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 3</text><circle cx="80" cy="38" r="10" fill="none" stroke="#7F77DD" stroke-width="2"/><line x1="70" y1="38" x2="46" y2="60" stroke="#7F77DD" stroke-width="2"/><line x1="90" y1="38" x2="114" y2="60" stroke="#7F77DD" stroke-width="2"/><path d="M28 82 Q80 66 132 82" fill="none" stroke="#7F77DD" stroke-width="2"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7F77DD">Nouer derrière la nuque</text></svg>`),
+  // D — Étape 4 : épingler la pointe
+  svg2uri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#EAF3DE" rx="8"/><rect x="6" y="7" width="52" height="18" rx="5" fill="#5BAD72"/><text x="32" y="19" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="white">Étape 4</text><circle cx="80" cy="36" r="10" fill="none" stroke="#5BAD72" stroke-width="2"/><line x1="70" y1="36" x2="46" y2="58" stroke="#5BAD72" stroke-width="2"/><line x1="90" y1="36" x2="114" y2="58" stroke="#5BAD72" stroke-width="2"/><path d="M28 78 Q80 62 132 78" fill="none" stroke="#5BAD72" stroke-width="2"/><line x1="80" y1="78" x2="80" y2="92" stroke="#5BAD72" stroke-width="1.5"/><circle cx="80" cy="95" r="4" fill="#5BAD72"/><text x="80" y="111" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5BAD72">Épingler la pointe</text></svg>`)
+];
+
+// QUESTIONS DE DÉMO
+const DEMO_QUESTIONS=[
+  {cat:'Urgences Vitales',q:"En RCP adulte, quel est le ratio compressions / insufflations ?",opts:["15 / 2","30 / 2","20 / 1","30 / 1"],ok:1,num:'Q001',expls:["Le ratio 15/2 s'applique à la RCP pédiatrique à 2 secouristes.","Correct. 30 compressions suivies de 2 insufflations répétées sans interruption (05PR01).","Ce ratio n'est pas prévu par les procédures PSE.","Une seule insufflation est insuffisante selon le PSE."]},
+  {cat:'Urgences Vitales',q:"En RCP chez l'enfant, combien d'insufflations initiales faut-il réaliser ?",opts:["2","3","5","Aucune — on débute par les compressions"],ok:2,num:'Q002',expls:["2 insufflations est le nombre par cycle, pas au démarrage.","3 insufflations initiales n'est pas le nombre indiqué.","Correct. 5 insufflations initiales avant les compressions (05PR03).","L'AC de l'enfant est majoritairement respiratoire."]},
+  {cat:'Urgences Vitales',q:"Lors d'une obstruction partielle des voies aériennes, quelle est la conduite à tenir ?",opts:["Compressions abdominales immédiates","5 claques dans le dos","Ne jamais désobstruer — encourager à tousser","Allonger la victime et alerter"],ok:2,num:'Q003',expls:["Les compressions abdominales sont réservées à l'obstruction complète.","Les claques dans le dos s'appliquent en cas d'obstruction complète.","Correct. Le PSE interdit les manœuvres de désobstruction en obstruction partielle (05PR10).","L'allongement n'est pas la conduite indiquée."]},
+  {cat:'Urgences Vitales',q:"En cas d'hémorragie externe, quelle est la première action ?",opts:["Alerter le 15","Se protéger avec des gants puis comprimer manuellement","Allonger la victime","Poser directement un garrot"],ok:1,num:'Q004',expls:["L'alerte ne doit pas retarder l'hémostase.","Correct. Gants de protection puis compression manuelle en priorité (05PR08).","L'allongement ne stoppe pas l'hémorragie.","Le garrot est utilisé seulement si la compression est inefficace."]},
+  {cat:'Urgences Vitales',q:"Lors d'une obstruction complète, combien de claques dans le dos avant les compressions ?",opts:["Toujours 5","De 1 à 5","De 3 à 6","De 5 à 10"],ok:1,num:'Q005',expls:["5 est le maximum, pas un chiffre fixe.","Correct. De 1 à 5 claques dans le dos puis de 1 à 5 compressions (05PR11).","De 3 à 6 n'est pas le protocole PSE.","De 5 à 10 n'est pas prévu par le PSE."]},
+  {cat:'Détresses & Bilans',q:"Une victime est en arrêt cardiaque si elle présente...",opts:["Pâleur et pouls rapide","Perte de connaissance avec absence de ventilation ou ventilation agonique","Perte de connaissance et cyanose uniquement","Convulsions et cyanose"],ok:1,num:'Q006',expls:["Ces signes correspondent à une détresse circulatoire.","Correct. Perte de connaissance + absence de ventilation ou ventilation agonique ≤6 mvts/min (05AC01).","La cyanose n'est pas le critère principal.","Les convulsions ne sont pas les critères diagnostiques principaux."]},
+  {cat:'Détresses & Bilans',q:"En dessous de quelle PA systolique parle-t-on de détresse circulatoire ?",opts:["< 120 mmHg","< 100 mmHg","< 90 mmHg","< 70 mmHg"],ok:2,num:'Q007',expls:["120 mmHg est une valeur normale.","100 mmHg n'est pas le seuil PSE.","Correct. PA systolique < 90 mmHg (ou -30% de la valeur habituelle) (05AC02).","70 mmHg est un état déjà très dégradé."]},
+  {cat:'Hygiène & Protection',q:"Lors du retrait des gants, quelle est la procédure correcte ?",opts:["Retirer les deux simultanément","Saisir par le poignet, retourner le premier, insérer les doigts à l'intérieur du second sans toucher la face externe","Utiliser les dents","Tirer sur les doigts depuis la face externe"],ok:1,num:'Q011',expls:["Cela expose la main nue à la face souillée.","Correct. Procédure PSE pour éviter toute contamination (04FT07).","L'utilisation des dents expose les muqueuses.","Tirer sur les doigts expose les mains à la face souillée."]},
+  {cat:'Malaises & Affections',q:"Quelle est la cause la plus fréquente d'AVC selon le PSE 2024 ?",opts:["Hémorragie cérébrale","Obstruction d'une artère cérébrale (85%)","Traumatisme crânien","Hypoglycémie"],ok:1,num:'Q016',expls:["L'hémorragie est la deuxième cause.","Correct. L'obstruction artérielle représente 85% des AVC (06AC01).","Le traumatisme crânien n'est pas une cause d'AVC.","L'hypoglycémie peut simuler un AVC."]},
+  {cat:'Atteintes Particulières',q:"Face à une victime en contact avec un conducteur électrique, quelle est la première action ?",opts:["Tirer la victime","S'approcher prudemment","Ne pas s'approcher avant que l'alimentation soit coupée","Arroser avec de l'eau"],ok:2,num:'Q021',expls:["Cela expose le secouriste à l'électrisation.","S'approcher sans coupure du courant est mortel.","Correct. Ne jamais approcher ni toucher avant coupure certaine (07PR01).","L'eau est conductrice et aggraverait le danger."]},
+
+  // ── QUESTIONS VISUELLES DE DÉMO ─────────────────────────────
+  {
+    cat:'Détresses & Bilans', type:'image', imgs:_PD, num:'Q_IMG_001',
+    q:"Laquelle de ces images correspond au plan dur ?",
+    opts:['Matelas coquille','Plan dur','Brancard','Portoir souple'],
+    ok:1,
+    expls:[
+      "Le matelas coquille est constitué de deux demi-coques rigides qui s'assemblent sous la victime — il n'est pas rigide sur toute la surface.",
+      "Correct. Le plan dur est une surface rigide et plane permettant d'immobiliser un traumatisé rachidien le temps du ramassage (08FT03).",
+      "Le brancard permet le transport de la victime mais n'assure pas l'immobilisation rachidienne nécessaire.",
+      "Le portoir souple est une toile de transport pliable — sa souplesse le rend inadapté aux traumatismes du rachis."
+    ],
+    validated:'oui'
+  },
+  {
+    cat:'Atteintes Particulières', type:'ordre', imgs:_EC, num:'Q_IMG_002',
+    q:"Dans quel ordre faut-il réaliser ces 4 étapes de mise en place d'une écharpe triangulaire ?",
+    opts:['① → ② → ④ → ③','② → ③ → ① → ④','① → ② → ③ → ④','③ → ① → ② → ④'],
+    ok:2,
+    expls:[
+      "Incorrect. L'épinglage (④) ne peut pas précéder le nœud (③) — le triangle doit d'abord être maintenu avant d'être fixé.",
+      "Incorrect. On ne peut pas glisser le bras (②) avant d'avoir positionné le triangle (①).",
+      "Correct. ① Positionner le triangle → ② Glisser le bras → ③ Nouer derrière la nuque → ④ Épingler la pointe (08FT01).",
+      "Incorrect. Nouer (③) avant de positionner (①) et glisser le bras (②) est impossible."
+    ],
+    validated:'oui'
+  }
+];
+</script>
 </body>
 </html>
